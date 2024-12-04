@@ -4,6 +4,7 @@ import lombok.*;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Proposition extends BaseEntity{
