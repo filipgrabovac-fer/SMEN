@@ -11,7 +11,6 @@ FROM gradle:8.5-jdk17 AS smen-be
 WORKDIR /app
 COPY build.gradle settings.gradle gradlew ./
 COPY --from=smen-fe /app/dist/* ./src/main/resources/static
-RUN gradle clean 
 COPY src ./src
 RUN gradle build 
 
