@@ -7,6 +7,7 @@ RUN npm install
 COPY frontend/ ./
 RUN npm run build
 
+
 # Stage 2: Build the backend
 FROM gradle:8.5-jdk17 AS smen-be
 WORKDIR /app
@@ -15,7 +16,8 @@ COPY build.gradle settings.gradle gradlew ./
 RUN gradle build 
 
 # Stage 3: Run the application
-FROM openjdk:17-jdk-slim AS smen
+FROM openjdk:17-jdk AS smen
 WORKDIR /app
 COPY --from=smen-be /app/build/libs/*.jar ./app.jar
-ENTRYPOINT ["java", "-jar", "./app.jar"]
+EXPOSE 8080
+CMD ["java", "-jar", "./app.jar"]
