@@ -10,7 +10,7 @@ RUN npm run build
 FROM gradle:8.5-jdk17 AS smen-be
 WORKDIR /app
 COPY build.gradle settings.gradle gradlew ./
-COPY --from=smen-fe /app/dist/* ./src/main/resources/static
+COPY --from=smen-fe /app/dist ./src/main/resources/static
 COPY src ./src
 RUN gradle build 
 
