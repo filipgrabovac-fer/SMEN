@@ -5,6 +5,7 @@ import java.util.List;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Workshop extends BaseEntity{
@@ -35,4 +36,8 @@ public class Workshop extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private Subject subject;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

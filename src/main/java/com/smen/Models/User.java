@@ -34,6 +34,9 @@ public class User extends BaseEntity{
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Rating> ratings;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Workshop> workshop;
+
     @ManyToOne
     @JoinColumn(name = "language_id")
     private Language language;
