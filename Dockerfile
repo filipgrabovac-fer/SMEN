@@ -1,6 +1,7 @@
 # Stage 1: Build the frontend
 FROM node:20 AS smen-fe
 WORKDIR /app
+COPY src ./src
 COPY frontend/package*.json ./
 RUN npm install
 COPY frontend/ ./
@@ -9,9 +10,8 @@ RUN npm run build
 # Stage 2: Build the backend
 FROM gradle:8.5-jdk17 AS smen-be
 WORKDIR /app
+COPY --from=smen-fe /app/src ./src
 COPY build.gradle settings.gradle gradlew ./
-COPY --from=smen-fe /app/dist ./src/main/resources/static
-COPY src ./src
 RUN gradle build 
 
 # Stage 3: Run the application
