@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @Getter
 @Setter
-public abstract class BaseEntity {
+public abstract class BaseEntity<M extends BaseEntity, L extends Number> {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

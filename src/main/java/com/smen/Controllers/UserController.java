@@ -18,10 +18,9 @@ public class UserController {
 
     private UserService service;
 
-
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
-        Optional<User> user = service.getByid(id);
+        Optional<User> user = service.getById(id);
 
         return user.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -36,8 +35,21 @@ public class UserController {
             return ResponseEntity.ok(users);
     }
 
+    @PostMapping("/new")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User newUser = service.create(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+        User updatedUser = service.updateUser(id, user);
+        if (updatedUser == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.ok(updatedUser);
+    }
+
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         boolean isDeleted = service.deleteById(id);
 
@@ -47,22 +59,4 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
-
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        User updatedUser = service.updateUser(id, user);
-        if (updatedUser == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        return ResponseEntity.ok(updatedUser);
-    }
-
-    @PostMapping("/new")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User newUser = service.create(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
-    }
-
-
 }

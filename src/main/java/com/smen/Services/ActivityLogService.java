@@ -22,10 +22,12 @@ public class ActivityLogService extends BaseEntityService<ActivityLog, Long> {
         throw new UnsupportedOperationException("Creation of ActivityLog is not allowed");
     }
 
-
     //sva aktivnost nekog korisnika
     public List<ActivityLog> getByUser(Long userId) {
         return activityLogRepository.findByUserId(userId);
+    }
 
+    public List<ActivityLog> getByWorkshop(Long workshopId) {
+        return activityLogRepository.findByWorkshopId(workshopId);
     }
 }

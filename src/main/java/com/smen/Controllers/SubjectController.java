@@ -3,12 +3,11 @@ package com.smen.Controllers;
 import com.smen.Models.Subject;
 import com.smen.Services.SubjectService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,17 +15,19 @@ import java.util.Optional;
 @AllArgsConstructor
 @RequestMapping("/api/subject")
 public class SubjectController {
-    
-    private SubjectService service;
 
+    private final SubjectService service;
+
+    // Endpoint to get a subject by its ID
     @GetMapping("/{id}")
     public ResponseEntity<Subject> getSubject(@PathVariable Long id) {
-        Optional<Subject> subject = service.getByid(id);
+        Optional<Subject> subject = service.getById(id);
 
         return subject.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // Endpoint to get all subjects
     @GetMapping("/")
     public ResponseEntity<List<Subject>> getSubjects() {
         List<Subject> subjects = service.getAll();
@@ -36,26 +37,49 @@ public class SubjectController {
             return ResponseEntity.ok(subjects);
     }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> deleteSubject(@PathVariable Long id) {
-        boolean isDeleted = service.deleteById(id);
+    // Endpoint to get a subject by its title
+    @GetMapping("/search/title/{title}")
+    public ResponseEntity<Subject> getSubjectByTitle(@PathVariable String title) {
+        Optional<Subject> subject = service.getSubjectByTitle(title);
 
-        if (isDeleted) {
-            return ResponseEntity.status(HttpStatus.OK).body("Subject deleted successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Subject not found");
-        }
+        return subject.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // Endpoint to create a subject
     @PostMapping("/new")
-    @PreAuthorize("hasRole('PARTICIPANT')")
     public ResponseEntity<Subject> createSubject(@RequestBody Subject subject) {
-        HttpHeaders headers = new HttpHeaders(); //dodavanje poruke bez promjene oblika
-        headers.add("Error-Message", "Subject must be between 1 and 5");
+        subject.setCreatedAt(LocalDateTime.now());
 
-        Subject newSubject = service.create(subject);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newSubject);
+        Subject createdSubject = service.saveSubject(subject);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSubject);
     }
 
+    // Endpoint to update a subject
+    @PutMapping("/{id}")
+    public ResponseEntity<Subject> updateSubject(@PathVariable Long id, @RequestBody Subject subject) {
+        Optional<Subject> existingSubject = service.getById(id);
+
+        if (existingSubject.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        subject.setId(id);
+        subject.setUpdatedAt(LocalDateTime.now());
+        Subject updatedSubject = service.saveSubject(subject);
+        return ResponseEntity.ok(updatedSubject);
+    }
+
+    // Endpoint to delete a subject
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSubject(@PathVariable Long id) {
+        Optional<Subject> subject = service.getById(id);
+
+        if (subject.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        service.deleteSubject(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -21,7 +21,7 @@ public class RegistrationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Registration> getRegistration(@PathVariable Long id) {
-        Optional<Registration> registration = service.getByid(id);
+        Optional<Registration> registration = service.getById(id);
 
         return registration.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -37,7 +37,6 @@ public class RegistrationController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteRegistration(@PathVariable Long id) {
         boolean isDeleted = service.deleteById(id);
 
@@ -49,7 +48,6 @@ public class RegistrationController {
     }
 
     @PostMapping("/new")
-    @PreAuthorize("hasRole('PARTICIPANT')")
     public ResponseEntity<Registration> createRegistration(@RequestBody Registration Registration) {
         HttpHeaders headers = new HttpHeaders(); //dodavanje poruke bez promjene oblika
         headers.add("Error-Message", "Registration must be between 1 and 5");
@@ -59,7 +57,6 @@ public class RegistrationController {
     }
 
     @GetMapping("/user/{id}")
-    @PreAuthorize("hasRole('ADMIN') or #id == principal.user.id")
     public ResponseEntity<List<Registration>> getRegistrationsByUser(@PathVariable Long id) {
         List<Registration> registrations = service.getByUser(id);
         if (registrations.isEmpty())
@@ -69,7 +66,6 @@ public class RegistrationController {
     }
 
     @GetMapping("/workshop/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MENTOR')")
     public ResponseEntity<List<Registration>> getRegistrationsByWorkshop(@PathVariable Long id) {
         List<Registration> registrations = service.getByUser(id);
         if (registrations.isEmpty())

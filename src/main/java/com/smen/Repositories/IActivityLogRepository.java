@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface IActivityLogRepository extends JpaRepository<ActivityLog, Long> {
     List<ActivityLog> findByUserId(Long userId);
+
+    List<ActivityLog> findByWorkshopId(Long workshopId);
 }

@@ -1,6 +1,8 @@
 package com.smen.Models;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "smen_user")
@@ -8,7 +10,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends BaseEntity{
+public class User extends BaseEntity<BaseEntity, Number> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,8 +22,6 @@ public class User extends BaseEntity{
     private String email;
 
     private String team;
-
-    private String role;
 
     private Boolean anonymity;
 
@@ -35,9 +35,27 @@ public class User extends BaseEntity{
     private List<Rating> ratings;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Workshop> workshop;
+    private List<Workshop> workshops;
+
+    @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
+    private List<MentorRequest> mentorRequests;
+
+    @OneToMany(mappedBy = "reviewer", cascade = CascadeType.ALL)
+    private List<MentorRequest> mentorReviews;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Approval> approvals;
 
     @ManyToOne
     @JoinColumn(name = "language_id")
     private Language language;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 }

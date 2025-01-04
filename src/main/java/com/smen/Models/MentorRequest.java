@@ -9,18 +9,24 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Registration extends BaseEntity<BaseEntity, Number> {
+public class MentorRequest extends BaseEntity<BaseEntity, Number> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String comment;
 
     @ManyToOne
-    @JoinColumn(name = "workshop_id")
-    private Workshop workshop;
+    @JoinColumn(name = "requester_id", nullable = false)
+    private User requester;
+
+    @ManyToOne
+    @JoinColumn(name = "reviewer_id", nullable = false)
+    private User reviewer;
+
+    @ManyToOne
+    @JoinColumn(name = "mentor_request_status_id", nullable = false)
+    private MentorRequestStatus mentorRequestStatus;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

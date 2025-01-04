@@ -1,21 +1,19 @@
 package com.smen.Services;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public abstract class BaseEntityService<T, Long> {
+public abstract class BaseEntityService<T, ID> {
 
-    private final JpaRepository<T, Long> repository;
+    private final JpaRepository<T, ID> repository;
 
-    public BaseEntityService(JpaRepository<T, Long> repository) {
+    protected BaseEntityService(JpaRepository<T, ID> repository) {
         this.repository = repository;
     }
 
-    public Optional<T> getByid(Long id) {
+    public Optional<T> getById(ID id) {
         return repository.findById(id);
     }
 
@@ -23,18 +21,20 @@ public abstract class BaseEntityService<T, Long> {
         return repository.findAll();
     }
 
-    public boolean deleteById(Long id) {
+    public boolean deleteById(ID id) {
         Optional<T> item = repository.findById(id);
         if (item.isPresent()) {
             repository.delete(item.get());
             return true;
-
         }
         return false;
     }
 
-
     public T create(T item) {
+        return repository.save(item);
+    }
+
+    public T update(T item) {
         return repository.save(item);
     }
 }

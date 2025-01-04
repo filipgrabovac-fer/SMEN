@@ -1,13 +1,17 @@
 package com.smen.Models;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subject extends BaseEntity {
+public class Subject extends BaseEntity<BaseEntity, Number> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,8 +23,10 @@ public class Subject extends BaseEntity {
     private String description;
 
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
-    private List<Proposition> propositions;
+    private List<WorkshopSubject> workshopSubjects;
 
-    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
-    private List<Workshop> workshops;
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 }

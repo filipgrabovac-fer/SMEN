@@ -21,7 +21,7 @@ public class RatingController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Rating> getRating(@PathVariable Long id) {
-        Optional<Rating> rating = service.getByid(id);
+        Optional<Rating> rating = service.getById(id);
 
         return rating.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -37,7 +37,6 @@ public class RatingController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteRating(@PathVariable Long id) {
         boolean isDeleted = service.deleteById(id);
 
@@ -49,7 +48,6 @@ public class RatingController {
     }
 
     @PostMapping("/new")
-    @PreAuthorize("!hasRole('MENTOR')")
     public ResponseEntity<Rating> createRating(@RequestBody Rating rating) {
         HttpHeaders headers = new HttpHeaders(); //dodavanje poruke bez promjene oblika
         headers.add("Error-Message", "Rating must be between 1 and 5");
@@ -64,14 +62,12 @@ public class RatingController {
 
     //sav rating za usera
     @GetMapping("/user/{id}/rating")
-    @PreAuthorize("hasRole('ADMIN')")
     public Double getUserRating(@PathVariable Long id) {
         return service.getAvgUserWorkshopsRating(id);
     }
 
     //rating za radionicu
     @GetMapping("/workshop/{id}/rating")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MENTOR')")
     public Double getWorkshopRating(@PathVariable Long id) {
         return service.getAvgWorkshopRating(id);
     }
