@@ -37,6 +37,4 @@ public class UserService extends BaseEntityService<User, Long> {
 
         return userRepository.save(updatedUser);
     }
-
-
 }

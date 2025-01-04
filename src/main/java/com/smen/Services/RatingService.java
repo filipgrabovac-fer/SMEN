@@ -51,6 +51,4 @@ public class RatingService extends BaseEntityService<Rating, Long> {
         }
         return rating / ratings.size();
     }
-
-
 }

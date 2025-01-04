@@ -3,24 +3,24 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Entity(name = "workshop_status")
-@Getter
-@Setter
-@AllArgsConstructor
+@Entity
+@Data
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
-public class WorkshopStatus extends BaseEntity<BaseEntity, Number> {
+@AllArgsConstructor
+public class WorkshopSubject extends BaseEntity<BaseEntity, Number> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "workshop_id")
+    private Workshop workshop;
 
-    private String description;
-
-    @OneToMany(mappedBy = "workshopStatus", cascade = CascadeType.ALL)
-    private List<Workshop> workshops;
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

@@ -5,12 +5,12 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity(name = "workshop_status")
+@Entity(name = "mentor_request_status")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class WorkshopStatus extends BaseEntity<BaseEntity, Number> {
+public class MentorRequestStatus extends BaseEntity<BaseEntity, Number> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,8 +19,8 @@ public class WorkshopStatus extends BaseEntity<BaseEntity, Number> {
 
     private String description;
 
-    @OneToMany(mappedBy = "workshopStatus", cascade = CascadeType.ALL)
-    private List<Workshop> workshops;
+    @OneToMany(mappedBy = "mentorRequestStatus", cascade = CascadeType.ALL)
+    private List<MentorRequest> mentorRequests;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

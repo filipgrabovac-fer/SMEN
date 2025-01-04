@@ -5,7 +5,6 @@ import com.smen.Services.ActivityLogService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,22 +12,20 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/activitylog")
+@RequestMapping("/api/activity-log")
 public class ActivityLogController {
     
     private ActivityLogService service;
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ActivityLog> getActivityLog(@PathVariable Long id) {
-        Optional<ActivityLog> activityLog = service.getByid(id);
+        Optional<ActivityLog> activityLog = service.getById(id);
 
         return activityLog.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ActivityLog>> getActivityLogs() {
         List<ActivityLog> activityLogs = service.getAll();
         if (activityLogs.isEmpty())
@@ -38,7 +35,6 @@ public class ActivityLogController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteActivityLog(@PathVariable Long id) {
         boolean isDeleted = service.deleteById(id);
 
@@ -50,9 +46,7 @@ public class ActivityLogController {
     }
 
     //obrisali smo endpoint za create
-
     @GetMapping("/user/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ActivityLog>> getActivityLogsByUser(@PathVariable Long id) {
         List<ActivityLog> activityLogs = service.getByUser(id);
         if (activityLogs.isEmpty())

@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface IRegistrationRepository extends JpaRepository<Registration, Long> {
     List<Registration> findByUserId(Long userId);
+
     List<Registration> findByWorkshopId(Long workshopId);
 }
