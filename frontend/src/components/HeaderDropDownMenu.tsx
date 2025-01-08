@@ -1,4 +1,3 @@
-import React from "react";
 import { DownOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Dropdown, Space } from "antd";
@@ -23,9 +22,12 @@ const items: MenuProps["items"] = [
   },
 ];
 
-const HeaderDropdownMenu: React.FC = () => (
+const HeaderDropdownMenu = () => (
   <Dropdown menu={{ items }}>
-    <a onClick={(e) => e.preventDefault()}>
+    <a
+      onClick={(e) => e.preventDefault()}
+      style={{ color: "white", fontWeight: "bold" }}
+    >
       <Space>
         Pregled kategorija
         <DownOutlined />

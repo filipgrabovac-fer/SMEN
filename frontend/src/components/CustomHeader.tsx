@@ -1,5 +1,5 @@
 import { Flex } from "antd";
-import HeaderDropdownMenu from "./DropDownMenu";
+import HeaderDropdownMenu from "./HeaderDropDownMenu";
 import { UserOutlined } from "@ant-design/icons";
 
 const CustomHeader = () => {

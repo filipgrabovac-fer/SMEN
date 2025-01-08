@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Modal } from "antd";
 
-const OglasDetails: React.FC = () => {
+const OglasDetails = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {

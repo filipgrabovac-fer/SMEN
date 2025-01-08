@@ -1,4 +1,3 @@
-import React from "react";
 import { Table } from "antd";
 import type { TableProps } from "antd";
 import OglasDetails from "./OglasDetails";
@@ -38,7 +37,7 @@ const columns: TableProps<DataType>["columns"] = [
     title: "Detalji",
     dataIndex: "link",
     key: "link",
-    render: (link: string) => <OglasDetails />,
+    render: () => <OglasDetails />,
   },
 ];
 
@@ -69,7 +68,7 @@ const data: DataType[] = [
   },
 ];
 
-const OglasiTable: React.FC = () => (
+const OglasiTable = () => (
   <Table<DataType> columns={columns} dataSource={data} />
 );
 
