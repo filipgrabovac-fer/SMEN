@@ -1,6 +1,6 @@
-import TemaHeader from "../components/OglasiHeader";
+import OglasiHeader from "../components/OglasiHeader";
 import { Flex } from "antd";
-import TemaTable from "../components/OglasiTable";
+import OglasiTable from "../components/OglasiTable";
 
 const LayoutPregledTema = () => {
   return (
@@ -14,8 +14,8 @@ const LayoutPregledTema = () => {
       }}
       vertical
     >
-      <TemaHeader />
-      <TemaTable />
+      <OglasiHeader />
+      <OglasiTable />
     </Flex>
   );
 };

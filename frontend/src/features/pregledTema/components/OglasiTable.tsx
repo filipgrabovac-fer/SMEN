@@ -72,8 +72,8 @@ const data: DataType[] = [
   },
 ];
 
-const App: React.FC = () => (
+const OglasiTable: React.FC = () => (
   <Table<DataType> columns={columns} dataSource={data} />
 );
 
-export default App;
+export default OglasiTable;

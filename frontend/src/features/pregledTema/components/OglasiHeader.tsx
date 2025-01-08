@@ -1,6 +1,6 @@
 import { Flex } from "antd";
 
-const TemaHeader = () => {
+const OglasiHeader = () => {
   return (
     <Flex
       style={{
@@ -15,4 +15,4 @@ const TemaHeader = () => {
   );
 };
 
-export default TemaHeader;
+export default OglasiHeader;
