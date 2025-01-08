@@ -1,6 +1,7 @@
 import React from "react";
 import { Table } from "antd";
 import type { TableProps } from "antd";
+import OglasDetails from "./OglasDetails";
 
 interface DataType {
   key: string;
@@ -37,11 +38,7 @@ const columns: TableProps<DataType>["columns"] = [
     title: "Detalji",
     dataIndex: "link",
     key: "link",
-    render: (link: string) => (
-      <a href={link} target="_blank" rel="noopener noreferrer">
-        View Details
-      </a>
-    ),
+    render: (link: string) => <OglasDetails />,
   },
 ];
 
