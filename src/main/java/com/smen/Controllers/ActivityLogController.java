@@ -15,43 +15,40 @@ import java.util.Optional;
 @RequestMapping("/api/activity-log")
 public class ActivityLogController {
     
-    private ActivityLogService service;
+    private ActivityLogService activitylogService;
 
     @GetMapping("/{id}")
     public ResponseEntity<ActivityLog> getActivityLog(@PathVariable Long id) {
-        Optional<ActivityLog> activityLog = service.getById(id);
+        Optional<ActivityLog> activityLog = activitylogService.getById(id);
 
         return activityLog.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<ActivityLog>> getActivityLogs() {
-        List<ActivityLog> activityLogs = service.getAll();
-        if (activityLogs.isEmpty())
-            return ResponseEntity.noContent().build();
-        else
-            return ResponseEntity.ok(activityLogs);
+        return ResponseEntity.ok(activitylogService.getAll());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteActivityLog(@PathVariable Long id) {
-        boolean isDeleted = service.deleteById(id);
+    public ResponseEntity<Void> deleteActivityLog(@PathVariable Long id) {
+        boolean isDeleted = activitylogService.deleteById(id);
 
         if (isDeleted) {
-            return ResponseEntity.status(HttpStatus.OK).body("ActivityLog deleted successfully");
+            return ResponseEntity.status(HttpStatus.OK).build();
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ActivityLog not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     //obrisali smo endpoint za create
     @GetMapping("/user/{id}")
     public ResponseEntity<List<ActivityLog>> getActivityLogsByUser(@PathVariable Long id) {
-        List<ActivityLog> activityLogs = service.getByUser(id);
-        if (activityLogs.isEmpty())
-            return ResponseEntity.noContent().build();
-        else
-            return ResponseEntity.ok(activityLogs);
+        return ResponseEntity.ok(activitylogService.getByUser(id));
+    }
+
+    @GetMapping("/workshop/{id}")
+    public ResponseEntity<List<ActivityLog>> getActivityLogsByWorkshop(@PathVariable Long id) {
+        return ResponseEntity.ok(activitylogService.getByWorkshop(id));
     }
 }

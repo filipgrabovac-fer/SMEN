@@ -17,16 +17,6 @@ public class LanguageService extends BaseEntityService<Language, Long> {
         this.languageRepository = languageRepository;
     }
 
-    // Fetch language by user ID
-    public Optional<Language> getLanguageByUserId(Long userId) {
-        return languageRepository.findByUserId(userId);
-    }
-
-    // Create a new language
-    public Language createLanguage(Language language) {
-        return languageRepository.save(language);
-    }
-
     // Update language by ID
     public Optional<Language> updateLanguage(Long languageId, Language languageDetails) {
         Optional<Language> existingLanguage = languageRepository.findById(languageId);
@@ -39,12 +29,4 @@ public class LanguageService extends BaseEntityService<Language, Long> {
         return Optional.empty();
     }
 
-    // Delete language by ID
-    public boolean deleteLanguage(Long languageId) {
-        if (languageRepository.existsById(languageId)) {
-            languageRepository.deleteById(languageId);
-            return true;
-        }
-        return false;
-    }
 }

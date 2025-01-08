@@ -1,6 +1,7 @@
 package com.smen.Controllers;
 
 import com.smen.Models.Approval;
+import com.smen.Models.User;
 import com.smen.Services.ApprovalService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,13 +28,28 @@ public class ApprovalController {
 
     @PostMapping("/new")
     public ResponseEntity<Approval> createApproval(@RequestBody Approval approval) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(approvalService.saveApproval(approval));
+        return ResponseEntity.status(HttpStatus.CREATED).body(approvalService.create(approval));
     }
 
     @PutMapping("/{approvalId}/approve")
     public ResponseEntity<Approval> approveWorkshop(
             @PathVariable Long approvalId,
             @RequestParam String comment) {
-        return ResponseEntity.ok(approvalService.approveWorkshop(approvalId, comment));
+
+        Approval updatedApproval = approvalService.approveWorkshop(approvalId, comment);
+        if (updatedApproval == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.ok(updatedApproval);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteApproval(@PathVariable Long id) {
+        boolean isDeleted = approvalService.deleteById(id);
+
+        if (isDeleted) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }

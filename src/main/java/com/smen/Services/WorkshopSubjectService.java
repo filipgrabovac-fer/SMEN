@@ -31,8 +31,4 @@ public class WorkshopSubjectService extends BaseEntityService<WorkshopSubject, L
         return workshopSubjectRepository.save(workshopSubject);
     }
 
-    // Delete WorkshopSubject by ID
-    public void deleteWorkshopSubject(Long id) {
-        workshopSubjectRepository.deleteById(id);
-    }
 }

@@ -1,5 +1,6 @@
 package com.smen.Services;
 
+import com.smen.Models.User;
 import com.smen.Models.Workshop;
 import com.smen.Models.WorkshopSubject;
 import com.smen.Repositories.*;
@@ -23,14 +24,6 @@ public class WorkshopService extends BaseEntityService<Workshop, Long> {
         this.workshopSubjectRepository = workshopSubjectRepository;
     }
 
-    public List<Workshop> getAllWorkshops() {
-        return workshopRepository.findAll();
-    }
-
-    public Optional<Workshop> getWorkshopById(Long id) {
-        return workshopRepository.findById(id);
-    }
-
     public List<Workshop> getWorkshopsByTitle(String title) {
         return workshopRepository.findByTitleContainingIgnoreCase(title);
     }
@@ -52,16 +45,21 @@ public class WorkshopService extends BaseEntityService<Workshop, Long> {
     }
 
     public Workshop updateWorkshop(Long id, Workshop updatedWorkshop) {
-        return workshopRepository.findById(id)
-                .map(existingWorkshop -> {
-                    existingWorkshop.setTitle(updatedWorkshop.getTitle());
-                    existingWorkshop.setDescription(updatedWorkshop.getDescription());
-                    existingWorkshop.setDuration(updatedWorkshop.getDuration());
-                    existingWorkshop.setNoOfAvailableSlots(updatedWorkshop.getNoOfAvailableSlots());
-                    existingWorkshop.setWorkshopStatus(updatedWorkshop.getWorkshopStatus());
-                    existingWorkshop.setUser(updatedWorkshop.getUser());
-                    return workshopRepository.save(existingWorkshop);
-                }).orElseThrow(() -> new RuntimeException("Workshop not found with id " + id));
+
+        Optional<Workshop> oldWorkshop = (Optional<Workshop>) workshopRepository.findById(id);
+        if (oldWorkshop.isEmpty())
+            return null;
+        Workshop existingWorkshop = oldWorkshop.get();
+
+            existingWorkshop.setTitle(updatedWorkshop.getTitle());
+            existingWorkshop.setDescription(updatedWorkshop.getDescription());
+            existingWorkshop.setDuration(updatedWorkshop.getDuration());
+            existingWorkshop.setNoOfAvailableSlots(updatedWorkshop.getNoOfAvailableSlots());
+            existingWorkshop.setWorkshopStatus(updatedWorkshop.getWorkshopStatus());
+            existingWorkshop.setUser(updatedWorkshop.getUser());
+
+            return workshopRepository.save(existingWorkshop);
+
     }
 
     public List<Workshop> getWorkshopsBySubjectId(Long subjectId) {
@@ -70,5 +68,9 @@ public class WorkshopService extends BaseEntityService<Workshop, Long> {
                 .map(WorkshopSubject::getWorkshop)
                 .distinct()
                 .collect(Collectors.toList());
+    }
+
+    public List<Workshop> getAvailableWorkshops() {
+        return workshopRepository.findByNoOfAvailableSlotsGreaterThan(0);
     }
 }

@@ -1,6 +1,7 @@
 package com.smen.Controllers;
 
 import com.smen.Models.User;
+import com.smen.Models.Workshop;
 import com.smen.Services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,47 +17,61 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private UserService service;
+    private UserService userService;
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
-        Optional<User> user = service.getById(id);
-
-        return user.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return userService.getById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<User>> getUsers() {
-        List<User> users = service.getAll();
-        if (users.isEmpty())
-            return ResponseEntity.noContent().build();
-        else
-            return ResponseEntity.ok(users);
+        return ResponseEntity.ok(userService.getAll());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> searchUsersByName(@RequestParam String name) {
+        return ResponseEntity.ok(userService.getUserByName(name));
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<User> getUsersByEmail(@PathVariable String email) {
+        return userService.getUserByEmail(email)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+
+    }
+
+    @GetMapping("/search/team/{team}")
+    public ResponseEntity<List<User>> getUsersByTeam(@RequestParam String team) {
+        return ResponseEntity.ok(userService.getUsersByTeam(team));
+
     }
 
     @PostMapping("/new")
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        User newUser = service.create(user);
+        User newUser = userService.create(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        User updatedUser = service.updateUser(id, user);
+        User updatedUser = userService.updateUser(id, user);
         if (updatedUser == null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        boolean isDeleted = service.deleteById(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        boolean isDeleted = userService.deleteById(id);
 
         if (isDeleted) {
-            return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
+            return ResponseEntity.status(HttpStatus.OK).build();
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }

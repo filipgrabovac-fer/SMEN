@@ -17,60 +17,37 @@ import java.util.Optional;
 @RequestMapping("/api/registration")
 public class RegistrationController {
 
-    private RegistrationService service;
+    private RegistrationService registrationService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Registration> getRegistration(@PathVariable Long id) {
-        Optional<Registration> registration = service.getById(id);
-
-        return registration.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Registration>> getRegistrations() {
-        List<Registration> registrations = service.getAll();
-        if (registrations.isEmpty())
-            return ResponseEntity.noContent().build();
-        else
-            return ResponseEntity.ok(registrations);
+        return ResponseEntity.ok(registrationService.getAll());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteRegistration(@PathVariable Long id) {
-        boolean isDeleted = service.deleteById(id);
+    public ResponseEntity<Void> deleteRegistration(@PathVariable Long id) {
+        boolean isDeleted = registrationService.deleteById(id);
 
         if (isDeleted) {
-            return ResponseEntity.status(HttpStatus.OK).body("Registration deleted successfully");
+            return ResponseEntity.status(HttpStatus.OK).build();
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Registration not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     @PostMapping("/new")
     public ResponseEntity<Registration> createRegistration(@RequestBody Registration Registration) {
-        HttpHeaders headers = new HttpHeaders(); //dodavanje poruke bez promjene oblika
-        headers.add("Error-Message", "Registration must be between 1 and 5");
-
-        Registration newRegistration = service.create(Registration);
+        Registration newRegistration = registrationService.create(Registration);
         return ResponseEntity.status(HttpStatus.CREATED).body(newRegistration);
     }
 
     @GetMapping("/user/{id}")
     public ResponseEntity<List<Registration>> getRegistrationsByUser(@PathVariable Long id) {
-        List<Registration> registrations = service.getByUser(id);
-        if (registrations.isEmpty())
-            return ResponseEntity.noContent().build();
-        else
-            return ResponseEntity.ok(registrations);
+        return ResponseEntity.ok(registrationService.getRegistrationsByUser(id));
     }
 
     @GetMapping("/workshop/{id}")
     public ResponseEntity<List<Registration>> getRegistrationsByWorkshop(@PathVariable Long id) {
-        List<Registration> registrations = service.getByUser(id);
-        if (registrations.isEmpty())
-            return ResponseEntity.noContent().build();
-        else
-            return ResponseEntity.ok(registrations);
+        return ResponseEntity.ok(registrationService.getRegistrationsByWorkshop(id));
     }
 }

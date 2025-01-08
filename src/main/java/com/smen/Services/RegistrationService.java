@@ -17,13 +17,13 @@ public class RegistrationService extends BaseEntityService<Registration, Long> {
     }
 
     //sve registracije nekog korisnika
-    public List<Registration> getByUser(Long userId) {
+    public List<Registration> getRegistrationsByUser(Long userId) {
         return registrationRepository.findByUserId(userId);
 
     }
 
     //sve registracije neke radionice
-    public List<Registration> getByWorkshop(Long workshopId) {
+    public List<Registration> getRegistrationsByWorkshop(Long workshopId) {
         return registrationRepository.findByWorkshopId(workshopId);
     }
 }

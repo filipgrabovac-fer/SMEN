@@ -21,7 +21,7 @@ public class RatingService extends BaseEntityService<Rating, Long> {
         this.workshopRepository = workshopRepository;
     }
 
-    //ukupni rating svih radionica tog usera
+    //avg rating svih radionica tog usera
     public Double getAvgUserWorkshopsRating(Long userId) {
         List<Workshop> workshops = workshopRepository.findByUserId(userId);
 
@@ -40,7 +40,7 @@ public class RatingService extends BaseEntityService<Rating, Long> {
         return rating / ratings.size();
     }
 
-    //ukupni rating radionice
+    //avg rating radionice
     public Double getAvgWorkshopRating(Long workshopId) {
         List<Rating> ratings = ratingRepository.findByWorkshopId(workshopId);
         Double rating = 0.0;
@@ -50,5 +50,14 @@ public class RatingService extends BaseEntityService<Rating, Long> {
             rating += r.getRating();
         }
         return rating / ratings.size();
+    }
+
+
+    public List<Rating> getWorkshopRatings(Long workshopId) {
+        return ratingRepository.findByWorkshopId(workshopId);
+    }
+
+    public List<Rating> getUserRatings(Long userId) {
+        return ratingRepository.findByUserId(userId);
     }
 }

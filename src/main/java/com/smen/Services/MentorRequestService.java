@@ -30,33 +30,51 @@ public class MentorRequestService extends BaseEntityService<MentorRequest, Long>
         return mentorRequestRepository.findAll();
     }
 
+    public List<MentorRequest> getMentorsByRequesterId(Long id) {
+        return mentorRequestRepository.findByRequesterId(id);
+    }
+
+    public List<MentorRequest> getMentorsByReviewerId(Long id) {
+        return mentorRequestRepository.findByReviewerId(id);
+    }
+
+    public List<MentorRequest> getMentorsByMentorRequestStatusId(Long id) {
+        return mentorRequestRepository.findByMentorRequestStatusId(id);
+    }
+
     public MentorRequest approveMentorRequest(Long mentorRequestId) {
         MentorRequest mentorRequest = mentorRequestRepository.findById(mentorRequestId)
-                .orElseThrow(() -> new IllegalStateException("MentorRequest with ID " + mentorRequestId + " not found"));
+                .orElse(null);
 
         // Fetch and validate the mentor role
         Role mentorRole = roleRepository.findByName("mentor")
-                .orElseThrow(() -> new IllegalStateException("Role 'mentor' not found"));
+                .orElse(null);
 
         // Update MentorRequest status
-        mentorRequest.getMentorRequestStatus().setName("approved");
-        mentorRequestRepository.save(mentorRequest);
+        if (mentorRequest != null) {
+            mentorRequest.getMentorRequestStatus().setName("approved");
 
-        // Update the user's role
-        User requester = mentorRequest.getRequester();
-        requester.setRole(mentorRole);
-        userRepository.save(requester);
+            mentorRequestRepository.save(mentorRequest);
+
+            // Update the user's role
+            User requester = mentorRequest.getRequester();
+            requester.setRole(mentorRole);
+            userRepository.save(requester);
+        }
 
         return mentorRequest;
     }
 
     public MentorRequest rejectMentorRequest(Long mentorRequestId) {
         MentorRequest mentorRequest = mentorRequestRepository.findById(mentorRequestId)
-                .orElseThrow(() -> new IllegalStateException("MentorRequest with ID " + mentorRequestId + " not found"));
+                .orElse(null);
 
         // Update MentorRequest status
-        mentorRequest.getMentorRequestStatus().setName("rejected");
-        mentorRequestRepository.save(mentorRequest);
+        if (mentorRequest != null) {
+            mentorRequest.getMentorRequestStatus().setName("rejected");
+
+            mentorRequestRepository.save(mentorRequest);
+        }
 
         return mentorRequest;
     }

@@ -29,8 +29,4 @@ public class SubjectService extends BaseEntityService<Subject, Long> {
         return subjectRepository.save(subject);
     }
 
-    // Delete a subject
-    public void deleteSubject(Long id) {
-        subjectRepository.deleteById(id);
-    }
 }

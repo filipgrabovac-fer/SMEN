@@ -3,7 +3,9 @@ package com.smen.Controllers;
 import com.smen.Models.Workshop;
 import com.smen.Services.WorkshopService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +19,12 @@ public class WorkshopController {
 
     @GetMapping
     public ResponseEntity<List<Workshop>> getAllWorkshops() {
-        return ResponseEntity.ok(workshopService.getAllWorkshops());
+        return ResponseEntity.ok(workshopService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Workshop> getWorkshopById(@PathVariable Long id) {
-        return workshopService.getWorkshopById(id)
+        return workshopService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -47,19 +49,33 @@ public class WorkshopController {
         return ResponseEntity.ok(workshopService.getWorkshopsBySubjectId(subjectId));
     }
 
-    @PostMapping
-    public ResponseEntity<Workshop> createWorkshop(@RequestBody Workshop workshop) {
-        return ResponseEntity.ok(workshopService.saveWorkshop(workshop));
+    @GetMapping("/available-slots")
+    public ResponseEntity<List<Workshop>> getAvailableWorkshops() {
+        return ResponseEntity.ok(workshopService.getAvailableWorkshops());
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Workshop> updateWorkshop(@PathVariable Long id, @RequestBody Workshop workshop) {
-        return ResponseEntity.ok(workshopService.updateWorkshop(id, workshop));
+        Workshop updatedWorkshop = workshopService.updateWorkshop(id, workshop);
+        if (updatedWorkshop == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.ok(updatedWorkshop);
+    }
+
+    @PostMapping
+    public ResponseEntity<Workshop> createWorkshop(@RequestBody Workshop workshop) {
+        Workshop newWorkshop = workshopService.create(workshop);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newWorkshop);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteWorkshop(@PathVariable Long id) {
-        workshopService.deleteWorkshop(id);
-        return ResponseEntity.noContent().build();
+        boolean isDeleted = workshopService.deleteById(id);
+        if (isDeleted) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }

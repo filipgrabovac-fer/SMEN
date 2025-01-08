@@ -34,7 +34,4 @@ public abstract class BaseEntityService<T, ID> {
         return repository.save(item);
     }
 
-    public T update(T item) {
-        return repository.save(item);
-    }
 }

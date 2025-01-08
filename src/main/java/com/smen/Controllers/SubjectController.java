@@ -16,31 +16,27 @@ import java.util.Optional;
 @RequestMapping("/api/subject")
 public class SubjectController {
 
-    private final SubjectService service;
+    private final SubjectService subjectService;
 
     // Endpoint to get a subject by its ID
     @GetMapping("/{id}")
     public ResponseEntity<Subject> getSubject(@PathVariable Long id) {
-        Optional<Subject> subject = service.getById(id);
+        Optional<Subject> subject = subjectService.getById(id);
 
         return subject.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Endpoint to get all subjects
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Subject>> getSubjects() {
-        List<Subject> subjects = service.getAll();
-        if (subjects.isEmpty())
-            return ResponseEntity.noContent().build();
-        else
-            return ResponseEntity.ok(subjects);
+        return ResponseEntity.ok(subjectService.getAll());
     }
 
     // Endpoint to get a subject by its title
-    @GetMapping("/search/title/{title}")
+    @GetMapping("/search")
     public ResponseEntity<Subject> getSubjectByTitle(@PathVariable String title) {
-        Optional<Subject> subject = service.getSubjectByTitle(title);
+        Optional<Subject> subject = subjectService.getSubjectByTitle(title);
 
         return subject.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -51,14 +47,14 @@ public class SubjectController {
     public ResponseEntity<Subject> createSubject(@RequestBody Subject subject) {
         subject.setCreatedAt(LocalDateTime.now());
 
-        Subject createdSubject = service.saveSubject(subject);
+        Subject createdSubject = subjectService.saveSubject(subject);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSubject);
     }
 
     // Endpoint to update a subject
     @PutMapping("/{id}")
     public ResponseEntity<Subject> updateSubject(@PathVariable Long id, @RequestBody Subject subject) {
-        Optional<Subject> existingSubject = service.getById(id);
+        Optional<Subject> existingSubject = subjectService.getById(id);
 
         if (existingSubject.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -66,20 +62,19 @@ public class SubjectController {
 
         subject.setId(id);
         subject.setUpdatedAt(LocalDateTime.now());
-        Subject updatedSubject = service.saveSubject(subject);
+        Subject updatedSubject = subjectService.saveSubject(subject);
         return ResponseEntity.ok(updatedSubject);
     }
 
     // Endpoint to delete a subject
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSubject(@PathVariable Long id) {
-        Optional<Subject> subject = service.getById(id);
+    public ResponseEntity<String> deleteSubject(@PathVariable Long id) {
+        boolean isDeleted = subjectService.deleteById(id);
 
-        if (subject.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        if (isDeleted) {
+            return ResponseEntity.status(HttpStatus.OK).body("Subject deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Subject not found");
         }
-
-        service.deleteSubject(id);
-        return ResponseEntity.noContent().build();
     }
 }

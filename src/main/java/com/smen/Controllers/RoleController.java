@@ -2,6 +2,7 @@ package com.smen.Controllers;
 
 import com.smen.Models.Role;
 import com.smen.Services.RoleService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +27,9 @@ public class RoleController {
     }
 
     // Endpoint to get a list of all roles
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Role>> getAllRoles() {
-        List<Role> roles = roleService.getAllRoles();
+        List<Role> roles = roleService.getAll();
         return ResponseEntity.ok(roles);
     }
 }

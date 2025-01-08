@@ -22,8 +22,4 @@ public class RoleService extends BaseEntityService<Role, Long> {
         return roleRepository.findByName(name);
     }
 
-    // Get a list of all roles
-    public List<Role> getAllRoles() {
-        return roleRepository.findAll();
-    }
 }
