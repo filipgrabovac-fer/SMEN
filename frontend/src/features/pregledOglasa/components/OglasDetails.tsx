@@ -8,10 +8,6 @@ const OglasDetails = () => {
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -24,9 +20,10 @@ const OglasDetails = () => {
       <Modal
         title="Basic Modal"
         open={isModalOpen}
-        onOk={handleOk}
         onCancel={handleCancel}
+        footer={null}
       >
+        <hr style={{ opacity: 0.5 }} />
         <p>Some contents...</p>
         <p>Some contents...</p>
         <p>Some contents...</p>

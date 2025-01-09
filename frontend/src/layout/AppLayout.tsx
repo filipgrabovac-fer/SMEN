@@ -1,7 +1,7 @@
 //import { Outlet } from "react-router";
 import CustomHeader from "../components/CustomHeader";
 import { Layout } from "antd";
-import LayoutPregledTema from "../features/pregledTema/layout/LayoutPregledTema";
+import LayoutPregledOglasa from "../features/pregledOglasa/layout/LayoutPregledOglasa";
 
 const { Header, Footer, Content } = Layout;
 
@@ -11,7 +11,7 @@ const AppLayout = () => (
       <CustomHeader />
     </Header>
     <Content className="content">
-      <LayoutPregledTema />
+      <LayoutPregledOglasa />
     </Content>
     <Footer className="footer">Footer</Footer>
   </Layout>
