@@ -6,3 +6,9 @@ export interface Oglas {
   naslovOglasa: string;
   details: string;
 }
+export interface OglasDetailsProps {
+  title: string;
+  content: string[];
+  author: string;
+  date: Date;
+}

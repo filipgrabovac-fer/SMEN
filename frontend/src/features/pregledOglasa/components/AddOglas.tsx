@@ -1,4 +1,4 @@
-import { Modal, Form, Input, DatePicker } from "antd";
+import { Modal, Form, Input } from "antd";
 import { Oglas } from "../typings/oglas";
 
 interface AddOglasModalProps {
@@ -13,14 +13,14 @@ const AddOglasModal = ({ visible, onOk, onCancel }: AddOglasModalProps) => {
   const handleOk = () => {
     form.validateFields().then((values) => {
       const newOglas: Oglas = {
-        key: Date.now().toString(), // Generate a unique key
+        key: Date.now().toString(),
         name: values.name,
         opis: values.opis,
-        datum: values.datum.toDate(),
+        datum: new Date(), // Automatically set the current date
         naslovOglasa: values.naslovOglasa,
-        details: "#", // Placeholder
+        details: "#", // Placeholder for details
       };
-      onOk(newOglas); // Pass the new oglas to the parent
+      onOk(newOglas);
       form.resetFields();
     });
   };
@@ -53,13 +53,6 @@ const AddOglasModal = ({ visible, onOk, onCancel }: AddOglasModalProps) => {
           rules={[{ required: true, message: "Please enter the description!" }]}
         >
           <Input />
-        </Form.Item>
-        <Form.Item
-          label="Datum"
-          name="datum"
-          rules={[{ required: true, message: "Please select the date!" }]}
-        >
-          <DatePicker />
         </Form.Item>
       </Form>
     </Modal>

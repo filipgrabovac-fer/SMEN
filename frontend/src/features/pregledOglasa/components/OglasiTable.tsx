@@ -30,7 +30,14 @@ const OglasiTable = ({ data }: { data: Oglas[] }) => {
       title: "Detalji",
       dataIndex: "details",
       key: "details",
-      render: () => <OglasDetails />,
+      render: (_: any, record: Oglas) => (
+        <OglasDetails
+          title={record.naslovOglasa}
+          content={[record.opis]}
+          author={record.name}
+          date={record.datum}
+        />
+      ),
     },
   ];
 
