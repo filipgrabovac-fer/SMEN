@@ -21,9 +21,4 @@ public class MentorRequestStatus extends BaseEntity<BaseEntity, Number> {
 
     @OneToMany(mappedBy = "mentorRequestStatus", cascade = CascadeType.ALL)
     private List<MentorRequest> mentorRequests;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

@@ -1,8 +1,10 @@
 package com.smen.Controllers;
 
+import com.smen.Dto.Subject.SubjectDto;
 import com.smen.Models.Subject;
 import com.smen.Services.SubjectService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,53 +18,55 @@ import java.util.Optional;
 @RequestMapping("/api/subject")
 public class SubjectController {
 
+    @Autowired
     private final SubjectService subjectService;
 
     // Endpoint to get a subject by its ID
     @GetMapping("/{id}")
-    public ResponseEntity<Subject> getSubject(@PathVariable Long id) {
-        Optional<Subject> subject = subjectService.getById(id);
+    public ResponseEntity<SubjectDto> getSubject(@PathVariable Long id) {
+        Optional<SubjectDto> subjectDto = subjectService.getByIdAsDto(id);
 
-        return subject.map(ResponseEntity::ok)
+        return subjectDto.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Endpoint to get all subjects
     @GetMapping
-    public ResponseEntity<List<Subject>> getSubjects() {
-        return ResponseEntity.ok(subjectService.getAll());
+    public ResponseEntity<List<SubjectDto>> getSubjects() {
+        return ResponseEntity.ok(subjectService.getAllSubjects());
     }
 
     // Endpoint to get a subject by its title
     @GetMapping("/search")
-    public ResponseEntity<Subject> getSubjectByTitle(@PathVariable String title) {
-        Optional<Subject> subject = subjectService.getSubjectByTitle(title);
+    public ResponseEntity<SubjectDto> getSubjectByTitle(@RequestParam String title) {
+        Optional<SubjectDto> subjectDto = subjectService.getSubjectByTitle(title);
 
-        return subject.map(ResponseEntity::ok)
+        return subjectDto.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Endpoint to create a subject
     @PostMapping("/new")
-    public ResponseEntity<Subject> createSubject(@RequestBody Subject subject) {
-        subject.setCreatedAt(LocalDateTime.now());
-
-        Subject createdSubject = subjectService.saveSubject(subject);
+    public ResponseEntity<SubjectDto> createSubject(@RequestBody SubjectDto subjectDto) {
+        subjectDto.setId(null); // Ensure the ID is not set for new records
+        SubjectDto createdSubject = subjectService.saveSubjectDto(subjectDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSubject);
     }
 
     // Endpoint to update a subject
     @PutMapping("/{id}")
-    public ResponseEntity<Subject> updateSubject(@PathVariable Long id, @RequestBody Subject subject) {
-        Optional<Subject> existingSubject = subjectService.getById(id);
+    public ResponseEntity<SubjectDto> updateSubject(
+            @PathVariable Long id,
+            @RequestBody SubjectDto subjectDto
+    ) {
+        Optional<SubjectDto> existingSubject = subjectService.getByIdAsDto(id);
 
         if (existingSubject.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        subject.setId(id);
-        subject.setUpdatedAt(LocalDateTime.now());
-        Subject updatedSubject = subjectService.saveSubject(subject);
+        subjectDto.setId(id);
+        SubjectDto updatedSubject = subjectService.saveSubjectDto(subjectDto);
         return ResponseEntity.ok(updatedSubject);
     }
 

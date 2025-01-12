@@ -4,6 +4,7 @@ import com.smen.Models.MentorRequestStatus;
 import com.smen.Models.Role;
 import com.smen.Services.MentorRequestStatusService;
 import com.smen.Services.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/mentor-request-status")
 public class MentorRequestStatusController {
+
+    @Autowired
     private final MentorRequestStatusService mentorRequestStatusService;
 
     public MentorRequestStatusController(MentorRequestStatusService mentorRequestStatusService) {

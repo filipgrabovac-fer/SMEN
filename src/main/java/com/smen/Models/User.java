@@ -1,4 +1,5 @@
 package com.smen.Models;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,8 +23,6 @@ public class User extends BaseEntity<BaseEntity, Number> {
     private String email;
 
     private String team;
-
-    private Boolean anonymity;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ActivityLog> activityLogs;
@@ -52,10 +51,6 @@ public class User extends BaseEntity<BaseEntity, Number> {
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
+    @JsonIgnore
     private Role role;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

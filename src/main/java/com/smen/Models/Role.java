@@ -22,9 +22,4 @@ public class Role extends BaseEntity<BaseEntity, Number> {
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private List<User> users;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

@@ -25,9 +25,4 @@ public class Rating extends BaseEntity<BaseEntity, Number> {
     @ManyToOne
     @JoinColumn(name = "workshop_id")
     private Workshop workshop;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

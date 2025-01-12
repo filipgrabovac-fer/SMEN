@@ -4,6 +4,7 @@ package com.smen.Controllers;
 import com.smen.Models.User;
 import com.smen.Models.WorkshopStatus;
 import com.smen.Services.WorkshopStatusService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,8 @@ import java.util.Optional;
 
 @RestController
 public class WorkshopStatusController {
+
+    @Autowired
     private final WorkshopStatusService workshopStatusService;
 
     public WorkshopStatusController(WorkshopStatusService workshopStatusService) {

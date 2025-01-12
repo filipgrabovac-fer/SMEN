@@ -15,10 +15,7 @@ public class Language extends BaseEntity<BaseEntity, Number> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String language;
-
-    @OneToMany(mappedBy = "language")
-    private List<User> users;
+    private String name;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

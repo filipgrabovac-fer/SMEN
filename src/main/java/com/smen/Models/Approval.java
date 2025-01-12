@@ -26,9 +26,4 @@ public class Approval {
     private LocalDateTime approvedAt;
 
     private String comment;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

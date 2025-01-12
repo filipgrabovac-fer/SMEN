@@ -21,9 +21,4 @@ public class WorkshopSubject extends BaseEntity<BaseEntity, Number> {
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private Subject subject;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

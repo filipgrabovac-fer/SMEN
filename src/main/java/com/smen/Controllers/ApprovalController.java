@@ -1,9 +1,9 @@
 package com.smen.Controllers;
 
-import com.smen.Models.Approval;
-import com.smen.Models.User;
+import com.smen.Dto.Approval.ApprovalDto;
 import com.smen.Services.ApprovalService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,32 +14,43 @@ import java.util.List;
 @RequestMapping("/api/approval")
 @AllArgsConstructor
 public class ApprovalController {
+
+    @Autowired
     private final ApprovalService approvalService;
 
     @GetMapping("/workshop/{workshopId}")
-    public ResponseEntity<List<Approval>> getApprovalsByWorkshop(@PathVariable Long workshopId) {
+    public ResponseEntity<List<ApprovalDto>> getApprovalsByWorkshop(@PathVariable Long workshopId) {
         return ResponseEntity.ok(approvalService.getApprovalsByWorkshop(workshopId));
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Approval>> getApprovalsByUser(@PathVariable Long userId) {
+    public ResponseEntity<List<ApprovalDto>> getApprovalsByUser(@PathVariable Long userId) {
         return ResponseEntity.ok(approvalService.getApprovalsByUser(userId));
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Approval> createApproval(@RequestBody Approval approval) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(approvalService.create(approval));
+    public ResponseEntity<ApprovalDto> createApproval(@RequestBody ApprovalDto approvalDto) {
+        ApprovalDto createdApproval = approvalService.createApproval(approvalDto);
+
+        if (createdApproval == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdApproval);
+        }
     }
 
     @PutMapping("/{approvalId}/approve")
-    public ResponseEntity<Approval> approveWorkshop(
+    public ResponseEntity<ApprovalDto> approveWorkshop(
             @PathVariable Long approvalId,
             @RequestParam String comment) {
 
-        Approval updatedApproval = approvalService.approveWorkshop(approvalId, comment);
-        if (updatedApproval == null)
+        ApprovalDto updatedApproval = approvalService.approveWorkshop(approvalId, comment);
+
+        if (updatedApproval == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        return ResponseEntity.ok(updatedApproval);
+        } else {
+            return ResponseEntity.ok(updatedApproval);
+        }
     }
 
     @DeleteMapping("/{id}")

@@ -1,8 +1,10 @@
 package com.smen.Controllers;
 
+import com.smen.Dto.Rating.RatingDto;
 import com.smen.Models.Rating;
 import com.smen.Services.RatingService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.util.Optional;
 @RequestMapping("/api/rating")
 public class RatingController {
 
+    @Autowired
     private RatingService ratingService;
 
     @GetMapping("/{id}")
@@ -32,6 +35,24 @@ public class RatingController {
         return ResponseEntity.ok(ratingService.getAll());
     }
 
+    @PostMapping("/new")
+    public ResponseEntity<RatingDto> createRating(@RequestBody RatingDto ratingDto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Error-Message", "Rating must be between 1 and 5");
+
+        if (ratingDto.getRating() < 1 || ratingDto.getRating() > 5) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
+        }
+
+        RatingDto createdRating = ratingService.createRating(ratingDto);
+
+        if (createdRating == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();  // Invalid user/workshop IDs
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdRating);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRating(@PathVariable Long id) {
         boolean isDeleted = ratingService.deleteById(id);
@@ -41,19 +62,6 @@ public class RatingController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-    }
-
-    @PostMapping("/new")
-    public ResponseEntity<Rating> createRating(@RequestBody Rating rating) {
-        HttpHeaders headers = new HttpHeaders(); //dodavanje poruke bez promjene oblika
-        headers.add("Error-Message", "Rating must be between 1 and 5");
-
-        if (rating.getRating() < 1 || rating.getRating() > 5) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
-        }
-
-        Rating newRating = ratingService.create(rating);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newRating);
     }
 
     //sav rating za usera
@@ -69,12 +77,24 @@ public class RatingController {
     }
 
     @GetMapping("/workshop/{id}/ratings")
-    public List<Rating> getWorkshopRatings(@PathVariable Long id) {
-        return ratingService.getWorkshopRatings(id);
+    public ResponseEntity<List<RatingDto>> getWorkshopRatings(@PathVariable Long id) {
+        List<RatingDto> ratings = ratingService.getWorkshopRatings(id);
+
+        if (ratings.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(ratings);
     }
 
     @GetMapping("/user/{id}/ratings")
-    public List<Rating> getUserRatings(@PathVariable Long id) {
-        return ratingService.getUserRatings(id);
+    public ResponseEntity<List<RatingDto>> getUserRatings(@PathVariable Long id) {
+        List<RatingDto> ratings = ratingService.getUserRatings(id);
+
+        if (ratings.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(ratings);
     }
 }

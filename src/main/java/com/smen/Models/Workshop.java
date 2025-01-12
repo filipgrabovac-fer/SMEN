@@ -45,9 +45,4 @@ public class Workshop extends BaseEntity<BaseEntity, Number> {
     @ManyToOne
     @JoinColumn(name = "workshop_status_id")
     private WorkshopStatus workshopStatus;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

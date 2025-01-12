@@ -24,9 +24,4 @@ public class Subject extends BaseEntity<BaseEntity, Number> {
 
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
     private List<WorkshopSubject> workshopSubjects;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

@@ -1,5 +1,6 @@
 package com.smen.Services;
 
+import com.smen.Dto.Role.RoleDto;
 import com.smen.Models.Role;
 import com.smen.Repositories.IRoleRepository;
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RoleService extends BaseEntityService<Role, Long> {
@@ -17,9 +19,16 @@ public class RoleService extends BaseEntityService<Role, Long> {
         this.roleRepository = roleRepository;
     }
 
-    // Get a role by its name
-    public Optional<Role> getRoleByName(String name) {
-        return roleRepository.findByName(name);
+    // Get a role by its name as a DTO
+    public Optional<RoleDto> getRoleByName(String name) {
+        return roleRepository.findByName(name).map(RoleDto::map);
     }
 
+    // Get all roles as DTOs
+    public List<RoleDto> getAllRoles() {
+        return roleRepository.findAll()
+                .stream()
+                .map(RoleDto::map)
+                .collect(Collectors.toList());
+    }
 }

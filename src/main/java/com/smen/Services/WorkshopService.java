@@ -1,5 +1,6 @@
 package com.smen.Services;
 
+import com.smen.Dto.Workshop.WorkshopDto;
 import com.smen.Models.User;
 import com.smen.Models.Workshop;
 import com.smen.Models.WorkshopSubject;
@@ -24,24 +25,57 @@ public class WorkshopService extends BaseEntityService<Workshop, Long> {
         this.workshopSubjectRepository = workshopSubjectRepository;
     }
 
-    public List<Workshop> getWorkshopsByTitle(String title) {
-        return workshopRepository.findByTitleContainingIgnoreCase(title);
+    public Optional<WorkshopDto> getByIdAsDto(Long id) {
+        return workshopRepository.findById(id).map(WorkshopDto::map);
     }
 
-    public List<Workshop> getWorkshopsByUserId(Long userId) {
-        return workshopRepository.findByUserId(userId);
+    public List<WorkshopDto> getAllWorkshops() {
+        return workshopRepository.findAll()
+                .stream()
+                .map(WorkshopDto::map)
+                .collect(Collectors.toList());
     }
 
-    public List<Workshop> getWorkshopsByStatusId(Long statusId) {
-        return workshopRepository.findByWorkshopStatusId(statusId);
+    public List<WorkshopDto> getWorkshopsBySubjectId(Long subjectId) {
+        List<WorkshopSubject> workshopSubjects = workshopSubjectRepository.findBySubjectId(subjectId);
+        return workshopSubjects.stream()
+                .map(WorkshopSubject::getWorkshop)
+                .distinct()
+                .map(WorkshopDto::map)
+                .collect(Collectors.toList());
     }
 
-    public Workshop saveWorkshop(Workshop workshop) {
-        return workshopRepository.save(workshop);
+    public List<WorkshopDto> getAvailableWorkshops() {
+        return workshopRepository.findByNoOfAvailableSlotsGreaterThan(0)
+                .stream()
+                .map(WorkshopDto::map)
+                .collect(Collectors.toList());
     }
 
-    public void deleteWorkshop(Long id) {
-        workshopRepository.deleteById(id);
+    public List<WorkshopDto> getWorkshopsByTitle(String title) {
+        return workshopRepository.findByTitleContainingIgnoreCase(title)
+                .stream()
+                .map(WorkshopDto::map)
+                .collect(Collectors.toList());
+    }
+
+    public List<WorkshopDto> getWorkshopsByUserId(Long userId) {
+        return workshopRepository.findByUserId(userId)
+                .stream()
+                .map(WorkshopDto::map)
+                .collect(Collectors.toList());
+    }
+
+    public List<WorkshopDto> getWorkshopsByStatusId(Long statusId) {
+        return workshopRepository.findByWorkshopStatusId(statusId)
+                .stream()
+                .map(WorkshopDto::map)
+                .collect(Collectors.toList());
+    }
+
+    public WorkshopDto saveWorkshopDto(Workshop workshop) {
+        Workshop savedWorkshop = workshopRepository.save(workshop);
+        return WorkshopDto.map(savedWorkshop);
     }
 
     public Workshop updateWorkshop(Long id, Workshop updatedWorkshop) {
@@ -62,15 +96,11 @@ public class WorkshopService extends BaseEntityService<Workshop, Long> {
 
     }
 
-    public List<Workshop> getWorkshopsBySubjectId(Long subjectId) {
-        List<WorkshopSubject> workshopSubjects = workshopSubjectRepository.findBySubjectId(subjectId);
-        return workshopSubjects.stream()
-                .map(WorkshopSubject::getWorkshop)
-                .distinct()
-                .collect(Collectors.toList());
-    }
-
-    public List<Workshop> getAvailableWorkshops() {
-        return workshopRepository.findByNoOfAvailableSlotsGreaterThan(0);
+    public boolean deleteWorkshop(Long id) {
+        if (workshopRepository.existsById(id)) {
+            workshopRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

@@ -27,9 +27,4 @@ public class MentorRequest extends BaseEntity<BaseEntity, Number> {
     @ManyToOne
     @JoinColumn(name = "mentor_request_status_id", nullable = false)
     private MentorRequestStatus mentorRequestStatus;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

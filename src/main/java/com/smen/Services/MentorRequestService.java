@@ -1,81 +1,118 @@
 package com.smen.Services;
 
+import com.smen.Dto.MentorRequestDto;
 import com.smen.Models.MentorRequest;
+import com.smen.Models.MentorRequestStatus;
 import com.smen.Models.Role;
 import com.smen.Models.User;
 import com.smen.Repositories.IMentorRequestRepository;
+import com.smen.Repositories.IMentorRequestStatusRepository;
 import com.smen.Repositories.IRoleRepository;
 import com.smen.Repositories.IUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MentorRequestService extends BaseEntityService<MentorRequest, Long> {
     private final IMentorRequestRepository mentorRequestRepository;
+    private final IMentorRequestStatusRepository mentorRequestStatusRepository;
     private final IRoleRepository roleRepository;
     private final IUserRepository userRepository;
 
     public MentorRequestService(IMentorRequestRepository mentorRequestRepository,
                                 IRoleRepository roleRepository,
-                                IUserRepository userRepository) {
+                                IUserRepository userRepository,
+                                IMentorRequestStatusRepository mentorRequestStatusRepository) {
         super(mentorRequestRepository);
         this.mentorRequestRepository = mentorRequestRepository;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+        this.mentorRequestStatusRepository = mentorRequestStatusRepository;
     }
 
-    public List<MentorRequest> getAllMentorRequests(){
-        return mentorRequestRepository.findAll();
+    public List<MentorRequestDto> getAllMentorRequests() {
+        return mentorRequestRepository.findAll()
+                .stream()
+                .map(MentorRequestDto::map)
+                .collect(Collectors.toList());
     }
 
-    public List<MentorRequest> getMentorsByRequesterId(Long id) {
-        return mentorRequestRepository.findByRequesterId(id);
+    public List<MentorRequestDto> getMentorsByRequesterId(Long id) {
+        return mentorRequestRepository.findByRequesterId(id)
+                .stream()
+                .map(MentorRequestDto::map)
+                .collect(Collectors.toList());
     }
 
-    public List<MentorRequest> getMentorsByReviewerId(Long id) {
-        return mentorRequestRepository.findByReviewerId(id);
+    public List<MentorRequestDto> getMentorsByReviewerId(Long id) {
+        return mentorRequestRepository.findByReviewerId(id)
+                .stream()
+                .map(MentorRequestDto::map)
+                .collect(Collectors.toList());
     }
 
-    public List<MentorRequest> getMentorsByMentorRequestStatusId(Long id) {
-        return mentorRequestRepository.findByMentorRequestStatusId(id);
+    public List<MentorRequestDto> getMentorsByMentorRequestStatusId(Long id) {
+        return mentorRequestRepository.findByMentorRequestStatusId(id)
+                .stream()
+                .map(MentorRequestDto::map)
+                .collect(Collectors.toList());
     }
 
-    public MentorRequest approveMentorRequest(Long mentorRequestId) {
-        MentorRequest mentorRequest = mentorRequestRepository.findById(mentorRequestId)
-                .orElse(null);
+    public MentorRequestDto approveMentorRequest(Long mentorRequestId) {
+        Optional<MentorRequest> mentorRequestOptional = mentorRequestRepository.findById(mentorRequestId);
 
-        // Fetch and validate the mentor role
+        if (!mentorRequestOptional.isPresent()) {
+            return null;
+        }
+
+        MentorRequest mentorRequest = mentorRequestOptional.get();
+
         Role mentorRole = roleRepository.findByName("mentor")
                 .orElse(null);
+        if (mentorRole == null)
+            return null;
 
-        // Update MentorRequest status
-        if (mentorRequest != null) {
-            mentorRequest.getMentorRequestStatus().setName("approved");
+        mentorRequest.getMentorRequestStatus().setName("approved");
+        MentorRequest updatedRequest = mentorRequestRepository.save(mentorRequest);
 
-            mentorRequestRepository.save(mentorRequest);
+        User requester = updatedRequest.getRequester();
+        requester.setRole(mentorRole);
+        userRepository.save(requester);
 
-            // Update the user's role
-            User requester = mentorRequest.getRequester();
-            requester.setRole(mentorRole);
-            userRepository.save(requester);
-        }
-
-        return mentorRequest;
+        return MentorRequestDto.map(updatedRequest);
     }
 
-    public MentorRequest rejectMentorRequest(Long mentorRequestId) {
-        MentorRequest mentorRequest = mentorRequestRepository.findById(mentorRequestId)
-                .orElse(null);
+    public MentorRequestDto rejectMentorRequest(Long mentorRequestId) {
+        Optional<MentorRequest> mentorRequestOptional = mentorRequestRepository.findById(mentorRequestId);
 
-        // Update MentorRequest status
-        if (mentorRequest != null) {
-            mentorRequest.getMentorRequestStatus().setName("rejected");
-
-            mentorRequestRepository.save(mentorRequest);
+        if (!mentorRequestOptional.isPresent()) {
+            return null;
         }
 
-        return mentorRequest;
+        MentorRequest mentorRequest = mentorRequestOptional.get();
+
+        mentorRequest.getMentorRequestStatus().setName("rejected");
+        return MentorRequestDto.map(mentorRequestRepository.save(mentorRequest));
+    }
+
+    public MentorRequestDto createMentorRequest(MentorRequestDto requestDto) {
+        Optional<User> requesterOptional = userRepository.findById(requestDto.getRequesterId());
+        Optional<User> reviewerOptional = userRepository.findById(requestDto.getReviewerId());
+        Optional<MentorRequestStatus> statusOptional = mentorRequestStatusRepository.findById(requestDto.getMentorRequestStatusId());
+
+        if (!requesterOptional.isPresent() || !reviewerOptional.isPresent() || !statusOptional.isPresent()) {
+            return null;
+        }
+
+        MentorRequest mentorRequest = requestDto.toEntity(
+                requesterOptional.get(),
+                reviewerOptional.get(),
+                statusOptional.get()
+        );
+
+        return MentorRequestDto.map(mentorRequestRepository.save(mentorRequest));
     }
 }
