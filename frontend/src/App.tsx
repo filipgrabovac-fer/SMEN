@@ -1,10 +1,14 @@
+import { RouterProvider } from "@tanstack/react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
+import { router } from "./routes/router";
 
 function App() {
+  const queryClient = new QueryClient();
   return (
-    <>
-      <h1 className="bg-red-600">Vite + React</h1>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   );
 }
 
