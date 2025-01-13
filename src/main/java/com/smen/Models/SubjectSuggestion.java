@@ -2,26 +2,27 @@ package com.smen.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-@Entity(name = "role")
+@Entity(name = "subject_suggestion")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role extends BaseEntity<BaseEntity, Number> {
+public class SubjectSuggestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String title;
 
     private String description;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
-    private List<User> users;
+    private User user;
 }
