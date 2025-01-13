@@ -2,8 +2,8 @@ import { Modal, Input, Button } from "antd";
 import { useState } from "react";
 
 interface PrijavaModalProps {
-  open: boolean; // Determines if the modal is visible
-  onClose: () => void; // Function to close the modal
+  open: boolean;
+  onClose: () => void;
 }
 
 const PrijavaModal: React.FC<PrijavaModalProps> = ({ open, onClose }) => {
