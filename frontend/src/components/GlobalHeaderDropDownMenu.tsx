@@ -3,13 +3,22 @@ import type { MenuProps } from "antd";
 import { Dropdown, Space } from "antd";
 import { useState } from "react";
 import PrijavaZaMentorstvoLayout from "../features/prijavaMentorstvo/PrijavaZaMentorstvoLayout";
+import { router } from "../routes/router";
 
 const role = "User";
 
 const items: MenuProps["items"] = [
   {
-    key: "1",
-    label: "a",
+    key: "/themes",
+    label: "Themes",
+  },
+  {
+    key: "/oglasi",
+    label: "Oglasi",
+  },
+  {
+    key: "/login",
+    label: "Login",
   },
 ];
 if (role === "User") {
@@ -25,6 +34,8 @@ const HeaderDropdownMenu = () => {
   const handleMenuClick = (key: string) => {
     if (key === "prijava") {
       setIsModalOpen(true);
+    } else {
+      router.navigate({ to: key });
     }
   };
 
