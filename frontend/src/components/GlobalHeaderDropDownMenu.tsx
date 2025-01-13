@@ -2,7 +2,7 @@ import { DownOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Dropdown, Space } from "antd";
 import { useState } from "react";
-import PrijavaZaMentorstvoLayout from "../features/prijavaMentorstvo/PrijavaZaMentorstvoLayout";
+import PrijavaZaMentorstvoLayout from "./prijavaMentorstvo/PrijavaZaMentorstvoLayout";
 import { router } from "../routes/router";
 
 const role = "User";

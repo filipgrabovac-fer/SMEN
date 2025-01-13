@@ -1,21 +1,37 @@
-import { Modal, Input, Button } from "antd";
+import { Button, Input, Modal } from "antd";
 import { useState } from "react";
+import { usePostSendMentorRequest } from "../hooks/usePostSendMentorRequest.hook";
 
 interface PrijavaModalProps {
   open: boolean;
   onClose: () => void;
+  requesterId: number;
 }
 
-const PrijavaModal: React.FC<PrijavaModalProps> = ({ open, onClose }) => {
+function PrijavaModal({ open, onClose, requesterId }: PrijavaModalProps) {
   const [reason, setReason] = useState("");
+
+  const mutation = usePostSendMentorRequest({
+    onSuccess: () => {
+      alert("Prijava uspješno poslana!");
+      onClose();
+    },
+  });
 
   const handleReasonChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReason(e.target.value);
   };
 
   const handleSubmit = () => {
-    console.log("Razlog prijave:", reason);
-    onClose();
+    if (!reason.trim()) {
+      alert("Razlog prijave ne može biti prazan.");
+      return;
+    }
+
+    mutation.mutate({
+      comment: reason,
+      requesterId,
+    });
   };
 
   return (
@@ -61,6 +77,6 @@ const PrijavaModal: React.FC<PrijavaModalProps> = ({ open, onClose }) => {
       </div>
     </Modal>
   );
-};
+}
 
 export default PrijavaModal;
