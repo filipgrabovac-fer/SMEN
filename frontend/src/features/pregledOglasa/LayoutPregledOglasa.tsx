@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Flex } from "antd";
-import OglasiHeader from "../components/OglasiHeader";
-import OglasiTable from "../components/OglasiTable";
-import { Oglas } from "../typings/oglas";
+import { Oglas } from "./typings/oglas";
+import OglasiHeader from "./components/OglasiHeader";
+import OglasiTable from "./components/OglasiTable";
 
 const LayoutPregledOglasa = () => {
   const [data, setData] = useState<Oglas[]>([

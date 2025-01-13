@@ -1,15 +1,11 @@
 import { RouteObject } from "react-router";
 import AppLayout from "./layout/AppLayout";
-import LayoutPregledOglasa from "./features/pregledOglasa/layout/LayoutPregledOglasa";
-import LayoutPregledTema from "./features/pregledTema/layout/LayoutPregledTema";
+import LayoutPregledOglasa from "./features/pregledOglasa/LayoutPregledOglasa";
 
 export const appRoutes: RouteObject[] = [
   {
     path: "/",
     element: <AppLayout />,
-    children: [
-      { index: true, element: <LayoutPregledOglasa /> },
-      { path: "tema", element: <LayoutPregledTema /> },
-    ],
+    children: [{ index: true, element: <LayoutPregledOglasa /> }],
   },
 ];

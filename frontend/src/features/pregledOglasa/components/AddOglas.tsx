@@ -16,9 +16,9 @@ const AddOglasModal = ({ visible, onOk, onCancel }: AddOglasModalProps) => {
         key: Date.now().toString(),
         name: values.name,
         opis: values.opis,
-        datum: new Date(), // Automatically set the current date
+        datum: new Date(),
         naslovOglasa: values.naslovOglasa,
-        details: "#", // Placeholder for details
+        details: "#",
       };
       onOk(newOglas);
       form.resetFields();
