@@ -1,13 +1,4 @@
-.header {
-    text-align: right;
-    color: #fff;
-    height: 64px;
-    padding-inline: 48px;
-    line-height: 64px;
-    background-color: #2c46b7;
-  }
-  
-  .content {
+ .content {
     text-align: center;
     min-height: 120px;
     line-height: 120px;
@@ -15,11 +6,6 @@
     background-color: #ffffff;
   }
   
-  .footer {
-    text-align: center;
-    color: #000000;
-    background-color: #ffffff;
-  }
   
   .layoutStyle {
     border-radius: 8px;

@@ -2,12 +2,20 @@ import { Flex } from "antd";
 import HeaderDropdownMenu from "./GlobalHeaderDropDownMenu";
 import { UserOutlined } from "@ant-design/icons";
 
-const CustomHeader = () => {
+const GlobalHeader = () => {
   return (
     <Flex
       gap="middle"
       justify="flex-end"
-      style={{ height: "100%", position: "sticky" }}
+      style={{
+        height: "64px",
+        position: "sticky",
+        textAlign: "right",
+        color: "#fff",
+        paddingInline: "48px",
+        lineHeight: "64px",
+        backgroundColor: "#2c46b7",
+      }}
       align="center"
     >
       <HeaderDropdownMenu />
@@ -16,4 +24,4 @@ const CustomHeader = () => {
   );
 };
 
-export default CustomHeader;
+export default GlobalHeader;

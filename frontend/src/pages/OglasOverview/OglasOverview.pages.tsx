@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Flex } from "antd";
-import { Oglas } from "./typings/oglas";
 import OglasiHeader from "./components/OglasiHeader";
 import OglasiTable from "./components/OglasiTable";
+import { Oglas } from "./oglas";
 
-const LayoutPregledOglasa = () => {
+const OglasOverview = () => {
   const [data, setData] = useState<Oglas[]>([
     {
       key: "1",
@@ -53,4 +53,4 @@ const LayoutPregledOglasa = () => {
   );
 };
 
-export default LayoutPregledOglasa;
+export default OglasOverview;

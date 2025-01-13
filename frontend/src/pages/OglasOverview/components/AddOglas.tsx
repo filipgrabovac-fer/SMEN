@@ -1,5 +1,5 @@
 import { Modal, Form, Input } from "antd";
-import { Oglas } from "../typings/oglas";
+import { Oglas } from "../oglas";
 
 interface AddOglasModalProps {
   visible: boolean;
