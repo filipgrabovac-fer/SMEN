@@ -1,5 +1,5 @@
 import { Flex } from "antd";
-import HeaderDropdownMenu from "./HeaderDropDownMenu";
+import HeaderDropdownMenu from "./GlobalHeaderDropDownMenu";
 import { UserOutlined } from "@ant-design/icons";
 
 const CustomHeader = () => {
@@ -7,7 +7,7 @@ const CustomHeader = () => {
     <Flex
       gap="middle"
       justify="flex-end"
-      style={{ height: "100%" }}
+      style={{ height: "100%", position: "sticky" }}
       align="center"
     >
       <HeaderDropdownMenu />

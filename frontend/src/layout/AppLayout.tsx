@@ -1,9 +1,8 @@
-//import { Outlet } from "react-router";
-import CustomHeader from "../components/CustomHeader";
+import CustomHeader from "../components/GlobalHeader";
 import { Layout } from "antd";
 import { Outlet } from "react-router";
 
-const { Header, Footer, Content } = Layout;
+const { Header, Content } = Layout;
 
 const AppLayout = () => (
   <Layout className="layout">
@@ -13,7 +12,6 @@ const AppLayout = () => (
     <Content className="content">
       <Outlet />
     </Content>
-    <Footer className="footer">Footer</Footer>
   </Layout>
 );
 

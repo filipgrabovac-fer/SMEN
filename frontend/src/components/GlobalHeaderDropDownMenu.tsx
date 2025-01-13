@@ -3,7 +3,7 @@ import type { MenuProps } from "antd";
 import { Dropdown, Space } from "antd";
 import { Link } from "react-router";
 import { useState } from "react";
-import PrijavaZaMentorstvoLayout from "../features/mentorstvo/PrijavaZaMentorstvoLayout";
+import PrijavaZaMentorstvoLayout from "../features/prijavaMentorstvo/PrijavaZaMentorstvoLayout";
 
 const role = "User";
 
