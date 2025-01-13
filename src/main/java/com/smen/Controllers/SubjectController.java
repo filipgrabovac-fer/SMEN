@@ -16,6 +16,7 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/subject")
+@CrossOrigin("*")
 public class SubjectController {
 
     @Autowired

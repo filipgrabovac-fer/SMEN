@@ -9,7 +9,6 @@ export const useGetCookieContent = () => {
         method: "GET",
       });
 
-      console.log(response);
       return response;
     },
   });

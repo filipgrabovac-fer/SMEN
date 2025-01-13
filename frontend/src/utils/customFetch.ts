@@ -11,8 +11,7 @@ export const customFetch = async ({
   body,
   headers,
 }: CustomFetchType) => {
-  const data = await fetch(endpointUrl, {
-    redirect: "follow",
+  const data = await fetch("http://localhost:8080/api/" + endpointUrl, {
     method,
     body: body,
     headers,

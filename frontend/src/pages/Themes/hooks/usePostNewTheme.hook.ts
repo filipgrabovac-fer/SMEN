@@ -1,39 +1,47 @@
 import { useMutation } from "@tanstack/react-query";
 import { customFetch } from "../../../utils/customFetch";
 
-export type PostLoginMutationProps = {
-  username: string;
-  password: string;
+export type PostNewThemeMutationProps = {
+  id: number;
+  title: string;
+  tags: string;
+  description: string;
 };
 
-export type PostLoginProps = {
+export type PostNewThemeProps = {
   onSuccess:
     | ((
         data: any,
-        variables: PostLoginMutationProps,
+        variables: PostNewThemeMutationProps,
         context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 };
 
-export const usePostLogin = ({ onSuccess }: PostLoginProps) => {
+export const usePostNewTheme = ({ onSuccess }: PostNewThemeProps) => {
   return useMutation({
     onSuccess: onSuccess,
-    mutationFn: async ({ username, password }: PostLoginMutationProps) => {
+    mutationFn: async ({
+      description,
+      id,
+      tags,
+      title,
+    }: PostNewThemeMutationProps) => {
       const response = await customFetch({
-        endpointUrl: "keycloak/login",
+        endpointUrl: "subject/new",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username,
-          password,
-          client_id: "smen-rest-api",
-          grant_type: "password",
+          description,
+          id,
+          tags,
+          title,
         }),
       });
 
+      console.log(response);
       return response;
     },
   });

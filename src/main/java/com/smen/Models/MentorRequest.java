@@ -1,6 +1,7 @@
 package com.smen.Models;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDateTime;
 

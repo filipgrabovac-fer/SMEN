@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/mentor-request")
+@CrossOrigin("*")
 public class MentorRequestController {
 
     @Autowired

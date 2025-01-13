@@ -18,6 +18,7 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/workshop")
+@CrossOrigin("*")
 public class WorkshopController {
 
     @Autowired
