@@ -64,7 +64,7 @@ export const Themes = () => {
     <div className="w-4/5 m-auto flex flex-col gap-y-6 mt-6">
       <div className="flex justify-between">
         <h1 className="text-2xl font-medium">Teme</h1>
-        <Button onClick={() => setIsCreateThemeModalOpen(true)}>
+        <Button type="primary" onClick={() => setIsCreateThemeModalOpen(true)}>
           Dodaj temu <PlusIcon className="w-5 h-5" />
         </Button>
       </div>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Modal, Typography } from "antd";
-import { OglasDetailsProps } from "../typings/oglas";
+import { OglasDetailsProps } from "../oglas";
 
 const { Title, Paragraph } = Typography;
 
@@ -18,9 +18,9 @@ const OglasDetails = ({ title, content, author, date }: OglasDetailsProps) => {
   return (
     <>
       <Button type="primary" onClick={showModal}>
-        details
+        detalji
       </Button>
-      <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
+      <Modal centered open={isModalOpen} onCancel={handleCancel} footer={null}>
         <Typography>
           <Title level={3}>{title}</Title>
           <hr style={{ opacity: 0.5 }} />

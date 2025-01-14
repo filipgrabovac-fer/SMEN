@@ -1,6 +1,6 @@
 export interface Oglas {
   key: string;
-  name: string;
+  autor: string;
   opis: string;
   datum: Date;
   naslovOglasa: string;

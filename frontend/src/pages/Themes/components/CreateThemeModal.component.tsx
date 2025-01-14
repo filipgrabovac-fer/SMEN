@@ -18,8 +18,10 @@ export const CreateThemeModal = ({
   const queryClient = useQueryClient();
   const { mutate: postNewTheme } = usePostNewTheme({
     onSuccess: () => {
-      setIsModalOpen(false);
+      setThemeDescription("");
+      setThemeName("");
       queryClient.invalidateQueries({ queryKey: ["themes"] });
+      setIsModalOpen(false);
     },
   });
 
@@ -28,7 +30,11 @@ export const CreateThemeModal = ({
       centered
       open={isModalOpen}
       footer={null}
-      onCancel={() => setIsModalOpen(false)}
+      onCancel={() => {
+        setThemeDescription("");
+        setThemeName("");
+        setIsModalOpen(false);
+      }}
     >
       <p className="text-2xl font-bold">Dodaj temu</p>
       <div className="flex flex-col gap-y-6 items-center mt-8">

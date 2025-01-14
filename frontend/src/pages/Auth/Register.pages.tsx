@@ -20,6 +20,7 @@ export const Register = () => {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
 
+  console.log(email, firstName, lastName, password, username);
   const { mutate: postLogin } = usePostLogin({
     onSuccess: () => {
       navigate({ to: homeRoute.fullPath });

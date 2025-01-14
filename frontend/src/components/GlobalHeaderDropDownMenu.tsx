@@ -10,21 +10,21 @@ const role = "User";
 const items: MenuProps["items"] = [
   {
     key: "/themes",
-    label: "Themes",
+    label: "Teme",
   },
   {
-    key: "/oglasi",
+    key: "/posts",
     label: "Oglasi",
   },
   {
-    key: "/login",
-    label: "Login",
+    key: "/mentors-overview",
+    label: "Pregled prijava",
   },
 ];
 if (role === "User") {
   items.push({
     key: "prijava",
-    label: "Prijava",
+    label: "Prijava za mentorstvo",
   });
 }
 

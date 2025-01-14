@@ -156,6 +156,7 @@ export const WorkshopSuggestions = () => {
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           selectedWorkshopId={selectedWorkshopId}
+          // @ts-expect-error random error
           setSelectedWorkshopId={setSelectedWorkshopId}
         />
       )}

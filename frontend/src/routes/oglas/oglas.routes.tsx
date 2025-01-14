@@ -4,6 +4,6 @@ import OglasOverview from "../../pages/OglasOverview/OglasOverview.pages";
 
 export const oglasRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/oglasi",
+  path: "/posts",
   component: OglasOverview,
 });

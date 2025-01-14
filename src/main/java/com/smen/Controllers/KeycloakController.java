@@ -37,7 +37,7 @@ public class KeycloakController {
     private String KEYCLOAK_CLIENT;
 
     @PostMapping(path="/login")
-    public void loginUser(@RequestBody KeycloakLoginDTO keycloakLogin, HttpServletResponse res) throws IOException {
+    public ResponseEntity<Boolean> loginUser(@RequestBody KeycloakLoginDTO keycloakLogin, HttpSession session) throws IOException {
         RestTemplate restTemplate = new RestTemplate();
         String url = KEYCLOAK_URL + "/realms/smen/protocol/openid-connect/token";
         HttpHeaders headers = new HttpHeaders();
@@ -53,19 +53,9 @@ public class KeycloakController {
 
         KeycloakTokenDTO token = objectMapper.readValue(response.getBody(), KeycloakTokenDTO.class);
 
-        Cookie cookie = new Cookie("token", token.getAccess_token());
 
-
-        cookie.setSecure(true);
-        cookie.setHttpOnly(false);
-        cookie.setMaxAge(7 * 24 * 60 * 60);
-        cookie.setPath("/");
-        res.addCookie(cookie);
-
-        res.sendRedirect("http://localhost:5173/home");
-
-
-//        return ResponseEntity.ok(true);
+        session.setAttribute("token", token.getAccess_token());
+        return ResponseEntity.ok(true);
     }
 
 

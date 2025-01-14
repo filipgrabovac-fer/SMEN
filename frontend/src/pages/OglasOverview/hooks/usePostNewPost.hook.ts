@@ -1,32 +1,21 @@
 import { useMutation } from "@tanstack/react-query";
+import { NewPostType } from "../components/AddOglas";
 import { customFetch } from "../../../utils/customFetch";
 
-export type PostNewThemeMutationProps = {
-  id: number;
-  title: string;
-  tags: string;
-  description: string;
-};
-
-export type PostNewThemeProps = {
+export type PostNewPostProps = {
   onSuccess:
     | ((
         data: unknown,
-        variables: PostNewThemeMutationProps,
+        variables: NewPostType,
         context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 };
 
-export const usePostNewTheme = ({ onSuccess }: PostNewThemeProps) => {
+export const usePostNewPost = ({ onSuccess }: PostNewPostProps) => {
   return useMutation({
     onSuccess: onSuccess,
-    mutationFn: async ({
-      description,
-      id,
-      tags,
-      title,
-    }: PostNewThemeMutationProps) => {
+    mutationFn: async ({ description, tags, title }: NewPostType) => {
       const response = await customFetch({
         endpointUrl: "subject/new",
         method: "POST",
@@ -35,7 +24,6 @@ export const usePostNewTheme = ({ onSuccess }: PostNewThemeProps) => {
         },
         body: JSON.stringify({
           description,
-          id,
           tags,
           title,
         }),

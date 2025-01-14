@@ -51,10 +51,7 @@ export const WorkshopApplicationModal = ({
       </div>
 
       <div className="flex gap-x-4 justify-center">
-        <button
-          className="border border-button_border rounded-md p-2 hover:opacity-60 text-button_border"
-          onClick={() => console.log("postWorkshopApplication({})")}
-        >
+        <button className="border border-button_border rounded-md p-2 hover:opacity-60 text-button_border">
           Prijavi se
         </button>
       </div>

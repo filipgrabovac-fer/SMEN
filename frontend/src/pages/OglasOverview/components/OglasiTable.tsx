@@ -1,7 +1,7 @@
 import { Table } from "antd";
 import type { TableProps } from "antd";
 import OglasDetails from "./OglasDetails";
-import { Oglas } from "../typings/oglas";
+import { Oglas } from "../oglas";
 
 const OglasiTable = ({ data }: { data: Oglas[] }) => {
   const columns: TableProps<Oglas>["columns"] = [
@@ -11,9 +11,9 @@ const OglasiTable = ({ data }: { data: Oglas[] }) => {
       key: "naslovOglasa",
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: "Autor",
+      dataIndex: "autor",
+      key: "autor",
     },
     {
       title: "Opis",
@@ -30,11 +30,11 @@ const OglasiTable = ({ data }: { data: Oglas[] }) => {
       title: "Detalji",
       dataIndex: "details",
       key: "details",
-      render: (_: any, record: Oglas) => (
+      render: (_: unknown, record: Oglas) => (
         <OglasDetails
           title={record.naslovOglasa}
           content={[record.opis]}
-          author={record.name}
+          author={record.autor}
           date={record.datum}
         />
       ),

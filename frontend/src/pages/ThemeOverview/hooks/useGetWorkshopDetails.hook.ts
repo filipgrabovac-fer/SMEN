@@ -24,6 +24,7 @@ export const useGetWorkshopDetails = ({
         endpointUrl: `workshop/${workshopId}`,
         method: "GET",
       });
+      console.log(response);
 
       return response;
     },

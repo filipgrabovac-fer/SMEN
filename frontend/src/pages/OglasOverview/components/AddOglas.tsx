@@ -1,35 +1,46 @@
 import { Modal, Form, Input } from "antd";
-import { Oglas } from "../oglas";
+import { usePostNewPost } from "../hooks/usePostNewPost.hook";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface AddOglasModalProps {
   visible: boolean;
-  onOk: (oglas: Oglas) => void;
   onCancel: () => void;
 }
 
-const AddOglasModal = ({ visible, onOk, onCancel }: AddOglasModalProps) => {
-  const [form] = Form.useForm();
+export type NewPostType = {
+  description: string;
+  tags: string;
+  title: string;
+};
 
+const AddOglasModal = ({ visible, onCancel }: AddOglasModalProps) => {
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+
+  const { mutate: postNewPost } = usePostNewPost({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      onCancel();
+    },
+  });
   const handleOk = () => {
     form.validateFields().then((values) => {
-      const newOglas: Oglas = {
-        key: Date.now().toString(),
-        name: values.name,
-        opis: values.opis,
-        datum: new Date(),
-        naslovOglasa: values.naslovOglasa,
-        details: "#",
-      };
-      onOk(newOglas);
+      postNewPost({
+        description: values.opis,
+        tags: "tags",
+        title: values.naslovOglasa,
+      });
+
       form.resetFields();
     });
   };
 
   return (
     <Modal
-      title="Add New Oglas"
+      title="Dodaj novi oglas"
       open={visible}
       onOk={handleOk}
+      centered
       onCancel={onCancel}
     >
       <Form form={form} layout="vertical">
@@ -37,13 +48,6 @@ const AddOglasModal = ({ visible, onOk, onCancel }: AddOglasModalProps) => {
           label="Naslov Oglasa"
           name="naslovOglasa"
           rules={[{ required: true, message: "Please enter the title!" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Name"
-          name="name"
-          rules={[{ required: true, message: "Please enter the name!" }]}
         >
           <Input />
         </Form.Item>

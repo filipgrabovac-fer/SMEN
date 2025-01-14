@@ -1,6 +1,7 @@
 import { Button, Input, Modal } from "antd";
 import { useState } from "react";
 import { usePostSendMentorRequest } from "../hooks/usePostSendMentorRequest.hook";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface PrijavaModalProps {
   open: boolean;
@@ -11,10 +12,11 @@ interface PrijavaModalProps {
 function PrijavaModal({ open, onClose, requesterId }: PrijavaModalProps) {
   const [reason, setReason] = useState("");
 
+  const queryClient = useQueryClient();
   const mutation = usePostSendMentorRequest({
     onSuccess: () => {
-      alert("Prijava uspješno poslana!");
       onClose();
+      queryClient.invalidateQueries({ queryKey: ["mentorRequests"] });
     },
   });
 
@@ -40,6 +42,7 @@ function PrijavaModal({ open, onClose, requesterId }: PrijavaModalProps) {
       open={open}
       onCancel={onClose}
       footer={null}
+      centered
     >
       <div style={{ marginBottom: 16 }}>
         <Input.TextArea

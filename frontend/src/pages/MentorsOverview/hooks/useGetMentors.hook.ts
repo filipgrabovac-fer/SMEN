@@ -10,7 +10,7 @@ export type GetMentorDataType = {
 };
 export const useGetMentors = () => {
   return useQuery<GetMentorDataType[]>({
-    queryKey: ["mentors"],
+    queryKey: ["mentorRequests"],
     queryFn: async () => {
       const response = await customFetch({
         method: "GET",

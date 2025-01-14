@@ -13,12 +13,6 @@ public class Registration extends BaseEntity<BaseEntity, Number> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "workshop_id")
-    private Workshop workshop;
+    private Long userId;
+    private Long workshopId;
 }

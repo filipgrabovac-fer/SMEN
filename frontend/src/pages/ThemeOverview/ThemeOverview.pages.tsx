@@ -1,9 +1,11 @@
-import { Table } from "antd";
+import { Button, Table } from "antd";
 import { WorkshopApplicationModal } from "./components/WorkshopApplicationModal.component";
 import { useState } from "react";
 import { useGetWorkshopsForTheme } from "./hooks/useGetWorkshopsForTheme.hook";
 import { useGetThemeDetails } from "./hooks/useGetThemeDetails.hook";
 import { themeOverviewRoute } from "../../routes/theme-overview/theme-overview.routes";
+import { PlusIcon } from "@heroicons/react/24/solid";
+import { CreateWorkshopModal } from "./components/CreateWorkshopModal.component";
 
 const columns = [
   {
@@ -22,9 +24,9 @@ const columns = [
     key: "broj_mjesta",
   },
   {
-    title: "tip",
-    dataIndex: "tip",
-    key: "tip",
+    title: "opis",
+    dataIndex: "opis",
+    key: "opis",
   },
   {
     title: "status",
@@ -43,11 +45,12 @@ export const ThemeOverview = () => {
   const [selectedWorkshopId, setSelectedWorkshopId] = useState<
     number | undefined
   >();
+  const [isCreateWorkshopModalOpen, setIsCreateWorkshopModalOpen] =
+    useState(false);
 
   const { themeId } = themeOverviewRoute.useParams();
 
   const { data } = useGetWorkshopsForTheme({ subjectId: themeId });
-
   const { data: themeDetails } = useGetThemeDetails({ subjectId: themeId });
 
   const dataSource = data?.map((workshop) => ({
@@ -55,7 +58,7 @@ export const ThemeOverview = () => {
     naziv: workshop.title,
     datum_odrzavanja: "2021-09-09",
     broj_mjesta: workshop.noOfAvailableSlots,
-    tip: workshop.description,
+    opis: workshop.description,
     status: workshop.workshopStatusId,
     find_out_more: (
       <p
@@ -72,9 +75,18 @@ export const ThemeOverview = () => {
 
   return (
     <>
-      <div className="bg-gray-100 flex flex-col gap-y-8 p-8 justify-center ">
-        <p className="text-2xl font-medium">{themeDetails?.title}</p>
-        <p>{themeDetails?.description}</p>
+      <div className="bg-gray-100 flex gap-y-8 p-8 justify-between">
+        <div>
+          <p className="text-2xl font-medium">{themeDetails?.title}</p>
+          <p>{themeDetails?.description}</p>
+        </div>
+        <Button
+          type="primary"
+          className="mt-auto"
+          onClick={() => setIsCreateWorkshopModalOpen(true)}
+        >
+          Dodaj radionicu <PlusIcon className="w-5 h-5" />
+        </Button>
       </div>
       <Table
         columns={columns}
@@ -90,6 +102,11 @@ export const ThemeOverview = () => {
           setSelectedWorkshopId={setSelectedWorkshopId}
         />
       )}
+
+      <CreateWorkshopModal
+        isCreateWorkshopModalOpen={isCreateWorkshopModalOpen}
+        setIsCreateWorkshopModalOpen={setIsCreateWorkshopModalOpen}
+      />
     </>
   );
 };
