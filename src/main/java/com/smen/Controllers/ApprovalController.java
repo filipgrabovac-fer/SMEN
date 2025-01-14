@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/approval")
 @AllArgsConstructor
+@CrossOrigin("*")
 public class ApprovalController {
 
     @Autowired

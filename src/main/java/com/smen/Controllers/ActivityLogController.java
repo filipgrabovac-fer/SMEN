@@ -16,6 +16,7 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/activity-log")
+@CrossOrigin("*")
 public class ActivityLogController {
 
     @Autowired

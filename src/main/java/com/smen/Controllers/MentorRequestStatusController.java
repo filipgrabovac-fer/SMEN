@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/mentor-request-status")
+@CrossOrigin("*")
 public class MentorRequestStatusController {
 
     @Autowired

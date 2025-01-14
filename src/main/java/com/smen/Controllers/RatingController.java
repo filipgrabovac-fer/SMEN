@@ -16,6 +16,7 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/rating")
+@CrossOrigin("*")
 public class RatingController {
 
     @Autowired

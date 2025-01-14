@@ -2,8 +2,8 @@
 FROM node:20 AS smen-fe
 WORKDIR /app
 COPY frontend/ ./
-RUN npm ci
 COPY src ./src
+RUN npm ci
 RUN npm run build
 
 
@@ -12,7 +12,7 @@ FROM gradle:8.5-jdk17 AS smen-be
 WORKDIR /app
 COPY --from=smen-fe /app/src ./src
 COPY build.gradle settings.gradle gradlew ./
-RUN gradle build 
+RUN gradle build
 
 # Stage 3: Run the application
 FROM openjdk:17-jdk AS smen

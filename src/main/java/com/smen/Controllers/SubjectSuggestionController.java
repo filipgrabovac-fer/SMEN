@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/subject-suggestions")
+@CrossOrigin("*")
 public class SubjectSuggestionController {
 
     private final SubjectSuggestionService service;

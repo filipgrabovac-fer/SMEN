@@ -27,7 +27,6 @@ import java.util.Map;
 @SessionAttributes("token")
 public class KeycloakController {
 
-//    @PreAuthorize("hasRole('client_user')")
     @Value("${app.api.keycloak_url}")
     private String KEYCLOAK_URL;
 
