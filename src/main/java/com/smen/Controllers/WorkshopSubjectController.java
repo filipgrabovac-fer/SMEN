@@ -1,6 +1,6 @@
 package com.smen.Controllers;
 
-import com.smen.Dto.WorkshopSubject.WorkshopSubjectDto;
+import com.smen.DTO.WorkshopSubject.WorkshopSubjectDto;
 import com.smen.Models.Subject;
 import com.smen.Models.Workshop;
 import com.smen.Models.WorkshopSubject;

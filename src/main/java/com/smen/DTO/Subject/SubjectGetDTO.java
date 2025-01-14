@@ -1,22 +1,20 @@
-package com.smen.Dto.Subject;
+package com.smen.DTO.Subject;
 import com.smen.Models.Subject;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Data
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubjectDto {
+public class SubjectGetDTO {
     private Long id;
     private String title;
-    private String tags;
     private String description;
+    private String tags;
 
-    public static SubjectDto map(Subject subject) {
-        SubjectDto dto = new SubjectDto();
+    public static SubjectGetDTO map(Subject subject) {
+        SubjectGetDTO dto = new SubjectGetDTO();
         dto.setId(subject.getId());
         dto.setTitle(subject.getTitle());
         dto.setTags(subject.getTags());

@@ -1,6 +1,7 @@
 package com.smen.Services;
 
-import com.smen.Dto.Subject.SubjectDto;
+import com.smen.DTO.Subject.SubjectDto;
+import com.smen.DTO.Subject.SubjectGetDTO;
 import com.smen.Models.Subject;
 import com.smen.Repositories.ISubjectRepository;
 import com.smen.Repositories.IWorkshopRepository;
@@ -32,15 +33,15 @@ public class SubjectService extends BaseEntityService<Subject, Long> {
     }
 
     // Get subject by ID as DTO
-    public Optional<SubjectDto> getByIdAsDto(Long id) {
-        return subjectRepository.findById(id).map(SubjectDto::map);
+    public Optional<SubjectGetDTO> getByIdAsDto(Long id) {
+        return subjectRepository.findById(id).map(SubjectGetDTO::map);
     }
 
     // Get all subjects as DTOs
-    public List<SubjectDto> getAllSubjects() {
+    public List<SubjectGetDTO> getAllSubjects() {
         return subjectRepository.findAll()
                 .stream()
-                .map(SubjectDto::map)
+                .map(SubjectGetDTO::map)
                 .collect(Collectors.toList());
     }
 

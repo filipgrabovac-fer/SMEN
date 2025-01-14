@@ -1,7 +1,6 @@
 package com.smen.Services;
 
-import com.smen.Dto.Workshop.WorkshopDto;
-import com.smen.Models.User;
+import com.smen.DTO.Workshop.WorkshopDto;
 import com.smen.Models.Workshop;
 import com.smen.Models.WorkshopSubject;
 import com.smen.Repositories.*;
@@ -38,11 +37,19 @@ public class WorkshopService extends BaseEntityService<Workshop, Long> {
 
     public List<WorkshopDto> getWorkshopsBySubjectId(Long subjectId) {
         List<WorkshopSubject> workshopSubjects = workshopSubjectRepository.findBySubjectId(subjectId);
-        return workshopSubjects.stream()
-                .map(WorkshopSubject::getWorkshop)
-                .distinct()
+
+
+        List<Workshop> workshops = workshopSubjects.stream()
+                .map(WorkshopSubject -> workshopRepository.findById(WorkshopSubject.getWorkshopId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+
+
+        return workshops.stream()
                 .map(WorkshopDto::map)
                 .collect(Collectors.toList());
+
     }
 
     public List<WorkshopDto> getAvailableWorkshops() {
@@ -60,7 +67,7 @@ public class WorkshopService extends BaseEntityService<Workshop, Long> {
     }
 
     public List<WorkshopDto> getWorkshopsByUserId(Long userId) {
-        return workshopRepository.findByUserId(userId)
+        return workshopRepository.findByOwnerId(userId)
                 .stream()
                 .map(WorkshopDto::map)
                 .collect(Collectors.toList());
@@ -89,8 +96,8 @@ public class WorkshopService extends BaseEntityService<Workshop, Long> {
             existingWorkshop.setDescription(updatedWorkshop.getDescription());
             existingWorkshop.setDuration(updatedWorkshop.getDuration());
             existingWorkshop.setNoOfAvailableSlots(updatedWorkshop.getNoOfAvailableSlots());
-            existingWorkshop.setWorkshopStatus(updatedWorkshop.getWorkshopStatus());
-            existingWorkshop.setUser(updatedWorkshop.getUser());
+            existingWorkshop.setWorkshopStatusId(updatedWorkshop.getWorkshopStatusId());
+            existingWorkshop.setOwnerId(updatedWorkshop.getOwnerId());
 
             return workshopRepository.save(existingWorkshop);
 

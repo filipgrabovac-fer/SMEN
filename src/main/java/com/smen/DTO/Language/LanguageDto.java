@@ -1,4 +1,4 @@
-package com.smen.Dto.Language;
+package com.smen.DTO.Language;
 
 import com.smen.Models.Language;
 import lombok.AllArgsConstructor;

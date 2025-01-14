@@ -1,4 +1,4 @@
-package com.smen.Dto.SubjectSuggestion;
+package com.smen.DTO.SubjectSuggestion;
 
 import com.smen.Models.SubjectSuggestion;
 import com.smen.Models.User;

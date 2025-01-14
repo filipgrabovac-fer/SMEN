@@ -1,4 +1,4 @@
-package com.smen.Dto.Rating;
+package com.smen.DTO.Rating;
 
 import com.smen.Models.Rating;
 import com.smen.Models.User;

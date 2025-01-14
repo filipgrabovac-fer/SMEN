@@ -1,6 +1,6 @@
 package com.smen.Services;
 
-import com.smen.Dto.Language.LanguageDto;
+import com.smen.DTO.Language.LanguageDto;
 import com.smen.Models.Language;
 import com.smen.Repositories.ILanguageRepository;
 import org.springframework.stereotype.Service;

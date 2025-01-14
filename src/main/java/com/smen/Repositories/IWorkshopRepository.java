@@ -9,7 +9,7 @@ import java.util.List;
 public interface IWorkshopRepository extends JpaRepository<Workshop, Long> {
     List<Workshop> findByTitleContainingIgnoreCase(String title);
 
-    List<Workshop> findByUserId(Long userId);
+    List<Workshop> findByOwnerId(Long userId);
 
     List<Workshop> findByWorkshopStatusId(Long workshopStatusId);
 

@@ -1,4 +1,4 @@
-package com.smen.Dto.User;
+package com.smen.DTO.User;
 
 import com.smen.Models.Language;
 import com.smen.Models.Role;

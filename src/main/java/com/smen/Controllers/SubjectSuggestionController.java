@@ -1,6 +1,6 @@
 package com.smen.Controllers;
 
-import com.smen.Dto.SubjectSuggestion.SubjectSuggestionDto;
+import com.smen.DTO.SubjectSuggestion.SubjectSuggestionDto;
 import com.smen.Models.User;
 import com.smen.Services.SubjectSuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;

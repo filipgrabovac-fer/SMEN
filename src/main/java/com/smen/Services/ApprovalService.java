@@ -1,6 +1,6 @@
 package com.smen.Services;
 
-import com.smen.Dto.Approval.ApprovalDto;
+import com.smen.DTO.Approval.ApprovalDto;
 import com.smen.Models.Approval;
 import com.smen.Models.User;
 import com.smen.Models.Workshop;

@@ -1,6 +1,5 @@
 package com.smen.Controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smen.DTO.KeycloakLoginDTO;
 import com.smen.DTO.KeycloakTokenDTO;
@@ -25,11 +24,10 @@ import java.util.Map;
 @NoArgsConstructor
 @RequestMapping("/api/keycloak")
 @CrossOrigin("*")
+@SessionAttributes("token")
 public class KeycloakController {
 
 //    @PreAuthorize("hasRole('client_user')")
-
-
     @Value("${app.api.keycloak_url}")
     private String KEYCLOAK_URL;
 
@@ -87,7 +85,7 @@ public class KeycloakController {
         registrationMap.put("firstName", "Filip");
         registrationMap.put("lastName", "Grabovac");
         registrationMap.put("email", "fake@gmail.com");
-registrationMap.put("emailVerified", false);
+        registrationMap.put("emailVerified", false);
 
         registrationMap.put("credentials", new HashMap<String, Object>() {{
             put("type", "password");

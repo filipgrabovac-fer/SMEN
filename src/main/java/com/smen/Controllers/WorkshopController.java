@@ -1,15 +1,17 @@
 package com.smen.Controllers;
 
-import com.smen.Dto.Workshop.WorkshopDto;
+import com.smen.DTO.Workshop.WorkshopCreateDTO;
+import com.smen.DTO.Workshop.WorkshopDto;
 import com.smen.Models.User;
 import com.smen.Models.Workshop;
 import com.smen.Models.WorkshopStatus;
+import com.smen.Models.WorkshopSubject;
 import com.smen.Services.WorkshopService;
+import com.smen.Services.WorkshopSubjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +25,8 @@ public class WorkshopController {
 
     @Autowired
     private final WorkshopService workshopService;
+    @Autowired
+    private WorkshopSubjectService workshopSubjectService;
 
     @GetMapping
     public ResponseEntity<List<WorkshopDto>> getAllWorkshops() {
@@ -32,7 +36,6 @@ public class WorkshopController {
     @GetMapping("/{id}")
     public ResponseEntity<WorkshopDto> getWorkshopById(@PathVariable Long id) {
         Optional<WorkshopDto> workshopDto = workshopService.getByIdAsDto(id);
-
         return workshopDto.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -63,21 +66,23 @@ public class WorkshopController {
     }
 
     @PostMapping
-    public ResponseEntity<WorkshopDto> createWorkshop(
-            @RequestBody WorkshopDto workshopDto,
-            @RequestParam Optional<User> owner,
-            @RequestParam Optional<WorkshopStatus> workshopStatus) {
-        Workshop workshop = workshopDto.toEntity(owner.orElseGet(() -> null),
-                workshopStatus.orElseGet(() -> null));
+    public ResponseEntity<Boolean> createWorkshop(
+            @RequestBody WorkshopCreateDTO workshopDto ){
+        Workshop workshop = workshopDto.toEntity();
         WorkshopDto createdWorkshopDto = workshopService.saveWorkshopDto(workshop);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdWorkshopDto);
+        WorkshopSubject workshopSubject = new WorkshopSubject();
+
+        workshopSubject.setWorkshopId(createdWorkshopDto.getId());
+        workshopSubject.setSubjectId(workshopDto.getSubjectId());
+        workshopSubjectService.saveWorkshopSubject(workshopSubject);
+
+        return ResponseEntity.ok(true);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<WorkshopDto> updateWorkshop(
             @PathVariable Long id,
             @RequestBody WorkshopDto workshopDto,
-            @RequestParam Optional<User> owner,
             @RequestParam Optional<WorkshopStatus> workshopStatus) {
         Optional<WorkshopDto> existingWorkshop = workshopService.getByIdAsDto(id);
 
@@ -85,8 +90,7 @@ public class WorkshopController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        Workshop workshop = workshopDto.toEntity(owner.orElseGet(() -> null),
-                workshopStatus.orElseGet(() -> null));
+        Workshop workshop = workshopDto.toEntity();
         workshop.setId(id);
         WorkshopDto updatedWorkshopDto = workshopService.saveWorkshopDto(workshop);
         return ResponseEntity.ok(updatedWorkshopDto);

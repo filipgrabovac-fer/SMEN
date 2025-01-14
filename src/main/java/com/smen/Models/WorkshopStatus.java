@@ -19,6 +19,4 @@ public class WorkshopStatus extends BaseEntity<BaseEntity, Number> {
 
     private String description;
 
-    @OneToMany(mappedBy = "workshopStatus", cascade = CascadeType.ALL)
-    private List<Workshop> workshops;
 }

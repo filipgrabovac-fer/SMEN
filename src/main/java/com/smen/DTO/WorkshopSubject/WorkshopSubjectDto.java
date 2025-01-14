@@ -1,4 +1,4 @@
-package com.smen.Dto.WorkshopSubject;
+package com.smen.DTO.WorkshopSubject;
 
 import com.smen.Models.Subject;
 import com.smen.Models.Workshop;
@@ -20,16 +20,16 @@ public class WorkshopSubjectDto {
     public static WorkshopSubjectDto map(WorkshopSubject workshopSubject) {
         WorkshopSubjectDto dto = new WorkshopSubjectDto();
         dto.setId(workshopSubject.getId());
-        dto.setWorkshopId(workshopSubject.getWorkshop() != null ? workshopSubject.getWorkshop().getId() : null);
-        dto.setSubjectId(workshopSubject.getSubject() != null ? workshopSubject.getSubject().getId() : null);
+        dto.setWorkshopId(workshopSubject.getWorkshopId());
+        dto.setSubjectId(workshopSubject.getSubjectId());
         return dto;
     }
 
     public WorkshopSubject toEntity(Workshop workshop, Subject subject) {
         WorkshopSubject workshopSubject = new WorkshopSubject();
         workshopSubject.setId(this.id);
-        workshopSubject.setWorkshop(workshop);
-        workshopSubject.setSubject(subject);
+        workshopSubject.setWorkshopId(workshop.getId());
+        workshopSubject.setSubjectId(subject.getId());
         return workshopSubject;
     }
 }

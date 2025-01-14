@@ -22,6 +22,4 @@ public class Subject extends BaseEntity<BaseEntity, Number> {
 
     private String description;
 
-    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
-    private List<WorkshopSubject> workshopSubjects;
 }

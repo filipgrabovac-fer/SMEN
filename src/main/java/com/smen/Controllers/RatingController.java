@@ -1,6 +1,6 @@
 package com.smen.Controllers;
 
-import com.smen.Dto.Rating.RatingDto;
+import com.smen.DTO.Rating.RatingDto;
 import com.smen.Models.Rating;
 import com.smen.Services.RatingService;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

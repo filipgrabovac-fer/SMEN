@@ -1,6 +1,6 @@
 package com.smen.Controllers;
 
-import com.smen.Dto.User.UserDto;
+import com.smen.DTO.User.UserDto;
 import com.smen.Models.User;
 import com.smen.Services.UserService;
 import lombok.AllArgsConstructor;

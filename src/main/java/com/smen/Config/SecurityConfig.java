@@ -17,6 +17,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig implements WebMvcConfigurer {
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/{path:[^\\.]*}")
+                .setViewName("forward:/index.html");
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthConverter jwtAuthConverter) throws Exception {
         http.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
@@ -33,9 +39,4 @@ public class SecurityConfig implements WebMvcConfigurer {
         return http.build();
     }
 
-     @Override
-     public void addViewControllers(ViewControllerRegistry registry) {
-         registry.addViewController("/{path:[^\\.]*}")
-                 .setViewName("forward:/index.html");
-     }
 }

@@ -1,4 +1,4 @@
-package com.smen.Dto.Approval;
+package com.smen.DTO.Approval;
 
 import com.smen.Models.Approval;
 import com.smen.Models.User;

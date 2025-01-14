@@ -14,11 +14,11 @@ public class WorkshopSubject extends BaseEntity<BaseEntity, Number> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "workshop_id")
-    private Workshop workshop;
+    @NonNull
+    private Long workshopId;
 
-    @ManyToOne
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
+    @NonNull
+    private Long subjectId;
+
+
 }

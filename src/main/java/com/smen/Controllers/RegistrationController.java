@@ -1,18 +1,15 @@
 package com.smen.Controllers;
 
-import com.smen.Dto.Registration.RegistrationDto;
+import com.smen.DTO.Registration.RegistrationDto;
 import com.smen.Models.Registration;
 import com.smen.Services.RegistrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @AllArgsConstructor

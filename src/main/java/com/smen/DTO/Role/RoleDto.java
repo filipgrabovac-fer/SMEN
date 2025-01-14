@@ -1,4 +1,4 @@
-package com.smen.Dto.Role;
+package com.smen.DTO.Role;
 
 import com.smen.Models.Role;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package com.smen.Services;
 
-import com.smen.Dto.WorkshopSubject.WorkshopSubjectDto;
+import com.smen.DTO.WorkshopSubject.WorkshopSubjectDto;
 import com.smen.Models.WorkshopSubject;
 import com.smen.Repositories.IWorkshopSubjectRepository;
 import org.springframework.stereotype.Service;

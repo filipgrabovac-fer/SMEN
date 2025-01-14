@@ -19,6 +19,4 @@ public class MentorRequestStatus extends BaseEntity<BaseEntity, Number> {
 
     private String description;
 
-    @OneToMany(mappedBy = "mentorRequestStatus", cascade = CascadeType.ALL)
-    private List<MentorRequest> mentorRequests;
 }

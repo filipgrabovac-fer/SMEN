@@ -1,6 +1,6 @@
 package com.smen.Services;
 
-import com.smen.Dto.Rating.RatingDto;
+import com.smen.DTO.Rating.RatingDto;
 import com.smen.Models.Rating;
 import com.smen.Models.User;
 import com.smen.Models.Workshop;
@@ -45,7 +45,7 @@ public class RatingService extends BaseEntityService<Rating, Long> {
 
     //avg rating svih radionica tog usera
     public Double getAvgUserWorkshopsRating(Long userId) {
-        List<Workshop> workshops = workshopRepository.findByUserId(userId);
+        List<Workshop> workshops = workshopRepository.findByOwnerId(userId);
 
         List<Rating> ratings = new ArrayList<>();
 

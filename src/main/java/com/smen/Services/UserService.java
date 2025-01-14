@@ -1,6 +1,6 @@
 package com.smen.Services;
 
-import com.smen.Dto.User.UserDto;
+import com.smen.DTO.User.UserDto;
 import com.smen.Models.Language;
 import com.smen.Models.Role;
 import com.smen.Models.User;

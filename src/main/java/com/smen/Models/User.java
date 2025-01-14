@@ -28,19 +28,7 @@ public class User extends BaseEntity<BaseEntity, Number> {
     private List<ActivityLog> activityLogs;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Registration> registrations;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Rating> ratings;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Workshop> workshops;
-
-    @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
-    private List<MentorRequest> mentorRequests;
-
-    @OneToMany(mappedBy = "reviewer", cascade = CascadeType.ALL)
-    private List<MentorRequest> mentorReviews;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Approval> approvals;

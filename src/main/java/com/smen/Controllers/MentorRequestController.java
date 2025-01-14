@@ -1,6 +1,6 @@
 package com.smen.Controllers;
 
-import com.smen.Dto.MentorRequestDto;
+import com.smen.DTO.MentorRequestDto;
 import com.smen.Services.MentorRequestService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

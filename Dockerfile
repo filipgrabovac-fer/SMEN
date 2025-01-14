@@ -18,5 +18,5 @@ RUN gradle build
 FROM openjdk:17-jdk AS smen
 WORKDIR /app
 COPY --from=smen-be /app/build/libs/*.jar ./app.jar
-EXPOSE 8080
+EXPOSE 8082
 CMD ["java", "-jar", "./app.jar"]

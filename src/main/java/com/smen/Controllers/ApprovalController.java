@@ -1,6 +1,6 @@
 package com.smen.Controllers;
 
-import com.smen.Dto.Approval.ApprovalDto;
+import com.smen.DTO.Approval.ApprovalDto;
 import com.smen.Services.ApprovalService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

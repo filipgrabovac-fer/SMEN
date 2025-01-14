@@ -1,4 +1,4 @@
-package com.smen.Dto.ActivityLog;
+package com.smen.DTO.ActivityLog;
 
 import com.smen.Models.ActivityLog;
 import com.smen.Models.User;

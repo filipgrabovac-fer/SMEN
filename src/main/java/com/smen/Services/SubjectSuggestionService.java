@@ -1,6 +1,6 @@
 package com.smen.Services;
 
-import com.smen.Dto.SubjectSuggestion.SubjectSuggestionDto;
+import com.smen.DTO.SubjectSuggestion.SubjectSuggestionDto;
 import com.smen.Models.SubjectSuggestion;
 import com.smen.Models.User;
 import com.smen.Repositories.ISubjectSuggestionRepository;

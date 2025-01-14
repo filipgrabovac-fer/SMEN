@@ -1,4 +1,5 @@
 package com.smen.Models;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,17 +16,15 @@ public class MentorRequest extends BaseEntity<BaseEntity, Number> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
     private String comment;
 
-    @ManyToOne
-    @JoinColumn(name = "requester_id", nullable = false)
-    private User requester;
+    @NonNull
+    private Long requesterId;
 
-    @ManyToOne
-    @JoinColumn(name = "reviewer_id", nullable = false)
-    private User reviewer;
+    @Nullable
+    private Long reviewerId;
 
-    @ManyToOne
-    @JoinColumn(name = "mentor_request_status_id", nullable = false)
-    private MentorRequestStatus mentorRequestStatus;
+    @NonNull
+    private Long mentorRequestStatusId;
 }

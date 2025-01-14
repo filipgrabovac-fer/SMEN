@@ -1,6 +1,6 @@
 package com.smen.Services;
 
-import com.smen.Dto.ActivityLog.ActivityLogDto;
+import com.smen.DTO.ActivityLog.ActivityLogDto;
 import com.smen.Models.ActivityLog;
 import com.smen.Models.User;
 import com.smen.Models.Workshop;

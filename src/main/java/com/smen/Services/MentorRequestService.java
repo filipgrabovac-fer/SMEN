@@ -1,6 +1,6 @@
 package com.smen.Services;
 
-import com.smen.Dto.MentorRequestDto;
+import com.smen.DTO.MentorRequestDto;
 import com.smen.Models.MentorRequest;
 import com.smen.Models.MentorRequestStatus;
 import com.smen.Models.Role;
@@ -75,12 +75,16 @@ public class MentorRequestService extends BaseEntityService<MentorRequest, Long>
         if (mentorRole == null)
             return null;
 
-        mentorRequest.getMentorRequestStatus().setName("approved");
+        mentorRequest.setMentorRequestStatusId(2L);
         MentorRequest updatedRequest = mentorRequestRepository.save(mentorRequest);
 
-        User requester = updatedRequest.getRequester();
-        requester.setRole(mentorRole);
-        userRepository.save(requester);
+        Long requesterId = updatedRequest.getRequesterId();
+        User requester = userRepository.findById(requesterId).orElse(null);
+
+        if (requester != null) {
+            requester.setRole(mentorRole);
+            userRepository.save(requester);
+        }
 
         return MentorRequestDto.map(updatedRequest);
     }
@@ -94,24 +98,18 @@ public class MentorRequestService extends BaseEntityService<MentorRequest, Long>
 
         MentorRequest mentorRequest = mentorRequestOptional.get();
 
-        mentorRequest.getMentorRequestStatus().setName("rejected");
+        mentorRequest.setMentorRequestStatusId(3L);
         return MentorRequestDto.map(mentorRequestRepository.save(mentorRequest));
     }
 
     public MentorRequestDto createMentorRequest(MentorRequestDto requestDto) {
         Optional<User> requesterOptional = userRepository.findById(requestDto.getRequesterId());
-        Optional<User> reviewerOptional = userRepository.findById(requestDto.getReviewerId());
-        Optional<MentorRequestStatus> statusOptional = mentorRequestStatusRepository.findById(requestDto.getMentorRequestStatusId());
 
-        if (!requesterOptional.isPresent() || !reviewerOptional.isPresent() || !statusOptional.isPresent()) {
+        if (requesterOptional.isEmpty()) {
             return null;
         }
 
-        MentorRequest mentorRequest = requestDto.toEntity(
-                requesterOptional.get(),
-                reviewerOptional.get(),
-                statusOptional.get()
-        );
+        MentorRequest mentorRequest = requestDto.toEntity(requestDto.getRequesterId(), null);
 
         return MentorRequestDto.map(mentorRequestRepository.save(mentorRequest));
     }
