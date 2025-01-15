@@ -8,6 +8,7 @@ import { themeOverviewRoute } from "./theme-overview/theme-overview.routes";
 import { mentorsRoute } from "./mentors/mentors.routes";
 import { workshopsRoute } from "./workshops/workshops.route";
 import { oglasRoute } from "./oglas/oglas.routes";
+import { workshopsUserRoute } from "./workshops-user/workshops-user.route";
 
 const routeTree = rootRoute.addChildren([
   homeRoute,
@@ -18,6 +19,7 @@ const routeTree = rootRoute.addChildren([
   mentorsRoute,
   workshopsRoute,
   oglasRoute,
+  workshopsUserRoute,
 ]);
 
 export const router = createRouter({ routeTree });

@@ -20,6 +20,10 @@ const items: MenuProps["items"] = [
     key: "/mentors-overview",
     label: "Pregled prijava",
   },
+  {
+    key: "/workshop-user",
+    label: "My workshops",
+  },
 ];
 if (role === "User") {
   items.push({
