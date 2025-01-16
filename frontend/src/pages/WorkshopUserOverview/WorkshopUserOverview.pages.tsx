@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useGetWorkshopsForUser } from "./hooks/useGetWorkshopsForUser.hooks";
 import { WorkshopApplicationModal } from "../ThemeOverview/components/WorkshopApplicationModal.component";
+
 import { Table } from "antd";
+import { ReviewWorkshopModal } from "./components/WorkshopUserReview";
 
 const userId = 1;
 
@@ -21,11 +23,6 @@ const columns = [
     dataIndex: "broj_mjesta",
     key: "broj_mjesta",
   },
-  //   {
-  //     title: "opis",
-  //     dataIndex: "opis",
-  //     key: "opis",
-  //   },
   {
     title: "status",
     dataIndex: "status",
@@ -36,20 +33,46 @@ const columns = [
     dataIndex: "find_out_more",
     key: "find_out_more",
   },
+  {
+    title: "",
+    dataIndex: "review",
+    key: "review",
+  },
 ];
 
 export const WorkshopUserOverview = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isreviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [selectedWorkshopId, setSelectedWorkshopId] = useState<
     number | undefined
   >();
-  const { data } = useGetWorkshopsForUser({ userId: userId });
+
+  const data = [
+    {
+      id: 1,
+      title: "Introduction to Web Development",
+      noOfAvailableSlots: 15,
+      workshopStatusId: "Active",
+    },
+    {
+      id: 2,
+      title: "Advanced JavaScript",
+      noOfAvailableSlots: 10,
+      workshopStatusId: "Inactive",
+    },
+    {
+      id: 3,
+      title: "Python for Beginners",
+      noOfAvailableSlots: 20,
+      workshopStatusId: "objavljen",
+    },
+  ];
+  //const { data } = useGetWorkshopsForUser({ userId: userId });
   const dataSource = data?.map((workshop) => ({
     key: workshop.id,
     naziv: workshop.title,
     datum_odrzavanja: "2021-09-09",
     broj_mjesta: workshop.noOfAvailableSlots,
-    // opis: workshop.description,
     status: workshop.workshopStatusId,
     find_out_more: (
       <p
@@ -62,7 +85,20 @@ export const WorkshopUserOverview = () => {
         Saznaj više
       </p>
     ),
+    review:
+      workshop.workshopStatusId === "objavljen" ? (
+        <p
+          className="underline text-blue-900 cursor-pointer"
+          onClick={() => {
+            setSelectedWorkshopId(workshop.id);
+            setIsReviewModalOpen(true);
+          }}
+        >
+          Ocijeni
+        </p>
+      ) : null,
   }));
+
   return (
     <div className="w-4/5 m-auto flex flex-col gap-y-6 mt-6">
       <div className="flex justify-between">
@@ -73,13 +109,20 @@ export const WorkshopUserOverview = () => {
         dataSource={dataSource}
         className="w-4/5 m-auto mt-[-20px]"
       />
-      {selectedWorkshopId && (
+      {selectedWorkshopId && isModalOpen && (
         <WorkshopApplicationModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           selectedWorkshopId={selectedWorkshopId}
           // @ts-expect-error random error, works without it
           setSelectedWorkshopId={setSelectedWorkshopId}
+        />
+      )}
+      {selectedWorkshopId && isreviewModalOpen && (
+        <ReviewWorkshopModal
+          isReviewWorkshopModalOpen={isreviewModalOpen}
+          setIsReviewWorkshopModalOpen={setIsReviewModalOpen}
+          selectedWorkshopId={selectedWorkshopId}
         />
       )}
     </div>
