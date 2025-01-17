@@ -6,6 +6,8 @@ export type GetThemeDataType = {
   id: number;
   tags: string;
   title: string;
+  author: string;
+  createdAt: string;
 };
 export const useGetThemes = () => {
   return useQuery<GetThemeDataType[]>({
@@ -15,6 +17,7 @@ export const useGetThemes = () => {
         endpointUrl: "subject",
         method: "GET",
       });
+
       return response;
     },
   });

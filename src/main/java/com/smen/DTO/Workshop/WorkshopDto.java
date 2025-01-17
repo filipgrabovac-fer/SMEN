@@ -5,6 +5,9 @@ import com.smen.Models.Workshop;
 import com.smen.Models.WorkshopStatus;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 @Getter
 @Setter
@@ -18,6 +21,7 @@ public class WorkshopDto {
     private Integer noOfAvailableSlots;
     private Long ownerId;
     private Long workshopStatusId;
+    private LocalDate dateOfEvent;
 
     public static WorkshopDto map(Workshop workshop) {
         WorkshopDto dto = new WorkshopDto();
@@ -28,6 +32,7 @@ public class WorkshopDto {
         dto.setNoOfAvailableSlots(workshop.getNoOfAvailableSlots());
         dto.setOwnerId(workshop.getOwnerId() != null ? workshop.getOwnerId() : null);
         dto.setWorkshopStatusId(workshop.getWorkshopStatusId() != null ? workshop.getWorkshopStatusId() : null);
+        dto.setDateOfEvent(workshop.getDateOfEvent());
         return dto;
     }
 

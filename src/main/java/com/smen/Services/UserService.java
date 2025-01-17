@@ -43,9 +43,9 @@ public class UserService extends BaseEntityService<User, Long> {
     }
 
     public UserDto createUser(UserDto userDto) {
-        Language language = languageRepository.findById(userDto.getLanguage().getId())
+        Language language = languageRepository.findById(userDto.getLanguageId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid language ID."));
-        Role role = roleRepository.findById(userDto.getRole().getId())
+        Role role = roleRepository.findById(userDto.getRoleId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid role ID."));
         User user = userDto.toEntity(language, role);
         User savedUser = userRepository.save(user);
@@ -57,18 +57,17 @@ public class UserService extends BaseEntityService<User, Long> {
         if (oldUser.isEmpty())
             return null;
 
-        Language language = languageRepository.findById(userDto.getLanguage().getId())
+        Language language = languageRepository.findById(userDto.getLanguageId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid language ID."));
-        Role role = roleRepository.findById(userDto.getRole().getId())
+        Role role = roleRepository.findById(userDto.getRoleId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid role ID."));
 
         User updatedUser = oldUser.get();
         updatedUser.setFirstName(userDto.getFirstName());
         updatedUser.setLastName(userDto.getLastName());
         updatedUser.setEmail(userDto.getEmail());
-        updatedUser.setTeam(userDto.getTeam());
-        updatedUser.setLanguage(language);
-        updatedUser.setRole(role);
+        updatedUser.setLanguageId(language.getId());
+        updatedUser.setRoleId(role.getId());
 
         User savedUser = userRepository.save(updatedUser);
         return UserDto.map(savedUser);
@@ -92,7 +91,4 @@ public class UserService extends BaseEntityService<User, Long> {
         return userRepository.findByEmail(email);
     }
 
-    public List<User> getUsersByTeam(String team) {
-        return userRepository.findByTeam(team);
-    }
 }

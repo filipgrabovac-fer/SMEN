@@ -42,17 +42,11 @@ public class ActivityLogService extends BaseEntityService<ActivityLog, Long> {
                 .collect(Collectors.toList());
     }
 
-    // Fetch all activity logs by workshop ID as DTOs
-    public List<ActivityLogDto> getActivityLogsByWorkshop(Long workshopId) {
-        return activityLogRepository.findByWorkshopId(workshopId)
-                .stream()
-                .map(ActivityLogDto::map)
-                .collect(Collectors.toList());
-    }
+
 
     // Save activity log
     public ActivityLogDto saveActivityLog(ActivityLogDto dto, User user, Workshop workshop) {
-        ActivityLog activityLog = dto.toEntity(user, workshop);
+        ActivityLog activityLog = dto.toEntity();
         ActivityLog savedActivityLog = activityLogRepository.save(activityLog);
         return ActivityLogDto.map(savedActivityLog);
     }

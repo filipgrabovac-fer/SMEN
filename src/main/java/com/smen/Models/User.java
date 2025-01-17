@@ -16,29 +16,18 @@ public class User extends BaseEntity<BaseEntity, Number> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
     private String firstName;
 
+    @NonNull
     private String lastName;
 
+    @NonNull
     private String email;
 
-    private String team;
+    @NonNull
+    private Long languageId;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<ActivityLog> activityLogs;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Rating> ratings;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Approval> approvals;
-
-    @ManyToOne
-    @JoinColumn(name = "language_id")
-    private Language language;
-
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    @JsonIgnore
-    private Role role;
+    @NonNull
+    private Long roleId;
 }

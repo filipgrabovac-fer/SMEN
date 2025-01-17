@@ -3,6 +3,11 @@ package com.smen.DTO.Workshop;
 import com.smen.Models.Workshop;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 @Data
 @Getter
 @Setter
@@ -13,6 +18,7 @@ public class WorkshopCreateDTO {
     private String description;
     private Long subjectId;
     private Long userId;
+    private String dateOfEvent;
 
     public Workshop toEntity() {
         Workshop workshop = new Workshop();
@@ -21,7 +27,8 @@ public class WorkshopCreateDTO {
         workshop.setDuration(10000);
         workshop.setNoOfAvailableSlots(10);
         workshop.setOwnerId(this.userId);
-        workshop.setWorkshopStatusId(1L);
+        workshop.setWorkshopStatusId(2L);
+        workshop.setDateOfEvent(LocalDate.parse(this.dateOfEvent));
         return workshop;
     }
 }

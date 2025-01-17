@@ -82,7 +82,7 @@ public class MentorRequestService extends BaseEntityService<MentorRequest, Long>
         User requester = userRepository.findById(requesterId).orElse(null);
 
         if (requester != null) {
-            requester.setRole(mentorRole);
+            requester.setRoleId(mentorRole.getId());
             userRepository.save(requester);
         }
 

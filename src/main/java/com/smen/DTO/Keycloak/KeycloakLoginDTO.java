@@ -1,4 +1,4 @@
-package com.smen.DTO;
+package com.smen.DTO.Keycloak;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

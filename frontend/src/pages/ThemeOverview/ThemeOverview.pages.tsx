@@ -56,10 +56,10 @@ export const ThemeOverview = () => {
   const dataSource = data?.map((workshop) => ({
     key: workshop.id,
     naziv: workshop.title,
-    datum_odrzavanja: "2021-09-09",
+    datum_odrzavanja: workshop.dateOfEvent,
     broj_mjesta: workshop.noOfAvailableSlots,
     opis: workshop.description,
-    status: workshop.workshopStatusId,
+    status: workshop.workshopStatus,
     find_out_more: (
       <p
         className="underline text-blue-900 cursor-pointer"
@@ -80,13 +80,14 @@ export const ThemeOverview = () => {
           <p className="text-2xl font-medium">{themeDetails?.title}</p>
           <p>{themeDetails?.description}</p>
         </div>
-        <Button
-          type="primary"
-          className="mt-auto ml-1.5"
-          onClick={() => setIsCreateWorkshopModalOpen(true)}
-        >
-          Dodaj radionicu <PlusIcon className="w-5 h-5" />
-        </Button>
+        <div className="mt-auto">
+          <Button
+            type="primary"
+            onClick={() => setIsCreateWorkshopModalOpen(true)}
+          >
+            Dodaj radionicu <PlusIcon className="w-5 h-5" />
+          </Button>
+        </div>
       </div>
       <Table
         columns={columns}

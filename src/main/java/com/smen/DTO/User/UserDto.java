@@ -17,9 +17,8 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String email;
-    private String team;
-    private Language language;
-    private Role role;
+    private Long languageId;
+    private Long roleId;
 
     public static UserDto map(User user) {
         UserDto dto = new UserDto();
@@ -27,9 +26,8 @@ public class UserDto {
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setEmail(user.getEmail());
-        dto.setTeam(user.getTeam());
-        dto.setLanguage(user.getLanguage());
-        dto.setRole(user.getRole());
+        dto.setLanguageId(user.getLanguageId());
+        dto.setRoleId(user.getRoleId());
 
         return dto;
     }
@@ -40,9 +38,8 @@ public class UserDto {
         user.setFirstName(this.firstName);
         user.setLastName(this.lastName);
         user.setEmail(this.email);
-        user.setTeam(this.team);
-        user.setLanguage(language);
-        user.setRole(role);
+        user.setLanguageId(language.getId());
+        user.setRoleId(role.getId());
 
         return user;
     }

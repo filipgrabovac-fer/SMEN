@@ -47,12 +47,6 @@ public class UserController {
 
     }
 
-    @GetMapping("/search/team/{team}")
-    public ResponseEntity<List<User>> getUsersByTeam(@RequestParam String team) {
-        return ResponseEntity.ok(userService.getUsersByTeam(team));
-
-    }
-
     @PostMapping("/new")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         UserDto createdUser = userService.createUser(userDto);

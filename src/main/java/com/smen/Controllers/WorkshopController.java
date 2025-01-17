@@ -2,6 +2,7 @@ package com.smen.Controllers;
 
 import com.smen.DTO.Workshop.WorkshopCreateDTO;
 import com.smen.DTO.Workshop.WorkshopDto2;
+import com.smen.DTO.Workshop.WorkshopDetailsDTO;
 import com.smen.DTO.Workshop.WorkshopDto;
 import com.smen.Models.User;
 import com.smen.Models.Workshop;
@@ -30,7 +31,7 @@ public class WorkshopController {
     private WorkshopSubjectService workshopSubjectService;
 
     @GetMapping
-    public ResponseEntity<List<WorkshopDto>> getAllWorkshops() {
+    public ResponseEntity<List<WorkshopDetailsDTO>> getAllWorkshops() {
         return ResponseEntity.ok(workshopService.getAllWorkshops());
     }
 
@@ -57,7 +58,7 @@ public class WorkshopController {
     }
 
     @GetMapping("/subject/{subjectId}")
-    public ResponseEntity<List<WorkshopDto>> getWorkshopsBySubject(@PathVariable Long subjectId) {
+    public ResponseEntity<List<WorkshopDetailsDTO>> getWorkshopsBySubject(@PathVariable Long subjectId) {
         return ResponseEntity.ok(workshopService.getWorkshopsBySubjectId(subjectId));
     }
 

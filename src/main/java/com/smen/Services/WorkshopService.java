@@ -1,5 +1,6 @@
 package com.smen.Services;
 
+import com.smen.DTO.Workshop.WorkshopDetailsDTO;
 import com.smen.DTO.Workshop.WorkshopDto;
 import com.smen.DTO.Workshop.WorkshopDto2;
 import com.smen.Models.Workshop;
@@ -18,29 +19,39 @@ public class WorkshopService extends BaseEntityService<Workshop, Long> {
     private final IWorkshopSubjectRepository workshopSubjectRepository;
     private final IRatingRepository ratingRepository;
     private final WorkshopStatusService workshopStatusService;
+    private final IWorkshopStatusRepository workshopStatusRepository;
 
-    public WorkshopService(IWorkshopRepository workshopRepository, IWorkshopSubjectRepository workshopSubjectRepository, IRatingRepository ratingRepository, IUserRepository userRepository, WorkshopStatusService workshopStatusService) {
+    public WorkshopService(IWorkshopStatusRepository workshopStatusRepository, IWorkshopRepository workshopRepository, IWorkshopSubjectRepository workshopSubjectRepository, IRatingRepository ratingRepository, IUserRepository userRepository, IRatingRepository ratingRepository1, WorkshopStatusService workshopStatusService) {
         super(workshopRepository);
         this.workshopRepository = workshopRepository;
-        this.ratingRepository = ratingRepository;
         this.workshopSubjectRepository = workshopSubjectRepository;
+        this.ratingRepository = ratingRepository1;
         this.workshopStatusService = workshopStatusService;
+        this.workshopStatusRepository = workshopStatusRepository;
     }
 
     public Optional<WorkshopDto> getByIdAsDto(Long id) {
         return workshopRepository.findById(id).map(WorkshopDto::map);
     }
 
-    public List<WorkshopDto> getAllWorkshops() {
+    public List<WorkshopDetailsDTO> getAllWorkshops() {
+
         return workshopRepository.findAll()
                 .stream()
-                .map(WorkshopDto::map)
+                .map(workshop -> {
+                    WorkshopDetailsDTO workshopDto = new WorkshopDetailsDTO();
+                    workshopDto.setId(workshop.getId());
+                    workshopDto.setWorkshopStatus(workshopStatusRepository.findById(workshop.getWorkshopStatusId()).get().getName());
+                    workshopDto.setDescription(workshop.getDescription());
+                    workshopDto.setTitle(workshop.getTitle());
+                    workshopDto.setNoOfAvailableSlots(workshop.getNoOfAvailableSlots());
+                    return workshopDto;
+                })
                 .collect(Collectors.toList());
     }
 
-    public List<WorkshopDto> getWorkshopsBySubjectId(Long subjectId) {
+    public List<WorkshopDetailsDTO> getWorkshopsBySubjectId(Long subjectId) {
         List<WorkshopSubject> workshopSubjects = workshopSubjectRepository.findBySubjectId(subjectId);
-
 
         List<Workshop> workshops = workshopSubjects.stream()
                 .map(WorkshopSubject -> workshopRepository.findById(WorkshopSubject.getWorkshopId()))
@@ -50,7 +61,16 @@ public class WorkshopService extends BaseEntityService<Workshop, Long> {
 
 
         return workshops.stream()
-                .map(WorkshopDto::map)
+                .map(workshop -> {
+                    WorkshopDetailsDTO workshopDto = new WorkshopDetailsDTO();
+                    workshopDto.setId(workshop.getId());
+                    workshopDto.setWorkshopStatus(workshopStatusRepository.findById(workshop.getWorkshopStatusId()).get().getName());
+                    workshopDto.setDescription(workshop.getDescription());
+                    workshopDto.setTitle(workshop.getTitle());
+                    workshopDto.setNoOfAvailableSlots(workshop.getNoOfAvailableSlots());
+                    workshopDto.setDateOfEvent(workshop.getDateOfEvent().toString());
+                    return workshopDto;
+                })
                 .collect(Collectors.toList());
 
     }

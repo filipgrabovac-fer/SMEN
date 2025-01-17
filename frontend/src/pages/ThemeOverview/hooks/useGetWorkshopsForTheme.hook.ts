@@ -12,7 +12,8 @@ export type GetWorkshopsForThemeDataType = {
   noOfAvailableSlots: number;
   ownerId: number;
   title: string;
-  workshopStatusId: number;
+  workshopStatus: string;
+  dateOfEvent: string;
 };
 export const useGetWorkshopsForTheme = ({
   subjectId,
@@ -25,6 +26,7 @@ export const useGetWorkshopsForTheme = ({
         method: "GET",
       });
 
+      console.log(response);
       return response;
     },
   });

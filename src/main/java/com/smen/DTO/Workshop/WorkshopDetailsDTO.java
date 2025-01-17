@@ -17,19 +17,8 @@ public class WorkshopDetailsDTO {
     private Integer duration;
     private Integer noOfAvailableSlots;
     private Long ownerId;
-    private Long workshopStatusId;
-
-    public static WorkshopDetailsDTO map(Workshop workshop) {
-        WorkshopDetailsDTO dto = new WorkshopDetailsDTO();
-        dto.setId(workshop.getId());
-        dto.setTitle(workshop.getTitle());
-        dto.setDescription(workshop.getDescription());
-        dto.setDuration(workshop.getDuration());
-        dto.setNoOfAvailableSlots(workshop.getNoOfAvailableSlots());
-        dto.setOwnerId(workshop.getOwnerId() != null ? workshop.getOwnerId() : null);
-        dto.setWorkshopStatusId(workshop.getWorkshopStatusId() != null ? workshop.getWorkshopStatusId() : null);
-        return dto;
-    }
+    private String workshopStatus;
+    private String dateOfEvent;
 
     public Workshop toEntity( WorkshopStatus workshopStatus) {
         Workshop workshop = new Workshop();

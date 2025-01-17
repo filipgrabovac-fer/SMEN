@@ -24,18 +24,16 @@ public class ActivityLogDto {
         dto.setId(activityLog.getId());
         dto.setActivity(activityLog.getActivity());
         dto.setDescription(activityLog.getDescription());
-        dto.setUserId(activityLog.getUser() != null ? activityLog.getUser().getId() : null);
-        dto.setWorkshopId(activityLog.getWorkshop() != null ? activityLog.getWorkshop().getId() : null);
+        dto.setUserId(activityLog.getUserId() != null ? activityLog.getUserId() : null);
         return dto;
     }
 
-    public ActivityLog toEntity(User user, Workshop workshop) {
+    public ActivityLog toEntity() {
         ActivityLog activityLog = new ActivityLog();
         activityLog.setId(this.id);
         activityLog.setActivity(this.activity);
         activityLog.setDescription(this.description);
-        activityLog.setUser(user);
-        activityLog.setWorkshop(workshop);
+        activityLog.setUserId(this.userId);
         return activityLog;
     }
 }

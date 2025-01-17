@@ -1,7 +1,9 @@
 package com.smen.Controllers;
 
 import com.smen.DTO.Subject.SubjectDto;
+import com.smen.DTO.Subject.SubjectEditDTO;
 import com.smen.DTO.Subject.SubjectGetDTO;
+import com.smen.Models.Subject;
 import com.smen.Services.SubjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,18 +56,22 @@ public class SubjectController {
 
     // Endpoint to update a subject
     @PutMapping("/{id}")
-    public ResponseEntity<SubjectDto> updateSubject(
+    public ResponseEntity<Boolean> updateSubject(
             @PathVariable Long id,
-            @RequestBody SubjectDto subjectDto
+            @RequestBody SubjectEditDTO subjectDto
     ) {
-        Optional<SubjectGetDTO> existingSubject = subjectService.getByIdAsDto(id);
+        Optional<Subject> optionalSubject = subjectService.getById(id);
 
-        if (existingSubject.isEmpty()) {
+        if (optionalSubject.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        SubjectDto updatedSubject = subjectService.saveSubjectDto(subjectDto);
-        return ResponseEntity.ok(updatedSubject);
+        Subject existingSubject = optionalSubject.get();
+        existingSubject.setTitle(subjectDto.getTitle());
+        existingSubject.setDescription(subjectDto.getDescription());
+        subjectService.saveSubject(existingSubject);
+
+        return ResponseEntity.ok(true);
     }
 
     // Endpoint to delete a subject

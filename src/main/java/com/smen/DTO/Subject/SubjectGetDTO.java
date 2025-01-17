@@ -1,6 +1,9 @@
 package com.smen.DTO.Subject;
 import com.smen.Models.Subject;
+import com.smen.Models.User;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Data
 @Getter
@@ -12,6 +15,9 @@ public class SubjectGetDTO {
     private String title;
     private String description;
     private String tags;
+    private String author;
+    private String createdAt;
+
 
     public static SubjectGetDTO map(Subject subject) {
         SubjectGetDTO dto = new SubjectGetDTO();
@@ -19,6 +25,7 @@ public class SubjectGetDTO {
         dto.setTitle(subject.getTitle());
         dto.setTags(subject.getTags());
         dto.setDescription(subject.getDescription());
+        dto.setCreatedAt(subject.getCreatedAt().toString());
         return dto;
     }
 

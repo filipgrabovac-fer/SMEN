@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import { usePostWorkshop } from "../hooks/usePostWorkshop.hook";
 import { themeOverviewRoute } from "../../../routes/theme-overview/theme-overview.routes";
 import { useQueryClient } from "@tanstack/react-query";
+import TextArea from "antd/es/input/TextArea";
 
 export type CreateWorkshopModalProps = {
   isCreateWorkshopModalOpen: boolean;
@@ -28,7 +29,7 @@ export const CreateWorkshopModal = ({
         workshopTitle: values.workshopTitle,
         workshopDescription: values.workshopDescription,
         subjectId: themeId,
-        workshopTags: values.workshopTags,
+        workshopDateOfEvent: values.dateOfWorkshopEvent,
       });
 
       form.resetFields();
@@ -57,14 +58,14 @@ export const CreateWorkshopModal = ({
           name="workshopDescription"
           rules={[{ required: true, message: "Please enter the description!" }]}
         >
-          <Input />
+          <TextArea />
         </Form.Item>
         <Form.Item
-          label="Oznake radionice"
-          name="workshopTags"
-          rules={[{ required: false }]}
+          label="Datum održavanja"
+          name="dateOfWorkshopEvent"
+          rules={[{ required: true, message: "Please select a date!" }]}
         >
-          <Input />
+          <Input type="date" />
         </Form.Item>
       </Form>
     </Modal>
