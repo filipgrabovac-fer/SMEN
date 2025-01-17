@@ -41,7 +41,7 @@ const OglasiTable = ({ data }: { data: Oglas[] }) => {
     },
   ];
 
-  return <Table<Oglas> columns={columns} dataSource={data} />;
+  return <Table columns={columns} dataSource={data} />;
 };
 
 export default OglasiTable;
