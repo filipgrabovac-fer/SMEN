@@ -1,6 +1,7 @@
 package com.smen.Services;
 
 import com.smen.DTO.Workshop.WorkshopDto;
+import com.smen.DTO.Workshop.WorkshopDto2;
 import com.smen.Models.Workshop;
 import com.smen.Models.WorkshopSubject;
 import com.smen.Repositories.*;
@@ -16,12 +17,14 @@ public class WorkshopService extends BaseEntityService<Workshop, Long> {
     private final IWorkshopRepository workshopRepository;
     private final IWorkshopSubjectRepository workshopSubjectRepository;
     private final IRatingRepository ratingRepository;
+    private final WorkshopStatusService workshopStatusService;
 
-    public WorkshopService(IWorkshopRepository workshopRepository, IWorkshopSubjectRepository workshopSubjectRepository, IRatingRepository ratingRepository, IUserRepository userRepository) {
+    public WorkshopService(IWorkshopRepository workshopRepository, IWorkshopSubjectRepository workshopSubjectRepository, IRatingRepository ratingRepository, IUserRepository userRepository, WorkshopStatusService workshopStatusService) {
         super(workshopRepository);
         this.workshopRepository = workshopRepository;
         this.ratingRepository = ratingRepository;
         this.workshopSubjectRepository = workshopSubjectRepository;
+        this.workshopStatusService = workshopStatusService;
     }
 
     public Optional<WorkshopDto> getByIdAsDto(Long id) {
@@ -70,6 +73,12 @@ public class WorkshopService extends BaseEntityService<Workshop, Long> {
         return workshopRepository.findByOwnerId(userId)
                 .stream()
                 .map(WorkshopDto::map)
+                .collect(Collectors.toList());
+    }
+    public List<WorkshopDto2> getWorkshopsByUserId2(Long userId) {
+        return workshopRepository.findByOwnerId(userId)
+                .stream()
+                .map(workshop -> WorkshopDto2.map(workshop, workshopStatusService))  // Pass workshopStatusService
                 .collect(Collectors.toList());
     }
 

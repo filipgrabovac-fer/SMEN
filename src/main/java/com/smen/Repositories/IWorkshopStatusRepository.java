@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface IWorkshopStatusRepository extends JpaRepository<WorkshopStatus, Long> {
     Optional<WorkshopStatus> findByName(String name);
+    Optional<WorkshopStatus> getWorkshopStatusById(Long id);
 }

@@ -10,7 +10,7 @@ const userId = 1;
 const columns = [
   {
     title: "naziv",
-    dataIndex: "naziv",
+    dataIndex: "Naziv",
     key: "naziv",
   },
   {
@@ -47,33 +47,13 @@ export const WorkshopUserOverview = () => {
     number | undefined
   >();
 
-  const data = [
-    {
-      id: 1,
-      title: "Introduction to Web Development",
-      noOfAvailableSlots: 15,
-      workshopStatusId: "Active",
-    },
-    {
-      id: 2,
-      title: "Advanced JavaScript",
-      noOfAvailableSlots: 10,
-      workshopStatusId: "Inactive",
-    },
-    {
-      id: 3,
-      title: "Python for Beginners",
-      noOfAvailableSlots: 20,
-      workshopStatusId: "objavljen",
-    },
-  ];
-  //const { data } = useGetWorkshopsForUser({ userId: userId });
+  const { data } = useGetWorkshopsForUser({ userId: userId });
   const dataSource = data?.map((workshop) => ({
     key: workshop.id,
     naziv: workshop.title,
     datum_odrzavanja: "2021-09-09",
     broj_mjesta: workshop.noOfAvailableSlots,
-    status: workshop.workshopStatusId,
+    status: workshop.workshopStatus,
     find_out_more: (
       <p
         className="underline text-blue-900 cursor-pointer"
@@ -86,7 +66,7 @@ export const WorkshopUserOverview = () => {
       </p>
     ),
     review:
-      workshop.workshopStatusId === "objavljen" ? (
+      workshop.workshopStatus === "Completed" ? (
         <p
           className="underline text-blue-900 cursor-pointer"
           onClick={() => {

@@ -1,6 +1,7 @@
 package com.smen.Controllers;
 
 import com.smen.DTO.Workshop.WorkshopCreateDTO;
+import com.smen.DTO.Workshop.WorkshopDto2;
 import com.smen.DTO.Workshop.WorkshopDto;
 import com.smen.Models.User;
 import com.smen.Models.Workshop;
@@ -46,8 +47,8 @@ public class WorkshopController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<WorkshopDto>> getWorkshopsByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(workshopService.getWorkshopsByUserId(userId));
+    public ResponseEntity<List<WorkshopDto2>> getWorkshopsByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(workshopService.getWorkshopsByUserId2(userId));
     }
 
     @GetMapping("/status/{statusId}")
