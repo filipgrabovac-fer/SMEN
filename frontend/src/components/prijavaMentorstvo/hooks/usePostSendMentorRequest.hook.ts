@@ -25,11 +25,12 @@ export const usePostSendMentorRequest = ({
       requesterId,
     }: PostSendMentorRequestMutationProps) => {
       const response = await customFetch({
+        
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ comment, requesterId }),
+        body: JSON.stringify({ comment : comment, requesterId : requesterId }),
         endpointUrl: `mentor-request`,
       });
       return response;

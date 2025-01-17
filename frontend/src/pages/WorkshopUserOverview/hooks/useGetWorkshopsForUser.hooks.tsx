@@ -12,7 +12,7 @@ export type GetWorkshopsForUserDataType = {
   noOfAvailableSlots: number;
   ownerId: number;
   title: string;
-  workshopStatus: string;
+  workshopStatusName: string;
 };
 export const useGetWorkshopsForUser = ({
   userId,

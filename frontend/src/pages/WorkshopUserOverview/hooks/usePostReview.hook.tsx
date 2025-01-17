@@ -33,7 +33,7 @@ export const usePostReview = ({ onSuccess }: PostReviewProps) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          title: rating,
+          rating: rating,
           comment: comment,
           userId: userId,
           workshopId: workshopId,

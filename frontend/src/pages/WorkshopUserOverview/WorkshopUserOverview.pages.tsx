@@ -9,9 +9,9 @@ const userId = 1;
 
 const columns = [
   {
-    title: "naziv",
-    dataIndex: "Naziv",
-    key: "naziv",
+    title: "title",
+    dataIndex: "title",
+    key: "title",
   },
   {
     title: "datum održavanja",
@@ -50,10 +50,10 @@ export const WorkshopUserOverview = () => {
   const { data } = useGetWorkshopsForUser({ userId: userId });
   const dataSource = data?.map((workshop) => ({
     key: workshop.id,
-    naziv: workshop.title,
+    title: workshop.title,
     datum_odrzavanja: "2021-09-09",
     broj_mjesta: workshop.noOfAvailableSlots,
-    status: workshop.workshopStatus,
+    status: workshop.workshopStatusName,
     find_out_more: (
       <p
         className="underline text-blue-900 cursor-pointer"
@@ -66,7 +66,7 @@ export const WorkshopUserOverview = () => {
       </p>
     ),
     review:
-      workshop.workshopStatus === "Completed" ? (
+      workshop.workshopStatusName === "Completed" ? (
         <p
           className="underline text-blue-900 cursor-pointer"
           onClick={() => {
