@@ -31,6 +31,18 @@ if (role === "User") {
     label: "Prijava za mentorstvo",
   });
 }
+items.push({
+  key: "/login",
+  label: (
+    <p className="text-red-600" onClick={() => handleLogout()}>
+      Odjava
+    </p>
+  ),
+});
+
+const handleLogout = () => {
+  localStorage.clear();
+};
 
 const HeaderDropdownMenu = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { usePostLogin } from "./hooks/usePostLogin.hook";
 import { useNavigate } from "@tanstack/react-router";
 import { homeRoute } from "../../routes/home/home.routes";
-import { Button, Input } from "antd";
+import { Button, Form, Input, Select } from "antd";
 import { loginRoute } from "../../routes/auth/login.routes";
+import { usePostRegister } from "./hooks/usePostRegister.hook";
 
 export type HandleSubmitProps = {
   username: string;
@@ -11,21 +11,22 @@ export type HandleSubmitProps = {
   email: string;
   firstName: string;
   lastName: string;
+  roleId: number;
 };
 
 export const Register = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState<string>();
+  const [email, setEmail] = useState<string>();
+  const [firstName, setFirstName] = useState<string>();
+  const [lastName, setLastName] = useState<string>();
+  const [password, setPassword] = useState<string>();
 
-  console.log(email, firstName, lastName, password, username);
-  const { mutate: postLogin } = usePostLogin({
+  const { mutate: postRegister } = usePostRegister({
     onSuccess: () => {
       navigate({ to: homeRoute.fullPath });
     },
   });
+  const [form] = Form.useForm();
 
   const navigate = useNavigate();
 
@@ -34,42 +35,85 @@ export const Register = () => {
       <div className="flex flex-col items-center gap-y-4">
         <p className="text-2xl "> Registracija</p>
         <div className="bg-gray-100 w-max p-4 m-auto rounded-md">
-          <div className="flex flex-col w-[300px] m-auto gap-y-2">
-            <Input
-              hidden
-              name="username"
-              placeholder="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <Input
-              name="ime"
-              placeholder="ime"
-              value={username}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-            <Input
-              name="prezime"
-              placeholder="prezime"
-              value={username}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-            <Input
-              name="email"
-              placeholder="email"
-              value={username}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <Input
-              placeholder="password"
-              typeof="password"
-              name="password"
-              value={password}
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
+          <div className="flex flex-col w-[300px] m-auto ">
+            <Form form={form}>
+              <Form.Item required name="username">
+                <Input
+                  name="username"
+                  placeholder="korisničko ime"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </Form.Item>
 
-            <Button onClick={() => postLogin({ username, password })}>
+              <Form.Item required name="firstName">
+                <Input
+                  name="firstName"
+                  placeholder="ime"
+                  minLength={3}
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </Form.Item>
+
+              <Form.Item required name="lastName">
+                <Input
+                  name="lastName"
+                  placeholder="prezime"
+                  minLength={8}
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </Form.Item>
+
+              <Form.Item required name="email">
+                <Input
+                  name="email"
+                  placeholder="email"
+                  minLength={8}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Form.Item>
+
+              <Form.Item required name="password">
+                <Input
+                  placeholder="lozinka"
+                  typeof="password"
+                  name="password"
+                  value={password}
+                  type="password"
+                  minLength={8}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Form.Item>
+              <Form.Item required name="roleId">
+                <Select
+                  placeholder="odaberi ulogu"
+                  defaultActiveFirstOption
+                  options={[
+                    { label: "Korisnik", value: "4" },
+                    { label: "Mentor", value: "3" },
+                    { label: "Vođa tima", value: "2" },
+                  ]}
+                />
+              </Form.Item>
+            </Form>
+            <Button
+              className="m-auto"
+              onClick={() => {
+                form.validateFields().then((values) =>
+                  postRegister({
+                    email: values.email,
+                    firstName: values.firstName,
+                    lastName: values.lastName,
+                    password: values.password,
+                    username: values.username,
+                    roleId: values.roleId,
+                  })
+                );
+              }}
+            >
               Registracija
             </Button>
           </div>

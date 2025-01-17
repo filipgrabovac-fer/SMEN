@@ -22,4 +22,5 @@ public class Subject extends BaseEntity<BaseEntity, Number> {
 
     private String description;
 
+    private Long authorId;
 }

@@ -1,7 +1,5 @@
 import PrijavaModal from "./components/PrijavaModal";
 
-const userId = 1; //potrebno popravit
-
 const PrijavaZaMentorstvoLayout = ({
   open,
   onClose,
@@ -9,6 +7,9 @@ const PrijavaZaMentorstvoLayout = ({
   open: boolean;
   onClose: () => void;
 }) => {
+  // // @ts-expect-error: userId is always defined at this point
+  // const { userId } = jwtDecode(localStorage.getItem("token") ?? "");
+  const userId = 1;
   return <PrijavaModal requesterId={userId} open={open} onClose={onClose} />;
 };
 

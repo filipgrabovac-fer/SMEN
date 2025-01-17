@@ -2,7 +2,9 @@ package com.smen.Models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,4 +28,7 @@ public class Workshop extends BaseEntity<BaseEntity, Number> {
     private Long ownerId;
 
     private Long workshopStatusId;
+
+    @NonNull
+    private LocalDate dateOfEvent;
 }

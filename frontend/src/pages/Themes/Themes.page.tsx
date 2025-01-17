@@ -1,22 +1,24 @@
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { Button, Table } from "antd";
 import { useState } from "react";
 import { CreateThemeModal } from "./components/CreateThemeModal.component";
 import { useGetThemes } from "./hooks/useGetThemes.hook";
 import { useNavigate } from "@tanstack/react-router";
 import { themeOverviewRoute } from "../../routes/theme-overview/theme-overview.routes";
+import { EditThemeModal } from "./components/EditThemeModal.component";
 
 export const Themes = () => {
   const [isCreateThemeModalOpen, setIsCreateThemeModalOpen] = useState(false);
   const { data } = useGetThemes();
   const navigate = useNavigate();
 
+  const [selectedThemeId, setSelectedThemeId] = useState<number | undefined>();
   const dataSource = data?.map((theme) => ({
     key: theme.id,
     naziv: theme.title,
     opis: theme.description,
-    datum_objave: "22-23-2020",
-    autor: "Unknown",
+    datum_objave: theme.createdAt.slice(0, 10),
+    autor: theme.author,
     find_out_more: (
       <p
         className="underline text-blue-900 cursor-pointer"
@@ -29,6 +31,20 @@ export const Themes = () => {
       >
         Saznaj više
       </p>
+    ),
+    edit: (
+      <div className="flex gap-x-2">
+        <Button type="primary" onClick={() => setSelectedThemeId(theme.id)}>
+          <PencilIcon className="w-3 h-3" />
+        </Button>
+        <Button className="p-auto">
+          <TrashIcon className="w-4 h-4" color="red" />
+        </Button>
+        <EditThemeModal
+          selectedThemeId={selectedThemeId}
+          setSelectedThemeId={setSelectedThemeId}
+        />
+      </div>
     ),
   }));
 
@@ -57,6 +73,11 @@ export const Themes = () => {
       title: "",
       dataIndex: "find_out_more",
       key: "find_out_more",
+    },
+    {
+      title: "",
+      dataIndex: "edit",
+      key: "edit",
     },
   ];
 

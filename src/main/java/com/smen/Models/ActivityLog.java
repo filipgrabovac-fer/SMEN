@@ -19,11 +19,5 @@ public class ActivityLog extends BaseEntity<BaseEntity, Number> {
 
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "workshop_id")
-    private Workshop workshop;
+    private Long userId;
 }

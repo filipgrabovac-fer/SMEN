@@ -39,6 +39,7 @@ const OglasiTable = ({ data }: { data: Oglas[] }) => {
         />
       ),
     },
+    { title: "", dataIndex: "edit", key: "edit" },
   ];
 
   return <Table columns={columns} dataSource={data} />;

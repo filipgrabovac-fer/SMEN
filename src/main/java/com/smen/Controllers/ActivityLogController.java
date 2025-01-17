@@ -43,12 +43,6 @@ public class ActivityLogController {
         return ResponseEntity.ok(activityLogService.getActivityLogsByUser(id));
     }
 
-    // Get activity logs by workshop ID
-    @GetMapping("/workshop/{id}")
-    public ResponseEntity<List<ActivityLogDto>> getActivityLogsByWorkshop(@PathVariable Long id) {
-        return ResponseEntity.ok(activityLogService.getActivityLogsByWorkshop(id));
-    }
-
     // Create or update an activity log
     @PostMapping
     public ResponseEntity<ActivityLogDto> saveActivityLog(

@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { customFetch } from "../../../utils/customFetch";
-
 export type PostNewThemeMutationProps = {
   id: number;
   title: string;
@@ -19,6 +18,10 @@ export type PostNewThemeProps = {
 };
 
 export const usePostNewTheme = ({ onSuccess }: PostNewThemeProps) => {
+  // // @ts-expect-error: userId is always defined at this point
+  // const { userId } = jwtDecode(localStorage.getItem("token") ?? "");
+  const userId = 1;
+
   return useMutation({
     onSuccess: onSuccess,
     mutationFn: async ({
@@ -38,6 +41,7 @@ export const usePostNewTheme = ({ onSuccess }: PostNewThemeProps) => {
           id,
           tags,
           title,
+          authorId: userId,
         }),
       });
 
