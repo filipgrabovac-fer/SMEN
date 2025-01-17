@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, Flex } from "antd";
 import AddOglasModal from "./AddOglas";
+import { PlusIcon } from "@heroicons/react/24/solid";
 
 const OglasiHeader = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,24 +15,14 @@ const OglasiHeader = () => {
   };
 
   return (
-    <Flex
-      style={{
-        alignSelf: "flex-start",
-        fontSize: "24px",
-        fontWeight: "bold",
-        lineHeight: "100px",
-        justifyContent: "space-between",
-        alignItems: "center",
-        width: "100%",
-      }}
-    >
-      <div>Oglasi</div>
+    <div className="flex justify-between">
+      <h1 className="text-2xl font-medium">Oglasi</h1>
       <Button type="primary" onClick={handleAddClick}>
-        Dodaj oglas
+        Dodaj oglas <PlusIcon className="w-5 h-5" />
       </Button>
 
       <AddOglasModal visible={isModalOpen} onCancel={handleModalCancel} />
-    </Flex>
+    </div>
   );
 };
 

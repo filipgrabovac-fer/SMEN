@@ -84,11 +84,7 @@ export const WorkshopUserOverview = () => {
       <div className="flex justify-between">
         <h1 className="text-2xl font-medium">Moje radionice</h1>
       </div>
-      <Table
-        columns={columns}
-        dataSource={dataSource}
-        className="w-4/5 m-auto mt-[-20px]"
-      />
+      <Table columns={columns} dataSource={dataSource} />
       {selectedWorkshopId && isModalOpen && (
         <WorkshopApplicationModal
           isModalOpen={isModalOpen}

@@ -1,4 +1,3 @@
-import { Flex } from "antd";
 import OglasiHeader from "./components/OglasiHeader";
 import OglasiTable from "./components/OglasiTable";
 import { useGetPosts } from "./hooks/useGetPosts.hook";
@@ -17,19 +16,10 @@ const OglasOverview = () => {
     })) ?? [];
 
   return (
-    <Flex
-      className="w-full"
-      justify="center"
-      style={{
-        width: "80%",
-        height: "80%",
-        margin: "0 auto",
-      }}
-      vertical
-    >
+    <div className="w-4/5 m-auto flex flex-col gap-y-6 mt-6">
       <OglasiHeader />
       <OglasiTable data={data} />
-    </Flex>
+    </div>
   );
 };
 

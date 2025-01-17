@@ -82,7 +82,7 @@ export const ThemeOverview = () => {
         </div>
         <Button
           type="primary"
-          className="mt-auto"
+          className="mt-auto ml-1.5"
           onClick={() => setIsCreateWorkshopModalOpen(true)}
         >
           Dodaj radionicu <PlusIcon className="w-5 h-5" />
@@ -91,7 +91,7 @@ export const ThemeOverview = () => {
       <Table
         columns={columns}
         dataSource={dataSource}
-        className="w-4/5 m-auto mt-[-20px]"
+        className="w-4/5 m-auto mt-[30px]"
       />
       {selectedWorkshopId && (
         <WorkshopApplicationModal
