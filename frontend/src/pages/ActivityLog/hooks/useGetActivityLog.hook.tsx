@@ -14,7 +14,7 @@ export const useGetActivityLog = ({}: GetActivityLogMutationProps) => {
     queryKey: ["activity-log"],
     queryFn: async () => {
       const response = await customFetch({
-        endpointUrl: `activity`,
+        endpointUrl: `activity-log`,
         method: "GET",
       });
       return response;
