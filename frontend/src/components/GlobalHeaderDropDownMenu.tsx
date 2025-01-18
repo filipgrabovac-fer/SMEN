@@ -27,8 +27,15 @@ const items: MenuProps["items"] = [
 ];
 if (role === "User") {
   items.push({
-    key: "prijava",
+    key: "/prijava",
     label: "Prijava za mentorstvo",
+  });
+}
+if (role === "User") {
+  //promijenit u dobar role
+  items.push({
+    key: "/activity",
+    label: "Activity log",
   });
 }
 items.push({
