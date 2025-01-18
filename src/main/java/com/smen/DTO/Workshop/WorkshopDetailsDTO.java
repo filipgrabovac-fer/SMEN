@@ -20,6 +20,7 @@ public class WorkshopDetailsDTO {
     private String workshopStatus;
     private String dateOfEvent;
     private Long workshopStatusId;
+    private Boolean hasApplied;
 
     public Workshop toEntity( WorkshopStatus workshopStatus) {
         Workshop workshop = new Workshop();

@@ -8,6 +8,7 @@ export type GetWorkshopDetailsDataType = {
   noOfAvailableSlots: number;
   ownerId: number;
   title: string;
+  hasApplied: boolean;
 };
 
 export type GetWorkshopDetailsProps = {
@@ -17,11 +18,12 @@ export type GetWorkshopDetailsProps = {
 export const useGetWorkshopDetails = ({
   workshopId,
 }: GetWorkshopDetailsProps) => {
+  const userId = 1;
   return useQuery<GetWorkshopDetailsDataType>({
     queryKey: ["workshop-details"],
     queryFn: async () => {
       const response = await customFetch({
-        endpointUrl: `workshop/${workshopId}`,
+        endpointUrl: `workshop/${workshopId}/user/${userId}`,
         method: "GET",
       });
 

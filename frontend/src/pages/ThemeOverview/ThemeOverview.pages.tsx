@@ -50,6 +50,12 @@ export const ThemeOverview = () => {
   const [selectedWorkshopId, setSelectedWorkshopId] = useState<
     number | undefined
   >();
+  const [selectedWorkshopTitle, setSelectedWorkshopTitle] = useState<
+    string | undefined
+  >();
+  const [selectedWorkshopDescription, setSelectedWorkshopDescription] =
+    useState<string | undefined>();
+
   const [isCreateWorkshopModalOpen, setIsCreateWorkshopModalOpen] =
     useState(false);
 
@@ -90,6 +96,8 @@ export const ThemeOverview = () => {
           type="primary"
           onClick={() => {
             setSelectedWorkshopId(workshop.id);
+            setSelectedWorkshopTitle(workshop.title);
+            setSelectedWorkshopDescription(workshop.description);
             setIsEditThemeModalOpen(true);
           }}
         >
@@ -107,8 +115,8 @@ export const ThemeOverview = () => {
           setIsModalOpen={setIsEditThemeModalOpen}
           selectedWorkshopId={selectedWorkshopId}
           setSelectedWorkshopId={setSelectedWorkshopId}
-          workshopTitle={workshop.title}
-          workshopDescription={workshop.description}
+          workshopTitle={selectedWorkshopTitle ?? ""}
+          workshopDescription={selectedWorkshopDescription ?? ""}
         />
       </div>
     ),

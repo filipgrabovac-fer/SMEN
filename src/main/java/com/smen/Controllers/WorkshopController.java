@@ -32,14 +32,12 @@ public class WorkshopController {
 
     @GetMapping
     public ResponseEntity<List<WorkshopDetailsDTO>> getAllWorkshops() {
-        return ResponseEntity.ok(workshopService.getAllWorkshops());
+        return ResponseEntity.ok(workshopService.getAllWorkshops(1L));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<WorkshopDto> getWorkshopById(@PathVariable Long id) {
-        Optional<WorkshopDto> workshopDto = workshopService.getByIdAsDto(id);
-        return workshopDto.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/{id}/user/{userId}")
+    public ResponseEntity<WorkshopDetailsDTO> getWorkshopById(@PathVariable Long id, @PathVariable Long userId) {
+        return ResponseEntity.ok(workshopService.getByDetailedDto(id, userId));
     }
 
     @GetMapping("/search")
@@ -57,9 +55,9 @@ public class WorkshopController {
         return ResponseEntity.ok(workshopService.getWorkshopsByStatusId(statusId));
     }
 
-    @GetMapping("/subject/{subjectId}")
-    public ResponseEntity<List<WorkshopDetailsDTO>> getWorkshopsBySubject(@PathVariable Long subjectId) {
-        return ResponseEntity.ok(workshopService.getWorkshopsBySubjectId(subjectId));
+    @GetMapping("/subject/{subjectId}/user/{userId}")
+    public ResponseEntity<List<WorkshopDetailsDTO>> getWorkshopsBySubject(@PathVariable Long subjectId, @PathVariable Long userId) {
+        return ResponseEntity.ok(workshopService.getWorkshopsBySubjectId(subjectId, userId));
     }
 
     @GetMapping("/available-slots")

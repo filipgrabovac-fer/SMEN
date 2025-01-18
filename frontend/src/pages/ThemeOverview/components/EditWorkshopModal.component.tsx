@@ -65,21 +65,19 @@ export const EditWorkshopModal = ({
         });
       }}
     >
-      <Form form={form}>
+      <Form
+        form={form}
+        initialValues={{
+          workshopTitle: workshopTitle,
+          workshopDescription: workshopDescription,
+        }}
+        layout="vertical"
+      >
         <Form.Item name="workshopTitle">
-          <Input
-            allowClear
-            placeholder="ime radionice"
-            defaultValue={workshopTitle}
-          />
+          <Input allowClear placeholder="ime radionice" />
         </Form.Item>
         <Form.Item name="workshopDescription">
-          <TextArea
-            allowClear
-            placeholder="opis radionice"
-            rows={6}
-            defaultValue={workshopDescription}
-          />
+          <TextArea allowClear placeholder="opis radionice" rows={6} />
         </Form.Item>
         <Form.Item name="workshopStatusId">
           <Select

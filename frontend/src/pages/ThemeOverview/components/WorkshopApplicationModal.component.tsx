@@ -1,6 +1,8 @@
-import { Modal } from "antd";
+import { Modal, Spin } from "antd";
 import { useGetWorkshopDetails } from "../hooks/useGetWorkshopDetails.hook";
 import { Dispatch, SetStateAction } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { usePostWorkshopApplication } from "../hooks/usePostWorkshopApplication.hook";
 
 export enum WorkshopApplicationUserTypeEnum {
   USER = "user",
@@ -28,6 +30,15 @@ export const WorkshopApplicationModal = ({
     workshopId: selectedWorkshopId.toString(),
   });
 
+  const queryClient = useQueryClient();
+  const { mutate: postWorkshopApplucation } = usePostWorkshopApplication({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["workshops"] });
+      setIsModalOpen(false);
+      setSelectedWorkshopId(undefined);
+    },
+  });
+
   return (
     <Modal
       title={data?.title}
@@ -50,11 +61,26 @@ export const WorkshopApplicationModal = ({
         </div>
       </div>
 
-      <div className="flex gap-x-4 justify-center">
-        <button className="border border-button_border rounded-md p-2 hover:opacity-60 text-button_border">
-          Prijavi se
-        </button>
-      </div>
+      {data?.hasApplied ? (
+        <p className="text-red-500 m-auto w-max">
+          Već ste se prijavili na ovu radionicu
+        </p>
+      ) : (
+        <div className="flex gap-x-4 justify-center">
+          {data ? (
+            <button
+              className="border border-button_border rounded-md p-2 hover:opacity-60 text-button_border"
+              onClick={() =>
+                postWorkshopApplucation({ workshopId: selectedWorkshopId })
+              }
+            >
+              Prijavi se
+            </button>
+          ) : (
+            <Spin className="w-3 h-3" />
+          )}
+        </div>
+      )}
     </Modal>
   );
 };
