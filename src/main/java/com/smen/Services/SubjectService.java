@@ -59,7 +59,6 @@ public class SubjectService extends BaseEntityService<Subject, Long> {
 
                     subjectGetDTO.setAuthor(user.getFirstName() + " " + user.getLastName());
                     subjectGetDTO.setCreatedAt(sub.getCreatedAt().toString());
-                    System.out.println(subjectGetDTO);
                     return subjectGetDTO;
                 }).filter(Objects::nonNull).collect(Collectors.toList());
     }

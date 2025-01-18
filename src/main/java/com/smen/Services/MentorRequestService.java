@@ -21,22 +21,39 @@ public class MentorRequestService extends BaseEntityService<MentorRequest, Long>
     private final IMentorRequestStatusRepository mentorRequestStatusRepository;
     private final IRoleRepository roleRepository;
     private final IUserRepository userRepository;
+    private final MentorRequestStatusService mentorRequestStatusService;
 
     public MentorRequestService(IMentorRequestRepository mentorRequestRepository,
                                 IRoleRepository roleRepository,
                                 IUserRepository userRepository,
-                                IMentorRequestStatusRepository mentorRequestStatusRepository) {
+                                IMentorRequestStatusRepository mentorRequestStatusRepository, MentorRequestStatusService mentorRequestStatusService) {
         super(mentorRequestRepository);
         this.mentorRequestRepository = mentorRequestRepository;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.mentorRequestStatusRepository = mentorRequestStatusRepository;
+        this.mentorRequestStatusService = mentorRequestStatusService;
     }
 
     public List<MentorRequestDto> getAllMentorRequests() {
         return mentorRequestRepository.findAll()
                 .stream()
-                .map(MentorRequestDto::map)
+                .map(mentorRequest->{
+                    if (userRepository.findById(mentorRequest.getRequesterId()).isEmpty()) return null;
+
+                    User user = userRepository.findById(mentorRequest.getRequesterId()).get();
+
+                    MentorRequestDto mentorRequestDto = new MentorRequestDto();
+                    mentorRequestDto.setRequesterId(mentorRequestDto.getRequesterId());
+                    mentorRequestDto.setStatus(mentorRequestStatusService.getById(mentorRequest.getMentorRequestStatusId()).get().getName());
+                    mentorRequestDto.setComment(mentorRequest.getComment());
+                    mentorRequestDto.setId(mentorRequest.getId());
+                    mentorRequestDto.setCreatedAt(mentorRequest.getCreatedAt().toString());
+                    mentorRequestDto.setEmail(user.getEmail());
+                    mentorRequestDto.setFirstName(user.getFirstName());
+                    mentorRequestDto.setLastName(user.getLastName());
+                    return mentorRequestDto;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -64,27 +81,15 @@ public class MentorRequestService extends BaseEntityService<MentorRequest, Long>
     public MentorRequestDto approveMentorRequest(Long mentorRequestId) {
         Optional<MentorRequest> mentorRequestOptional = mentorRequestRepository.findById(mentorRequestId);
 
-        if (!mentorRequestOptional.isPresent()) {
+        if (mentorRequestOptional.isEmpty()) {
             return null;
         }
 
         MentorRequest mentorRequest = mentorRequestOptional.get();
 
-        Role mentorRole = roleRepository.findByName("mentor")
-                .orElse(null);
-        if (mentorRole == null)
-            return null;
-
         mentorRequest.setMentorRequestStatusId(2L);
         MentorRequest updatedRequest = mentorRequestRepository.save(mentorRequest);
 
-        Long requesterId = updatedRequest.getRequesterId();
-        User requester = userRepository.findById(requesterId).orElse(null);
-
-        if (requester != null) {
-            requester.setRoleId(mentorRole.getId());
-            userRepository.save(requester);
-        }
 
         return MentorRequestDto.map(updatedRequest);
     }

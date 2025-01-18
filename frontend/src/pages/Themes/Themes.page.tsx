@@ -19,6 +19,12 @@ export const Themes = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["themes"] }),
   });
   const [selectedThemeId, setSelectedThemeId] = useState<number | undefined>();
+  const [selectedThemeTitle, setSelectedThemeTitle] = useState<
+    string | undefined
+  >();
+  const [selectedThemeDescription, setSelectedThemeDescription] = useState<
+    string | undefined
+  >();
 
   const [isEditThemeModalOpen, setIsEditThemeModalOpen] = useState(false);
   const dataSource = data?.map((theme) => ({
@@ -45,6 +51,8 @@ export const Themes = () => {
         <Button
           type="primary"
           onClick={() => {
+            setSelectedThemeTitle(theme.title);
+            setSelectedThemeDescription(theme.description);
             setSelectedThemeId(theme.id);
             setIsEditThemeModalOpen(true);
           }}
@@ -57,12 +65,6 @@ export const Themes = () => {
         >
           <TrashIcon className="w-4 h-4" color="red" />
         </Button>
-        <EditThemeModal
-          isModalOpen={isEditThemeModalOpen}
-          setIsModalOpen={setIsEditThemeModalOpen}
-          selectedThemeId={selectedThemeId}
-          setSelectedThemeId={setSelectedThemeId}
-        />
       </div>
     ),
   }));
@@ -113,6 +115,14 @@ export const Themes = () => {
       <CreateThemeModal
         isModalOpen={isCreateThemeModalOpen}
         setIsModalOpen={setIsCreateThemeModalOpen}
+      />
+      <EditThemeModal
+        title={selectedThemeTitle ?? ""}
+        description={selectedThemeDescription ?? ""}
+        isModalOpen={isEditThemeModalOpen}
+        setIsModalOpen={setIsEditThemeModalOpen}
+        selectedThemeId={selectedThemeId}
+        setSelectedThemeId={setSelectedThemeId}
       />
     </div>
   );

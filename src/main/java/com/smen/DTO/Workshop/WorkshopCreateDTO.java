@@ -27,7 +27,7 @@ public class WorkshopCreateDTO {
         workshop.setDuration(10000);
         workshop.setNoOfAvailableSlots(10);
         workshop.setOwnerId(this.userId);
-        workshop.setWorkshopStatusId(2L);
+        workshop.setWorkshopStatusId(1L);
         workshop.setDateOfEvent(LocalDate.parse(this.dateOfEvent));
         return workshop;
     }

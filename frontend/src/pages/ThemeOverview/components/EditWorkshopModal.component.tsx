@@ -54,8 +54,9 @@ export const EditWorkshopModal = ({
       onOk={() => {
         form.validateFields().then((values) => {
           putworkshop({
-            workshopTitle: values.workshopTitle,
-            workshopDescription: values.workshopDescription,
+            workshopTitle: values.workshopTitle ?? workshopTitle,
+            workshopDescription:
+              values.workshopDescription ?? workshopDescription,
             workshopId: selectedWorkshopId ?? 0,
             workshopStatusId: values.workshopStatusId,
           });
