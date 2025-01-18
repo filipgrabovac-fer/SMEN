@@ -14,6 +14,7 @@ export type GetWorkshopsForThemeDataType = {
   title: string;
   workshopStatus: string;
   dateOfEvent: string;
+  workshopStatusId: number;
 };
 export const useGetWorkshopsForTheme = ({
   subjectId,
@@ -25,8 +26,6 @@ export const useGetWorkshopsForTheme = ({
         endpointUrl: `workshop/subject/${subjectId}`,
         method: "GET",
       });
-
-      console.log(response);
       return response;
     },
   });

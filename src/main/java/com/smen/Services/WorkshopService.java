@@ -69,6 +69,7 @@ public class WorkshopService extends BaseEntityService<Workshop, Long> {
                     workshopDto.setTitle(workshop.getTitle());
                     workshopDto.setNoOfAvailableSlots(workshop.getNoOfAvailableSlots());
                     workshopDto.setDateOfEvent(workshop.getDateOfEvent().toString());
+                    workshopDto.setWorkshopStatusId(workshop.getWorkshopStatusId());
                     return workshopDto;
                 })
                 .collect(Collectors.toList());

@@ -1,40 +1,42 @@
 import { useMutation } from "@tanstack/react-query";
 import { customFetch } from "../../../utils/customFetch";
 
-export type EditThemeMutationProps = {
-  themeTitle: string;
-  themeDescription: string;
-  subjectId: number;
+export type PutOglasMutationProps = {
+  title: string;
+  description: string;
+  postId: number;
 };
 
-export type EditThemeProps = {
+export type PutOglasProps = {
   onSuccess:
     | ((
         data: unknown,
-        variables: EditThemeMutationProps,
+        variables: PutOglasMutationProps,
         context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 };
-export const useEditTheme = ({ onSuccess }: EditThemeProps) => {
+export const usePutOglas = ({ onSuccess }: PutOglasProps) => {
   return useMutation({
     onSuccess: onSuccess,
     mutationFn: async ({
-      themeTitle,
-      themeDescription,
-      subjectId,
-    }: EditThemeMutationProps) => {
+      title,
+      description,
+      postId,
+    }: PutOglasMutationProps) => {
       const response = await customFetch({
+        endpointUrl: `post/${postId}`,
         method: "PUT",
-        endpointUrl: `subject/${subjectId}`,
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          title: themeTitle,
-          description: themeDescription,
+          title,
+          description,
+          userId: 1,
         }),
       });
+
       return response;
     },
   });

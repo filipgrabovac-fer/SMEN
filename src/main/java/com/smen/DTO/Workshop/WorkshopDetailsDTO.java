@@ -19,6 +19,7 @@ public class WorkshopDetailsDTO {
     private Long ownerId;
     private String workshopStatus;
     private String dateOfEvent;
+    private Long workshopStatusId;
 
     public Workshop toEntity( WorkshopStatus workshopStatus) {
         Workshop workshop = new Workshop();
@@ -28,7 +29,7 @@ public class WorkshopDetailsDTO {
         workshop.setDuration(this.duration);
         workshop.setNoOfAvailableSlots(this.noOfAvailableSlots);
         workshop.setOwnerId(this.ownerId);
-        workshop.setWorkshopStatusId(1L);
+        workshop.setWorkshopStatusId(this.workshopStatusId);
         return workshop;
     }
 }

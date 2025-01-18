@@ -86,23 +86,22 @@ public class WorkshopController {
             @PathVariable Long id,
             @RequestBody WorkshopDto workshopDto,
             @RequestParam Optional<WorkshopStatus> workshopStatus) {
-        Optional<WorkshopDto> existingWorkshop = workshopService.getByIdAsDto(id);
 
-        if (existingWorkshop.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        if (workshopService.getById(id).isEmpty()) return ResponseEntity.badRequest().build();
 
-        Workshop workshop = workshopDto.toEntity();
-        workshop.setId(id);
-        WorkshopDto updatedWorkshopDto = workshopService.saveWorkshopDto(workshop);
+        Workshop existingWorkshop = workshopService.getById(id).get();
+        existingWorkshop.setTitle(workshopDto.getTitle());
+        existingWorkshop.setDescription(workshopDto.getDescription());
+        existingWorkshop.setWorkshopStatusId(workshopDto.getWorkshopStatusId());
+        WorkshopDto updatedWorkshopDto = workshopService.saveWorkshopDto(existingWorkshop);
         return ResponseEntity.ok(updatedWorkshopDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteWorkshop(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteWorkshop(@PathVariable Long id) {
         boolean isDeleted = workshopService.deleteWorkshop(id);
         if (isDeleted) {
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.ok(true);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

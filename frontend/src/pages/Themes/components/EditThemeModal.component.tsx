@@ -6,11 +6,15 @@ import { useEditTheme } from "../hooks/useEditTheme.hook";
 export type EditThemeModalProps = {
   selectedThemeId?: number;
   setSelectedThemeId: Dispatch<SetStateAction<number | undefined>>;
+  isModalOpen: boolean | undefined;
+  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 export const EditThemeModal = ({
   selectedThemeId,
   setSelectedThemeId,
+  isModalOpen,
+  setIsModalOpen,
 }: EditThemeModalProps) => {
   const [themeTitle, setThemeTitle] = useState<string>();
   const [themeDescription, setThemeDescription] = useState<string>();
@@ -19,6 +23,7 @@ export const EditThemeModal = ({
   const { mutate: putTheme } = useEditTheme({
     onSuccess: () => {
       setSelectedThemeId(undefined);
+      setIsModalOpen(false);
     },
   });
 
@@ -26,8 +31,11 @@ export const EditThemeModal = ({
     <Modal
       title="Uredi temu"
       centered
-      open={selectedThemeId ? true : false}
-      onCancel={() => setSelectedThemeId(undefined)}
+      open={isModalOpen}
+      onCancel={() => {
+        setSelectedThemeId(undefined);
+        setIsModalOpen(false);
+      }}
       onOk={() => {
         form.validateFields().then(() => {
           putTheme({

@@ -11,6 +11,7 @@ import com.smen.Repositories.IRegistrationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -58,9 +59,9 @@ public class SubjectService extends BaseEntityService<Subject, Long> {
 
                     subjectGetDTO.setAuthor(user.getFirstName() + " " + user.getLastName());
                     subjectGetDTO.setCreatedAt(sub.getCreatedAt().toString());
+                    System.out.println(subjectGetDTO);
                     return subjectGetDTO;
-                })
-                .collect(Collectors.toList());
+                }).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     // Create or update a subject and return as DTO
