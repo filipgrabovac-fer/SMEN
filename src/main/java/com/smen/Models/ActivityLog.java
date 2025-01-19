@@ -20,4 +20,15 @@ public class ActivityLog extends BaseEntity<BaseEntity, Number> {
     private String description;
 
     private Long userId;
+
+    private LocalDateTime createdAt;
+
+    public ActivityLog(String activity, String description, Long userId) {
+        if(activity.equals("c")) this.activity = "Create";
+        if(activity.equals("e")) this.activity = "Edit";
+        if(activity.equals("d")) this.activity = "Delete";
+        this.activity = activity;
+        this.description = description;
+        this.userId = userId;
+    }
 }

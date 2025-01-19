@@ -46,17 +46,10 @@ public class ActivityLogController {
     // Create or update an activity log
     @PostMapping
     public ResponseEntity<ActivityLogDto> saveActivityLog(
-            @RequestBody ActivityLogDto activityLogDto,
-            @RequestParam Optional<User> user,
-            @RequestParam Optional<Workshop> workshop) {
-
-        // Handle user and workshop dependencies
-        if (user.isEmpty() || workshop.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-
+            @RequestBody ActivityLogDto activityLogDto
+            ) {
         ActivityLogDto savedActivityLogDto = activityLogService.saveActivityLog(
-                activityLogDto, user.get(), workshop.get());
+                activityLogDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedActivityLogDto);
     }
 

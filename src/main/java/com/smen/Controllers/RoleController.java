@@ -1,5 +1,7 @@
 package com.smen.Controllers;
 
+import com.smen.Services.ActivityLogService;
+import com.smen.DTO.ActivityLog.ActivityLogDto;
 import com.smen.DTO.Role.RoleDto;
 import com.smen.Services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;

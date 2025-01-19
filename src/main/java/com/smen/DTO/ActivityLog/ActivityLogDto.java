@@ -17,11 +17,17 @@ public class ActivityLogDto {
     private String activity;
     private String description;
     private Long userId;
-    private Long workshopId;
+
+    public ActivityLogDto(String activity, String description, Long userId) {
+        if(activity.equals("c")) this.activity = "Create";
+        if(activity.equals("e")) this.activity = "Edit";
+        if(activity.equals("d")) this.activity = "Delete";
+        this.description = description;
+        this.userId = userId;
+    }
 
     public static ActivityLogDto map(ActivityLog activityLog) {
         ActivityLogDto dto = new ActivityLogDto();
-        dto.setId(activityLog.getId());
         dto.setActivity(activityLog.getActivity());
         dto.setDescription(activityLog.getDescription());
         dto.setUserId(activityLog.getUserId() != null ? activityLog.getUserId() : null);
@@ -29,11 +35,6 @@ public class ActivityLogDto {
     }
 
     public ActivityLog toEntity() {
-        ActivityLog activityLog = new ActivityLog();
-        activityLog.setId(this.id);
-        activityLog.setActivity(this.activity);
-        activityLog.setDescription(this.description);
-        activityLog.setUserId(this.userId);
-        return activityLog;
+        return  new ActivityLog(this.activity, this.description, this.userId);
     }
 }

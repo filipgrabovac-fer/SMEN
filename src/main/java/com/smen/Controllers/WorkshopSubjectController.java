@@ -1,5 +1,7 @@
 package com.smen.Controllers;
 
+import com.smen.Services.ActivityLogService;
+import com.smen.DTO.ActivityLog.ActivityLogDto;
 import com.smen.DTO.WorkshopSubject.WorkshopSubjectDto;
 import com.smen.Models.Subject;
 import com.smen.Models.Workshop;

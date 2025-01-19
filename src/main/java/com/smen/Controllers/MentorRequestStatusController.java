@@ -1,5 +1,7 @@
 package com.smen.Controllers;
 
+import com.smen.Services.ActivityLogService;
+import com.smen.DTO.ActivityLog.ActivityLogDto;
 import com.smen.Models.MentorRequestStatus;
 import com.smen.Models.Role;
 import com.smen.Services.MentorRequestStatusService;

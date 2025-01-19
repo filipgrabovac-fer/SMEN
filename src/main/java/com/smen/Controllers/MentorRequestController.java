@@ -1,5 +1,7 @@
 package com.smen.Controllers;
 
+import com.smen.Services.ActivityLogService;
+import com.smen.DTO.ActivityLog.ActivityLogDto;
 import com.smen.DTO.MentorRequestDto;
 import com.smen.Services.MentorRequestService;
 import lombok.AllArgsConstructor;

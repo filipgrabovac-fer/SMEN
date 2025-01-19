@@ -1,5 +1,7 @@
 package com.smen.Controllers;
 
+import com.smen.Services.ActivityLogService;
+import com.smen.DTO.ActivityLog.ActivityLogDto;
 import com.smen.DTO.Workshop.WorkshopCreateDTO;
 import com.smen.DTO.Workshop.WorkshopDto2;
 import com.smen.DTO.Workshop.WorkshopDetailsDTO;

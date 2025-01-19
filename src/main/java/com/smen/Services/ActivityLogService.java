@@ -45,7 +45,7 @@ public class ActivityLogService extends BaseEntityService<ActivityLog, Long> {
 
 
     // Save activity log
-    public ActivityLogDto saveActivityLog(ActivityLogDto dto, User user, Workshop workshop) {
+    public ActivityLogDto saveActivityLog(ActivityLogDto dto) {
         ActivityLog activityLog = dto.toEntity();
         ActivityLog savedActivityLog = activityLogRepository.save(activityLog);
         return ActivityLogDto.map(savedActivityLog);
