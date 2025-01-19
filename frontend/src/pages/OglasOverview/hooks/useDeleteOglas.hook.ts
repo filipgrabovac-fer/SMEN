@@ -18,8 +18,9 @@ export const useDeleteOglas = ({ onSuccess }: DeleteOglasProps) => {
   return useMutation({
     onSuccess: onSuccess,
     mutationFn: async ({ oglasId }: DeleteOglasMutationProps) => {
+      const userId = localStorage.getItem("userId");
       const response = await customFetch({
-        endpointUrl: `post/${oglasId}`,
+        endpointUrl: `post/${oglasId}/user/${userId}`,
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

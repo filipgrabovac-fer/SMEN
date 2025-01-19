@@ -33,7 +33,7 @@ export const usePostWorkshop = ({ onSuccess }: PostWorkshopProps) => {
       noOfAvailableSlots,
     }: PostWorkshopMutationProps) => {
       const response = await customFetch({
-        endpointUrl: `workshop`,
+        endpointUrl: `workshop/user/${userId}`,
         method: "POST",
         headers: {
           "Content-Type": "application/json",

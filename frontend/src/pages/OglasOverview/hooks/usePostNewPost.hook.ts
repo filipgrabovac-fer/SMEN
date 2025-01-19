@@ -18,7 +18,7 @@ export const usePostNewPost = ({ onSuccess }: PostNewPostProps) => {
     mutationFn: async ({ description, title }: NewPostType) => {
       const userId = Number(localStorage.getItem("userId") ?? 0);
       const response = await customFetch({
-        endpointUrl: "post",
+        endpointUrl: `post/user/${userId}`,
         method: "POST",
         headers: {
           "Content-Type": "application/json",

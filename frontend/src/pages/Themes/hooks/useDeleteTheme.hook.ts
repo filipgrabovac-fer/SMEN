@@ -18,8 +18,9 @@ export const useDeleteTheme = ({ onSuccess }: DeleteThemeProps) => {
   return useMutation({
     onSuccess: onSuccess,
     mutationFn: async ({ themeId }: DeleteThemeMutationProps) => {
+      const userId = localStorage.getItem("userId");
       const response = await customFetch({
-        endpointUrl: `subject/${themeId}`,
+        endpointUrl: `subject/${themeId}/user/${userId}`,
         method: "DELETE",
       });
       return response;

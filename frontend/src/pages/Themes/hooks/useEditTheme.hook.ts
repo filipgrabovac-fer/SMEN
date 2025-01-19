@@ -24,9 +24,10 @@ export const useEditTheme = ({ onSuccess }: EditThemeProps) => {
       themeDescription,
       subjectId,
     }: EditThemeMutationProps) => {
+      const userId = localStorage.getItem("userId");
       const response = await customFetch({
         method: "PUT",
-        endpointUrl: `subject/${subjectId}`,
+        endpointUrl: `subject/${subjectId}/user/${userId}`,
         headers: {
           "Content-Type": "application/json",
         },

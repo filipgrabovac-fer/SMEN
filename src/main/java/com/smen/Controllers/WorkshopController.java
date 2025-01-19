@@ -67,9 +67,10 @@ public class WorkshopController {
         return ResponseEntity.ok(workshopService.getAvailableWorkshops());
     }
 
-    @PostMapping
+    @PostMapping("user/{userId}")
     public ResponseEntity<Boolean> createWorkshop(
-            @RequestBody WorkshopCreateDTO workshopDto ){
+            @RequestBody WorkshopCreateDTO workshopDto,
+            @PathVariable Long userId){
         Workshop workshop = workshopDto.toEntity();
         WorkshopDto createdWorkshopDto = workshopService.saveWorkshopDto(workshop);
         WorkshopSubject workshopSubject = new WorkshopSubject();
@@ -82,10 +83,11 @@ public class WorkshopController {
         return ResponseEntity.ok(true);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/user/{userId}")
     public ResponseEntity<WorkshopDto> updateWorkshop(
             @PathVariable Long id,
-            @RequestBody WorkshopDto workshopDto) {
+            @RequestBody WorkshopDto workshopDto,
+            @PathVariable Long userId) {
 
         if (workshopService.getById(id).isEmpty()) return ResponseEntity.badRequest().build();
 
@@ -100,8 +102,8 @@ public class WorkshopController {
         return ResponseEntity.ok(updatedWorkshopDto);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteWorkshop(@PathVariable Long id) {
+    @DeleteMapping("/{id}/user/{userId}")
+    public ResponseEntity<Boolean> deleteWorkshop(@PathVariable Long id,@PathVariable Long userId) {
         boolean isDeleted = workshopService.deleteWorkshop(id);
         if (isDeleted) {
             ActivityLogDto activityLogDto= new ActivityLogDto("d","workshop",userId);

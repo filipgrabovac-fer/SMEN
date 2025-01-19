@@ -31,7 +31,7 @@ export const usePostNewTheme = ({ onSuccess }: PostNewThemeProps) => {
       title,
     }: PostNewThemeMutationProps) => {
       const response = await customFetch({
-        endpointUrl: "subject/new",
+        endpointUrl: `subject/new/user/${userId}`,
         method: "POST",
         headers: {
           "Content-Type": "application/json",

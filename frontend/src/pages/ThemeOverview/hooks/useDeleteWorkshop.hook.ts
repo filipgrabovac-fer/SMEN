@@ -10,11 +10,13 @@ export type DeleteWorkshopProps = {
   ) => Promise<unknown> | unknown;
 };
 export const useDeleteWorkshop = ({ onSuccess }: DeleteWorkshopProps) => {
+  const userId = localStorage.getItem("userId");
+
   return useMutation({
     onSuccess: onSuccess,
     mutationFn: async ({ workshopId }: DeleteWorkshopMutationProps) => {
       const response = await customFetch({
-        endpointUrl: `workshop/${workshopId}`,
+        endpointUrl: `workshop/${workshopId}/user/${userId}`,
         method: "DELETE",
       });
       return response;

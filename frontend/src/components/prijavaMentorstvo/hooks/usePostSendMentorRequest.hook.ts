@@ -24,14 +24,14 @@ export const usePostSendMentorRequest = ({
       comment,
       requesterId,
     }: PostSendMentorRequestMutationProps) => {
+      const userId = localStorage.getItem("userId");
       const response = await customFetch({
-        
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ comment : comment, requesterId : requesterId }),
-        endpointUrl: `mentor-request`,
+        body: JSON.stringify({ comment: comment, requesterId: requesterId }),
+        endpointUrl: `mentor-request/user/${userId}`,
       });
       return response;
     },

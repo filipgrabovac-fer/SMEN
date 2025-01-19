@@ -50,8 +50,8 @@ public class SubjectController {
     }
 
     // Endpoint to create a subject
-    @PostMapping("/new")
-    public ResponseEntity<SubjectDto> createSubject(@RequestBody SubjectDto subjectDto) {
+    @PostMapping("/new/user/{userId}")
+    public ResponseEntity<SubjectDto> createSubject(@RequestBody SubjectDto subjectDto,@PathVariable Long userId) {
         SubjectDto createdSubject = subjectService.saveSubjectDto(subjectDto);
 
         ActivityLogDto activityLogDto= new ActivityLogDto("c","subject",userId);
@@ -60,10 +60,11 @@ public class SubjectController {
     }
 
     // Endpoint to update a subject
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/user/{userId}")
     public ResponseEntity<Boolean> updateSubject(
             @PathVariable Long id,
-            @RequestBody SubjectEditDTO subjectDto
+            @RequestBody SubjectEditDTO subjectDto,
+            @PathVariable Long userId
     ) {
         Optional<Subject> optionalSubject = subjectService.getById(id);
 
@@ -84,8 +85,8 @@ public class SubjectController {
     }
 
     // Endpoint to delete a subject
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteSubject(@PathVariable Long id) {
+    @DeleteMapping("/{id}/user/{userId}")
+    public ResponseEntity<Boolean> deleteSubject(@PathVariable Long id,@PathVariable Long userId) {
         boolean isDeleted = subjectService.deleteById(id);
 
         if (isDeleted) {

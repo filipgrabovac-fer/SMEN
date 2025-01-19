@@ -32,8 +32,8 @@ public class WorkshopApplicationController {
         return ResponseEntity.ok(true);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Boolean> updateWorkshopApplication(@PathVariable Long id){
+    @DeleteMapping("{id}/user/{userId}")
+    public ResponseEntity<Boolean> updateWorkshopApplication(@PathVariable Long id,@PathVariable Long userId){
         workshopApplicationService.deleteWorkshopApplication(id);
         ActivityLogDto activityLogDto= new ActivityLogDto("d","workshop application",userId);
         activityLogService.saveActivityLog(activityLogDto);

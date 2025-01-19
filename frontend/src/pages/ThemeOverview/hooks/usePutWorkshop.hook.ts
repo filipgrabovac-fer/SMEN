@@ -28,8 +28,10 @@ export const usePutWorkshop = ({ onSuccess }: PutWorkshopProps) => {
       workshopStatusId,
       noOfAvailableSlots,
     }: PutWorkshopMutationProps) => {
+      const userId = localStorage.getItem("userId");
+
       const response = await customFetch({
-        endpointUrl: `workshop/${workshopId}`,
+        endpointUrl: `workshop/${workshopId}/user/${userId}`,
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

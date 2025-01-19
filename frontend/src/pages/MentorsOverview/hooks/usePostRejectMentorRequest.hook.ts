@@ -23,9 +23,10 @@ export const usePostRejectMentorRequest = ({
     mutationFn: async ({
       mentorRequestId,
     }: PostRejectMentorRequestMutationProps) => {
+      const userId = localStorage.getItem("userId");
       const response = await customFetch({
         method: "POST",
-        endpointUrl: `mentor-request/${mentorRequestId}/reject`,
+        endpointUrl: `mentor-request/${mentorRequestId}/reject/user/${userId}`,
       });
       return response;
     },

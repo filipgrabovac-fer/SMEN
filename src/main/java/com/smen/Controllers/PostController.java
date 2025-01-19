@@ -22,10 +22,12 @@ public class PostController {
 
     private final PostService postService;
     private final UserService userService;
+    private final ActivityLogService activityLogService;
 
-    public PostController(PostService postService, UserService userService) {
+    public PostController(PostService postService, UserService userService, ActivityLogService activityLogService) {
         this.postService = postService;
         this.userService = userService;
+        this.activityLogService = activityLogService;
     }
 
     @GetMapping
@@ -47,15 +49,15 @@ public class PostController {
         }).collect(Collectors.toList()));
     }
 
-    @PostMapping()
-    public ResponseEntity<Post> createPost(@RequestBody PostCreateDto post){
+    @PostMapping("user/{userId}")
+    public ResponseEntity<Post> createPost(@RequestBody PostCreateDto post,@PathVariable Long userId){
         ActivityLogDto activityLogDto= new ActivityLogDto("c","oglas",userId);
         activityLogService.saveActivityLog(activityLogDto);
         return ResponseEntity.ok(postService.createPost(post));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Boolean> updatePost(@RequestBody PostCreateDto post, @PathVariable Long id){
+    @PutMapping("/{id}/user/{userId}")
+    public ResponseEntity<Boolean> updatePost(@RequestBody PostCreateDto post, @PathVariable Long id,@PathVariable Long userId){
         Post existingPost = postService.getPostById(id).orElse(null);
         if (existingPost == null) return ResponseEntity.badRequest().build();
         existingPost.setUserId(post.getUserId());
@@ -67,8 +69,8 @@ public class PostController {
         return ResponseEntity.ok(true);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deletePost(@PathVariable Long id){
+    @DeleteMapping("/{id}/user/{userId}")
+    public ResponseEntity<Boolean> deletePost(@PathVariable Long id,@PathVariable Long userId){
         postService.deletePost(id);
         ActivityLogDto activityLogDto= new ActivityLogDto("d","oglas",userId);
         activityLogService.saveActivityLog(activityLogDto);

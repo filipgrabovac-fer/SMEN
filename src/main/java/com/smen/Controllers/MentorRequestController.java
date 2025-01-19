@@ -46,8 +46,8 @@ public class MentorRequestController {
     }
 
     // Endpoint to approve a mentor request
-    @PostMapping("/{id}/approve")
-    public ResponseEntity<MentorRequestDto> approveMentorRequest(@PathVariable Long id) {
+    @PostMapping("/{id}/approve/user/{userId}")
+    public ResponseEntity<MentorRequestDto> approveMentorRequest(@PathVariable Long id,@PathVariable Long userId) {
         MentorRequestDto approvedRequest = mentorRequestService.approveMentorRequest(id);
 
         if (approvedRequest == null) {
@@ -59,8 +59,8 @@ public class MentorRequestController {
     }
 
     // Endpoint to reject a mentor request
-    @PostMapping("/{id}/reject")
-    public ResponseEntity<MentorRequestDto> rejectMentorRequest(@PathVariable Long id) {
+    @PostMapping("/{id}/reject/user/{userId}")
+    public ResponseEntity<MentorRequestDto> rejectMentorRequest(@PathVariable Long id,@PathVariable Long userId) {
         MentorRequestDto rejectedRequest = mentorRequestService.rejectMentorRequest(id);
 
         if (rejectedRequest == null) {
@@ -72,8 +72,8 @@ public class MentorRequestController {
     }
 
     // Endpoint to create a mentor request
-    @PostMapping
-    public ResponseEntity<MentorRequestDto> createMentorRequest(@RequestBody MentorRequestDto requestDto) {
+    @PostMapping("user/{userId}")
+    public ResponseEntity<MentorRequestDto> createMentorRequest(@RequestBody MentorRequestDto requestDto,@PathVariable Long userId) {
         MentorRequestDto newRequest = mentorRequestService.createMentorRequest(requestDto);
 
         if (newRequest == null) {
@@ -85,8 +85,8 @@ public class MentorRequestController {
     }
 
     // Endpoint to delete a mentor request
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMentorRequest(@PathVariable Long id) {
+    @DeleteMapping("/{id}/user/{userId}")
+    public ResponseEntity<Void> deleteMentorRequest(@PathVariable Long id,@PathVariable Long userId) {
         boolean isDeleted = mentorRequestService.deleteById(id);
 
         if (isDeleted) {
