@@ -17,6 +17,8 @@ public class ActivityLogDto {
     private String activity;
     private String description;
     private Long userId;
+    private String user;
+    private String createdAt;
 
     public ActivityLogDto(String activity, String description, Long userId) {
         if(activity.equals("c")) this.activity = "Create";

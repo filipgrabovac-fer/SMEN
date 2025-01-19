@@ -23,7 +23,7 @@ export const MentorsOverview = () => {
     key: i,
     ime: mentor.firstName,
     prezime: mentor.lastName,
-    email: mentor.comment,
+    email: mentor.email,
     comment: mentor.comment,
     datum_prijave: mentor.createdAt.slice(0, 10),
     approve_reject: (

@@ -8,24 +8,30 @@ const columns = [
     key: "activity",
   },
   {
-    title: "descritpion",
-    dataIndex: "descritpion",
-    key: "descritpion",
+    title: "description",
+    dataIndex: "description",
+    key: "description",
   },
   {
-    title: "userId",
-    dataIndex: "userId",
-    key: "userId",
+    title: "user",
+    dataIndex: "user",
+    key: "user",
+  },
+  {
+    title: "createdAt",
+    dataIndex: "createdAt",
+    key: "createdAt",
   },
 ];
 
 export const ActivityLogOverview = () => {
-  const { data } = useGetActivityLog({});
+  const { data } = useGetActivityLog();
   const dataSource = data?.map((activityLog) => ({
     key: activityLog.id,
     description: activityLog.description,
     activity: activityLog.activity,
-    userId: activityLog.userId,
+    user: activityLog.user,
+    createdAt: activityLog.createdAt.slice(0, 10),
   }));
 
   return (

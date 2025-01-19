@@ -74,11 +74,16 @@ const HeaderDropdownMenu = () => {
     },
   ];
 
-  if (isAdmin)
+  if (isAdmin) {
     items.push({
       key: "/mentors-overview",
       label: "Pregled prijava",
     });
+    items.push({
+      key: "/activity",
+      label: "Aktivnosti",
+    });
+  }
 
   if (isUser && !userAppliedForMentorship) {
     items.push({

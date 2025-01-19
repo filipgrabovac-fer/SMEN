@@ -5,8 +5,10 @@ import com.smen.Models.ActivityLog;
 import com.smen.Models.User;
 import com.smen.Models.Workshop;
 import com.smen.Repositories.IActivityLogRepository;
+import com.smen.Repositories.IUserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,10 +17,12 @@ import java.util.stream.Collectors;
 public class ActivityLogService extends BaseEntityService<ActivityLog, Long> {
 
     private final IActivityLogRepository activityLogRepository;
+    private final IUserRepository userRepository;
 
-    public ActivityLogService(IActivityLogRepository activityLogRepository) {
+    public ActivityLogService(IActivityLogRepository activityLogRepository, UserService userService, IUserRepository userRepository) {
         super(activityLogRepository);
         this.activityLogRepository = activityLogRepository;
+        this.userRepository = userRepository;
     }
 
     // Fetch activity log by ID as a DTO
@@ -28,9 +32,21 @@ public class ActivityLogService extends BaseEntityService<ActivityLog, Long> {
 
     // Fetch all activity logs as DTOs
     public List<ActivityLogDto> getAllActivityLogs() {
+
         return activityLogRepository.findAll()
                 .stream()
-                .map(ActivityLogDto::map)
+                .map(activityLog  ->{
+                    ActivityLogDto activityLogDto = new ActivityLogDto();
+                    User user = userRepository.findById(activityLog.getUserId()).get();
+
+                    activityLogDto.setActivity(activityLog.getActivity());
+                    activityLogDto.setId(activityLog.getId());
+                    activityLogDto.setDescription(activityLog.getDescription());
+                    activityLogDto.setUserId(activityLog.getUserId() != null ? activityLog.getUserId() : null);
+                    activityLogDto.setUser(user.getUsername());
+                    activityLogDto.setCreatedAt(activityLog.getCreatedAt().toString());
+                    return activityLogDto;
+                })
                 .collect(Collectors.toList());
     }
 
