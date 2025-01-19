@@ -72,7 +72,6 @@ public class SubjectController {
             return ResponseEntity.notFound().build();
         }
 
-        System.out.println(subjectDto);
         Subject existingSubject = optionalSubject.get();
         existingSubject.setTitle(subjectDto.getTitle());
         existingSubject.setDescription(subjectDto.getDescription());
