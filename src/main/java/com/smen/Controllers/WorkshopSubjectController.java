@@ -24,7 +24,7 @@ public class WorkshopSubjectController {
 
     @Autowired
     private final WorkshopSubjectService workshopSubjectService;
-
+    private ActivityLogService activityLogService;
     @GetMapping("/workshop/{workshopId}")
     public ResponseEntity<List<WorkshopSubjectDto>> getWorkshopSubjectsByWorkshop(@PathVariable Long workshopId) {
         List<WorkshopSubjectDto> workshopSubjects = workshopSubjectService.getByWorkshopId(workshopId);

@@ -19,7 +19,7 @@ public class WorkshopStatusController {
 
     @Autowired
     private final WorkshopStatusService workshopStatusService;
-
+    private ActivityLogService activityLogService;
     public WorkshopStatusController(WorkshopStatusService workshopStatusService) {
         this.workshopStatusService = workshopStatusService;
     }

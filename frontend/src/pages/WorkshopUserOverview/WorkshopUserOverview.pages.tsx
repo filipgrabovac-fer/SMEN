@@ -66,7 +66,7 @@ export const WorkshopUserOverview = () => {
       </p>
     ),
     review:
-      workshop.workshopStatusName === "Completed" ? (
+      workshop.workshopStatusName === "COMPLETED" ? (
         <p
           className="underline text-blue-900 cursor-pointer"
           onClick={() => {

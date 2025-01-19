@@ -31,7 +31,7 @@ public class WorkshopController {
     private final WorkshopService workshopService;
     @Autowired
     private WorkshopSubjectService workshopSubjectService;
-
+    private ActivityLogService activityLogService;
     @GetMapping
     public ResponseEntity<List<WorkshopDetailsDTO>> getAllWorkshops() {
         return ResponseEntity.ok(workshopService.getAllWorkshops(1L));
@@ -77,7 +77,8 @@ public class WorkshopController {
         workshopSubject.setWorkshopId(createdWorkshopDto.getId());
         workshopSubject.setSubjectId(workshopDto.getSubjectId());
         workshopSubjectService.saveWorkshopSubject(workshopSubject);
-
+        ActivityLogDto activityLogDto= new ActivityLogDto("c","workshop",userId);
+        activityLogService.saveActivityLog(activityLogDto);
         return ResponseEntity.ok(true);
     }
 
@@ -94,6 +95,8 @@ public class WorkshopController {
         existingWorkshop.setDescription(workshopDto.getDescription());
         existingWorkshop.setWorkshopStatusId(workshopDto.getWorkshopStatusId());
         WorkshopDto updatedWorkshopDto = workshopService.saveWorkshopDto(existingWorkshop);
+        ActivityLogDto activityLogDto= new ActivityLogDto("e","workshop",userId);
+        activityLogService.saveActivityLog(activityLogDto);
         return ResponseEntity.ok(updatedWorkshopDto);
     }
 
@@ -101,6 +104,8 @@ public class WorkshopController {
     public ResponseEntity<Boolean> deleteWorkshop(@PathVariable Long id) {
         boolean isDeleted = workshopService.deleteWorkshop(id);
         if (isDeleted) {
+            ActivityLogDto activityLogDto= new ActivityLogDto("d","workshop",userId);
+            activityLogService.saveActivityLog(activityLogDto);
             return ResponseEntity.ok(true);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

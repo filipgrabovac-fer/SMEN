@@ -18,7 +18,7 @@ public class RoleController {
 
     @Autowired
     private final RoleService roleService;
-
+    private ActivityLogService activityLogService;
     public RoleController(RoleService roleService) {
         this.roleService = roleService;
     }

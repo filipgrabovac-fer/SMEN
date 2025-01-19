@@ -24,7 +24,7 @@ public class SubjectController {
 
     @Autowired
     private final SubjectService subjectService;
-
+    private ActivityLogService activityLogService;
     // Endpoint to get a subject by its ID
     @GetMapping("/{id}")
     public ResponseEntity<SubjectGetDTO> getSubject(@PathVariable Long id) {
@@ -53,6 +53,9 @@ public class SubjectController {
     @PostMapping("/new")
     public ResponseEntity<SubjectDto> createSubject(@RequestBody SubjectDto subjectDto) {
         SubjectDto createdSubject = subjectService.saveSubjectDto(subjectDto);
+
+        ActivityLogDto activityLogDto= new ActivityLogDto("c","subject",userId);
+        activityLogService.saveActivityLog(activityLogDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSubject);
     }
 
@@ -74,6 +77,9 @@ public class SubjectController {
         existingSubject.setDescription(subjectDto.getDescription());
         subjectService.saveSubject(existingSubject);
 
+        ActivityLogDto activityLogDto= new ActivityLogDto("e","subject",userId);
+        activityLogService.saveActivityLog(activityLogDto);
+
         return ResponseEntity.ok(true);
     }
 
@@ -83,6 +89,8 @@ public class SubjectController {
         boolean isDeleted = subjectService.deleteById(id);
 
         if (isDeleted) {
+            ActivityLogDto activityLogDto= new ActivityLogDto("d","subject",userId);
+            activityLogService.saveActivityLog(activityLogDto);
             return ResponseEntity.status(HttpStatus.OK).body(true);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);

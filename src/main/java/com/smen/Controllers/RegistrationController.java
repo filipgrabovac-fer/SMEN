@@ -21,7 +21,7 @@ public class RegistrationController {
 
     @Autowired
     private RegistrationService registrationService;
-
+    private ActivityLogService activityLogService;
     @GetMapping
     public ResponseEntity<List<Registration>> getRegistrations() {
         return ResponseEntity.ok(registrationService.getAll());

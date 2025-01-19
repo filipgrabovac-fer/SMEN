@@ -1,7 +1,9 @@
 package com.smen.Controllers;
 
+import com.smen.DTO.ActivityLog.ActivityLogDto;
 import com.smen.DTO.Post.PostCreateDto;
 import com.smen.Models.Post;
+import com.smen.Services.ActivityLogService;
 import com.smen.Services.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,7 @@ import java.util.Optional;
 public class PostController {
 
     private final PostService postService;
-
+    private ActivityLogService activityLogService;
     public PostController(PostService postService) {
         this.postService = postService;
     }
@@ -27,6 +29,8 @@ public class PostController {
 
     @PostMapping()
     public ResponseEntity<Post> createPost(@RequestBody PostCreateDto post){
+        ActivityLogDto activityLogDto= new ActivityLogDto("c","oglas",userId);
+        activityLogService.saveActivityLog(activityLogDto);
         return ResponseEntity.ok(postService.createPost(post));
     }
 
@@ -38,12 +42,16 @@ public class PostController {
         existingPost.setTitle(post.getTitle());
         existingPost.setDescription(post.getDescription());
         postService.updatePost(existingPost);
+        ActivityLogDto activityLogDto= new ActivityLogDto("e","oglas",userId);
+        activityLogService.saveActivityLog(activityLogDto);
         return ResponseEntity.ok(true);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deletePost(@PathVariable Long id){
         postService.deletePost(id);
+        ActivityLogDto activityLogDto= new ActivityLogDto("d","oglas",userId);
+        activityLogService.saveActivityLog(activityLogDto);
         return ResponseEntity.ok(true);
     }
 }

@@ -21,7 +21,7 @@ public class MentorRequestStatusController {
 
     @Autowired
     private final MentorRequestStatusService mentorRequestStatusService;
-
+    private ActivityLogService activityLogService;
     public MentorRequestStatusController(MentorRequestStatusService mentorRequestStatusService) {
         this.mentorRequestStatusService = mentorRequestStatusService;
     }

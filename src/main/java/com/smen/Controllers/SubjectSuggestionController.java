@@ -18,7 +18,7 @@ import java.util.Optional;
 public class SubjectSuggestionController {
 
     private final SubjectSuggestionService service;
-
+    private ActivityLogService activityLogService;
     @Autowired
     public SubjectSuggestionController(SubjectSuggestionService service) {
         this.service = service;

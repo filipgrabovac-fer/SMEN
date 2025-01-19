@@ -23,7 +23,7 @@ public class RatingController {
 
     @Autowired
     private RatingService ratingService;
-
+    private ActivityLogService activityLogService;
     @GetMapping("/{id}")
     public ResponseEntity<Rating> getRating(@PathVariable Long id) {
         Optional<Rating> rating = ratingService.getById(id);
@@ -38,7 +38,7 @@ public class RatingController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<RatingDto> createRating(@RequestBody RatingDto ratingDto) {
+    public ResponseEntity<RatingDto> createRating(@RequestBody RatingDto ratingDto,@RequestHeader("userId") long userId) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Error-Message", "Rating must be between 1 and 5");
 
@@ -51,6 +51,9 @@ public class RatingController {
         if (createdRating == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();  // Invalid user/workshop IDs
         }
+
+        ActivityLogDto activityLogDto= new ActivityLogDto("c","activity log",userId);
+        activityLogService.saveActivityLog(activityLogDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRating);
     }

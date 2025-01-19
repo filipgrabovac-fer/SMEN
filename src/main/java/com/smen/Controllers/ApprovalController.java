@@ -18,6 +18,7 @@ import java.util.List;
 @CrossOrigin("*")
 public class ApprovalController {
 
+    private ActivityLogService activityLogService;
     @Autowired
     private final ApprovalService approvalService;
 

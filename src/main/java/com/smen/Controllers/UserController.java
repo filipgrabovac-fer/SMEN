@@ -21,7 +21,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
+    private ActivityLogService activityLogService;
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
         UserDto userDto = userService.getUserById(id);

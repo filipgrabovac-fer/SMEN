@@ -20,7 +20,7 @@ public class MentorRequestController {
 
     @Autowired
     private final MentorRequestService mentorRequestService;
-
+    private ActivityLogService activityLogService;
     // Endpoint to get all mentor requests
     @GetMapping
     public ResponseEntity<List<MentorRequestDto>> getAllMentorRequests() {
@@ -53,7 +53,8 @@ public class MentorRequestController {
         if (approvedRequest == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
+        ActivityLogDto activityLogDto= new ActivityLogDto("c","mentor request status",userId);
+        activityLogService.saveActivityLog(activityLogDto);
         return ResponseEntity.ok(approvedRequest);
     }
 
@@ -65,7 +66,8 @@ public class MentorRequestController {
         if (rejectedRequest == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
+        ActivityLogDto activityLogDto= new ActivityLogDto("e","mentor request status",userId);
+        activityLogService.saveActivityLog(activityLogDto);
         return ResponseEntity.ok(rejectedRequest);
     }
 
@@ -77,7 +79,8 @@ public class MentorRequestController {
         if (newRequest == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
+        ActivityLogDto activityLogDto= new ActivityLogDto("c","mentor request status",userId);
+        activityLogService.saveActivityLog(activityLogDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newRequest);
     }
 
@@ -87,6 +90,8 @@ public class MentorRequestController {
         boolean isDeleted = mentorRequestService.deleteById(id);
 
         if (isDeleted) {
+            ActivityLogDto activityLogDto= new ActivityLogDto("d","mentor request status",userId);
+            activityLogService.saveActivityLog(activityLogDto);
             return ResponseEntity.status(HttpStatus.OK).build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
