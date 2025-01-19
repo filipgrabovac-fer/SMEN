@@ -1,34 +1,30 @@
 import { useMutation } from "@tanstack/react-query";
-import { NewPostType } from "../components/AddOglas";
 import { customFetch } from "../../../utils/customFetch";
 
-export type PostNewPostProps = {
+export type DeleteOglasProps = {
   onSuccess:
     | ((
         data: unknown,
-        variables: NewPostType,
+        variables: DeleteOglasMutationProps,
         context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 };
 
-export const usePostNewPost = ({ onSuccess }: PostNewPostProps) => {
+export type DeleteOglasMutationProps = {
+  oglasId: number;
+};
+export const useDeleteOglas = ({ onSuccess }: DeleteOglasProps) => {
   return useMutation({
     onSuccess: onSuccess,
-    mutationFn: async ({ description, title }: NewPostType) => {
+    mutationFn: async ({ oglasId }: DeleteOglasMutationProps) => {
       const response = await customFetch({
-        endpointUrl: "post",
-        method: "POST",
+        endpointUrl: `post/${oglasId}`,
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          description,
-          title,
-          userId: 1,
-        }),
       });
-
       return response;
     },
   });

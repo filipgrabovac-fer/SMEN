@@ -34,14 +34,12 @@ public class WorkshopController {
 
     @GetMapping
     public ResponseEntity<List<WorkshopDetailsDTO>> getAllWorkshops() {
-        return ResponseEntity.ok(workshopService.getAllWorkshops());
+        return ResponseEntity.ok(workshopService.getAllWorkshops(1L));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<WorkshopDto> getWorkshopById(@PathVariable Long id) {
-        Optional<WorkshopDto> workshopDto = workshopService.getByIdAsDto(id);
-        return workshopDto.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/{id}/user/{userId}")
+    public ResponseEntity<WorkshopDetailsDTO> getWorkshopById(@PathVariable Long id, @PathVariable Long userId) {
+        return ResponseEntity.ok(workshopService.getByDetailedDto(id, userId));
     }
 
     @GetMapping("/search")
@@ -59,9 +57,9 @@ public class WorkshopController {
         return ResponseEntity.ok(workshopService.getWorkshopsByStatusId(statusId));
     }
 
-    @GetMapping("/subject/{subjectId}")
-    public ResponseEntity<List<WorkshopDetailsDTO>> getWorkshopsBySubject(@PathVariable Long subjectId) {
-        return ResponseEntity.ok(workshopService.getWorkshopsBySubjectId(subjectId));
+    @GetMapping("/subject/{subjectId}/user/{userId}")
+    public ResponseEntity<List<WorkshopDetailsDTO>> getWorkshopsBySubject(@PathVariable Long subjectId, @PathVariable Long userId) {
+        return ResponseEntity.ok(workshopService.getWorkshopsBySubjectId(subjectId, userId));
     }
 
     @GetMapping("/available-slots")
@@ -88,23 +86,22 @@ public class WorkshopController {
             @PathVariable Long id,
             @RequestBody WorkshopDto workshopDto,
             @RequestParam Optional<WorkshopStatus> workshopStatus) {
-        Optional<WorkshopDto> existingWorkshop = workshopService.getByIdAsDto(id);
 
-        if (existingWorkshop.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        if (workshopService.getById(id).isEmpty()) return ResponseEntity.badRequest().build();
 
-        Workshop workshop = workshopDto.toEntity();
-        workshop.setId(id);
-        WorkshopDto updatedWorkshopDto = workshopService.saveWorkshopDto(workshop);
+        Workshop existingWorkshop = workshopService.getById(id).get();
+        existingWorkshop.setTitle(workshopDto.getTitle());
+        existingWorkshop.setDescription(workshopDto.getDescription());
+        existingWorkshop.setWorkshopStatusId(workshopDto.getWorkshopStatusId());
+        WorkshopDto updatedWorkshopDto = workshopService.saveWorkshopDto(existingWorkshop);
         return ResponseEntity.ok(updatedWorkshopDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteWorkshop(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteWorkshop(@PathVariable Long id) {
         boolean isDeleted = workshopService.deleteWorkshop(id);
         if (isDeleted) {
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.ok(true);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

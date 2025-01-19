@@ -12,7 +12,7 @@ export const useGetPosts = () => {
     queryKey: ["posts"],
     queryFn: async () => {
       const response = await customFetch({
-        endpointUrl: "subject",
+        endpointUrl: "post",
         method: "GET",
       });
       return response;

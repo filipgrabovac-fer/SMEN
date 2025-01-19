@@ -4,8 +4,12 @@ import { useState } from "react";
 import { useGetWorkshopsForTheme } from "./hooks/useGetWorkshopsForTheme.hook";
 import { useGetThemeDetails } from "./hooks/useGetThemeDetails.hook";
 import { themeOverviewRoute } from "../../routes/theme-overview/theme-overview.routes";
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { CreateWorkshopModal } from "./components/CreateWorkshopModal.component";
+
+import { useQueryClient } from "@tanstack/react-query";
+import { useDeleteWorkshop } from "./hooks/useDeleteWorkshop.hook";
+import { EditWorkshopModal } from "./components/EditWorkshopModal.component";
 
 const columns = [
   {
@@ -38,6 +42,7 @@ const columns = [
     dataIndex: "find_out_more",
     key: "find_out_more",
   },
+  { title: "", dataIndex: "edit", key: "edit" },
 ];
 
 export const ThemeOverview = () => {
@@ -45,13 +50,27 @@ export const ThemeOverview = () => {
   const [selectedWorkshopId, setSelectedWorkshopId] = useState<
     number | undefined
   >();
+  const [selectedWorkshopTitle, setSelectedWorkshopTitle] = useState<
+    string | undefined
+  >();
+  const [selectedWorkshopDescription, setSelectedWorkshopDescription] =
+    useState<string | undefined>();
+
   const [isCreateWorkshopModalOpen, setIsCreateWorkshopModalOpen] =
     useState(false);
 
-  const { themeId } = themeOverviewRoute.useParams();
+  const [isEditThemeModalOpen, setIsEditThemeModalOpen] = useState<
+    boolean | undefined
+  >();
 
+  const { themeId } = themeOverviewRoute.useParams();
   const { data } = useGetWorkshopsForTheme({ subjectId: themeId });
   const { data: themeDetails } = useGetThemeDetails({ subjectId: themeId });
+  const queryClient = useQueryClient();
+
+  const { mutate: postDeleteWorkshop } = useDeleteWorkshop({
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["workshops"] }),
+  });
 
   const dataSource = data?.map((workshop) => ({
     key: workshop.id,
@@ -70,6 +89,36 @@ export const ThemeOverview = () => {
       >
         Saznaj više
       </p>
+    ),
+    edit: (
+      <div className="flex gap-x-2">
+        <Button
+          type="primary"
+          onClick={() => {
+            setSelectedWorkshopId(workshop.id);
+            setSelectedWorkshopTitle(workshop.title);
+            setSelectedWorkshopDescription(workshop.description);
+            setIsEditThemeModalOpen(true);
+          }}
+        >
+          <PencilIcon className="w-3 h-3" />
+        </Button>
+        <Button
+          className="p-auto"
+          onClick={() => postDeleteWorkshop({ workshopId: workshop.id })}
+        >
+          <TrashIcon className="w-4 h-4" color="red" />
+        </Button>
+        <EditWorkshopModal
+          workshopStatusId={Number(workshop.workshopStatusId)}
+          isModalOpen={isEditThemeModalOpen}
+          setIsModalOpen={setIsEditThemeModalOpen}
+          selectedWorkshopId={selectedWorkshopId}
+          setSelectedWorkshopId={setSelectedWorkshopId}
+          workshopTitle={selectedWorkshopTitle ?? ""}
+          workshopDescription={selectedWorkshopDescription ?? ""}
+        />
+      </div>
     ),
   }));
 

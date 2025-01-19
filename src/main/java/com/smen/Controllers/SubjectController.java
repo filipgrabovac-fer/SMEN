@@ -68,6 +68,7 @@ public class SubjectController {
             return ResponseEntity.notFound().build();
         }
 
+        System.out.println(subjectDto);
         Subject existingSubject = optionalSubject.get();
         existingSubject.setTitle(subjectDto.getTitle());
         existingSubject.setDescription(subjectDto.getDescription());
@@ -78,13 +79,13 @@ public class SubjectController {
 
     // Endpoint to delete a subject
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSubject(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteSubject(@PathVariable Long id) {
         boolean isDeleted = subjectService.deleteById(id);
 
         if (isDeleted) {
-            return ResponseEntity.status(HttpStatus.OK).body("Subject deleted successfully");
+            return ResponseEntity.status(HttpStatus.OK).body(true);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Subject not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
         }
     }
 }

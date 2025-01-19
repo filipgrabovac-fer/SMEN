@@ -4,9 +4,11 @@ import { customFetch } from "../../../utils/customFetch";
 export type GetMentorDataType = {
   id: number;
   comment: string;
-  requesterId: number;
-  reviewerId: number;
-  mentorRequestStatusId: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  status: string;
+  createdAt: string;
 };
 export const useGetMentors = () => {
   return useQuery<GetMentorDataType[]>({

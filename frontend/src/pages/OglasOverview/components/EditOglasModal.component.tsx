@@ -1,5 +1,7 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { Form, Input, Modal } from "antd";
 import { Dispatch, SetStateAction } from "react";
+import { usePutOglas } from "../hooks/usePutOglas.hook";
 
 export type EditOglasModalProps = {
   title: string;
@@ -14,6 +16,15 @@ export const EditOglasModal = ({
   selectedOglasId,
 }: EditOglasModalProps) => {
   const [form] = Form.useForm();
+
+  const queryClient = useQueryClient();
+
+  const { mutate: putOglas } = usePutOglas({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      setSelectedOglasId(undefined);
+    },
+  });
   return (
     <Modal
       title="Uredi temu"
@@ -21,19 +32,22 @@ export const EditOglasModal = ({
       open={selectedOglasId !== undefined}
       onOk={() => {
         form.validateFields().then((values) => {
-          console.log(values);
-          setSelectedOglasId(undefined);
+          putOglas({
+            postId: selectedOglasId ?? 0,
+            title: values.postTitle ?? title,
+            description: values.postDescription ?? description,
+          });
         });
       }}
       onCancel={() => setSelectedOglasId(undefined)}
       className="bg-none"
     >
-      <Form>
-        <Form.Item label="Naslov teme" name="themeTitle">
-          <Input value={title} />
+      <Form form={form} layout="vertical">
+        <Form.Item label="Naslov oglasa" name="postTitle">
+          <Input defaultValue={title} />
         </Form.Item>
-        <Form.Item label="Opis teme" name="themeDescription">
-          <Input value={description} />
+        <Form.Item label="Opis oglasa" name="postDescription">
+          <Input defaultValue={description} />
         </Form.Item>
       </Form>
     </Modal>

@@ -5,11 +5,19 @@ import { useGetPosts } from "./hooks/useGetPosts.hook";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { EditOglasModal } from "./components/EditOglasModal.component";
+import { useQueryClient } from "@tanstack/react-query";
+import { useDeleteOglas } from "./hooks/useDeleteOglas.hook";
 
 const OglasOverview = () => {
   const { data: postsData } = useGetPosts();
 
   const [selectedOglasId, setSelectedOglasId] = useState<number | undefined>();
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteOglas } = useDeleteOglas({
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["posts"] }),
+  });
+
   const data =
     postsData?.map((post, i) => ({
       key: i.toString(),
@@ -24,7 +32,11 @@ const OglasOverview = () => {
             <PencilIcon className="w-3 h-3" />
           </Button>
           <Button className="p-auto">
-            <TrashIcon className="w-4 h-4" color="red" />
+            <TrashIcon
+              className="w-4 h-4"
+              color="red"
+              onClick={() => deleteOglas({ oglasId: post.id })}
+            />
           </Button>
           <EditOglasModal
             title={post.title}

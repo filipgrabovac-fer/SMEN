@@ -22,7 +22,7 @@ const items: MenuProps["items"] = [
   },
   {
     key: "/workshop-user",
-    label: "My workshops",
+    label: "Moje radionice",
   },
 ];
 if (role === "User") {

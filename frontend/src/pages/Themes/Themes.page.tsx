@@ -6,13 +6,27 @@ import { useGetThemes } from "./hooks/useGetThemes.hook";
 import { useNavigate } from "@tanstack/react-router";
 import { themeOverviewRoute } from "../../routes/theme-overview/theme-overview.routes";
 import { EditThemeModal } from "./components/EditThemeModal.component";
+import { useDeleteTheme } from "./hooks/useDeleteTheme.hook";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Themes = () => {
   const [isCreateThemeModalOpen, setIsCreateThemeModalOpen] = useState(false);
   const { data } = useGetThemes();
   const navigate = useNavigate();
 
+  const queryClient = useQueryClient();
+  const { mutate: postDeleteTheme } = useDeleteTheme({
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["themes"] }),
+  });
   const [selectedThemeId, setSelectedThemeId] = useState<number | undefined>();
+  const [selectedThemeTitle, setSelectedThemeTitle] = useState<
+    string | undefined
+  >();
+  const [selectedThemeDescription, setSelectedThemeDescription] = useState<
+    string | undefined
+  >();
+
+  const [isEditThemeModalOpen, setIsEditThemeModalOpen] = useState(false);
   const dataSource = data?.map((theme) => ({
     key: theme.id,
     naziv: theme.title,
@@ -34,16 +48,23 @@ export const Themes = () => {
     ),
     edit: (
       <div className="flex gap-x-2">
-        <Button type="primary" onClick={() => setSelectedThemeId(theme.id)}>
+        <Button
+          type="primary"
+          onClick={() => {
+            setSelectedThemeTitle(theme.title);
+            setSelectedThemeDescription(theme.description);
+            setSelectedThemeId(theme.id);
+            setIsEditThemeModalOpen(true);
+          }}
+        >
           <PencilIcon className="w-3 h-3" />
         </Button>
-        <Button className="p-auto">
+        <Button
+          className="p-auto"
+          onClick={() => postDeleteTheme({ themeId: theme.id })}
+        >
           <TrashIcon className="w-4 h-4" color="red" />
         </Button>
-        <EditThemeModal
-          selectedThemeId={selectedThemeId}
-          setSelectedThemeId={setSelectedThemeId}
-        />
       </div>
     ),
   }));
@@ -94,6 +115,14 @@ export const Themes = () => {
       <CreateThemeModal
         isModalOpen={isCreateThemeModalOpen}
         setIsModalOpen={setIsCreateThemeModalOpen}
+      />
+      <EditThemeModal
+        title={selectedThemeTitle ?? ""}
+        description={selectedThemeDescription ?? ""}
+        isModalOpen={isEditThemeModalOpen}
+        setIsModalOpen={setIsEditThemeModalOpen}
+        selectedThemeId={selectedThemeId}
+        setSelectedThemeId={setSelectedThemeId}
       />
     </div>
   );

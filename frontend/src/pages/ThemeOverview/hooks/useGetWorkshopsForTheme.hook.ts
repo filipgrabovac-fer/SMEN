@@ -14,6 +14,7 @@ export type GetWorkshopsForThemeDataType = {
   title: string;
   workshopStatus: string;
   dateOfEvent: string;
+  workshopStatusId: number;
 };
 export const useGetWorkshopsForTheme = ({
   subjectId,
@@ -21,12 +22,12 @@ export const useGetWorkshopsForTheme = ({
   return useQuery<GetWorkshopsForThemeDataType[]>({
     queryKey: ["workshops"],
     queryFn: async () => {
+      const userId = 1;
       const response = await customFetch({
-        endpointUrl: `workshop/subject/${subjectId}`,
+        endpointUrl: `workshop/subject/${subjectId}/user/${userId}`,
         method: "GET",
       });
 
-      console.log(response);
       return response;
     },
   });

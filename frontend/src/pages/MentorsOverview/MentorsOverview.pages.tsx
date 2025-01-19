@@ -10,38 +10,50 @@ export const MentorsOverview = () => {
   const queryClient = useQueryClient();
 
   const { mutate: postApproveMentorRequest } = usePostApproveMentorRequest({
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["mentors"] }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["mentorRequests"] }),
   });
   const { mutate: postRejectMentorRequest } = usePostRejectMentorRequest({
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["mentors"] }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["mentorRequests"] }),
   });
 
-  const dataSource = data?.map((mentor) => ({
-    key: mentor.id,
-    ime: "Demo ime",
-    prezime: "Demo prezime",
-    email: "Demo email",
+  const dataSource = data?.map((mentor, i) => ({
+    key: i,
+    ime: mentor.firstName,
+    prezime: mentor.lastName,
+    email: mentor.comment,
     comment: mentor.comment,
-    datum_prijave: "22-02-2022",
+    datum_prijave: mentor.createdAt.slice(0, 10),
     approve_reject: (
       <div className="flex gap-x-2">
-        <Button
-          className="bg-button_border !hover:background-button_border"
-          onClick={() =>
-            postApproveMentorRequest({ mentorRequestId: mentor.id })
-          }
-        >
-          <CheckIcon className="w-5 h-5 text-white" />
-        </Button>
-        <Button>
-          <TrashIcon
-            className="w-5 h-5"
-            color="red"
-            onClick={() =>
-              postRejectMentorRequest({ mentorRequestId: mentor.id })
-            }
-          />
-        </Button>
+        {mentor.status == "ACCEPTED" && (
+          <p className="text-green-500">Accepted</p>
+        )}
+        {mentor.status == "REJECTED" && (
+          <p className="text-red-500">Rejected</p>
+        )}
+        {mentor.status == "PENDING" && (
+          <>
+            <Button
+              className="bg-button_border !hover:background-button_border"
+              onClick={() =>
+                postApproveMentorRequest({ mentorRequestId: mentor.id })
+              }
+            >
+              <CheckIcon className="w-5 h-5 text-white" />
+            </Button>
+            <Button>
+              <TrashIcon
+                className="w-5 h-5"
+                color="red"
+                onClick={() =>
+                  postRejectMentorRequest({ mentorRequestId: mentor.id })
+                }
+              />
+            </Button>
+          </>
+        )}
       </div>
     ),
   }));
