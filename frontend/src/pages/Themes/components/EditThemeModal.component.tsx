@@ -6,7 +6,9 @@ import { useQueryClient } from "@tanstack/react-query";
 
 export type EditThemeModalProps = {
   title: string;
+  setTitle: Dispatch<SetStateAction<string | undefined>>;
   description: string;
+  setDescription: Dispatch<SetStateAction<string | undefined>>;
   selectedThemeId?: number;
   setSelectedThemeId: Dispatch<SetStateAction<number | undefined>>;
   isModalOpen: boolean | undefined;
@@ -20,6 +22,8 @@ export const EditThemeModal = ({
   setIsModalOpen,
   title,
   description,
+  setTitle,
+  setDescription,
 }: EditThemeModalProps) => {
   const [form] = Form.useForm();
 
@@ -42,10 +46,10 @@ export const EditThemeModal = ({
         setIsModalOpen(false);
       }}
       onOk={() => {
-        form.validateFields().then((values) => {
+        form.validateFields().then(() => {
           putTheme({
-            themeTitle: values.themeTitle ?? title,
-            themeDescription: values.themeDescription ?? description,
+            themeTitle: title,
+            themeDescription: description,
             subjectId: selectedThemeId ?? 0,
           });
 
@@ -54,21 +58,25 @@ export const EditThemeModal = ({
       }}
     >
       <Form form={form} layout="vertical">
-        <Form.Item name="themeTitle">
+        <Form.Item>
           <Input
+            required
             allowClear
             title="ime teme"
             placeholder="ime teme"
-            defaultValue={title}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </Form.Item>
-        <Form.Item name="themeDescription">
+        <Form.Item>
           <TextArea
+            required
             allowClear
             title="opis teme"
             placeholder="opis teme"
             rows={6}
-            defaultValue={description}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </Form.Item>
       </Form>

@@ -85,8 +85,7 @@ public class WorkshopController {
     @PutMapping("/{id}")
     public ResponseEntity<WorkshopDto> updateWorkshop(
             @PathVariable Long id,
-            @RequestBody WorkshopDto workshopDto,
-            @RequestParam Optional<WorkshopStatus> workshopStatus) {
+            @RequestBody WorkshopDto workshopDto) {
 
         if (workshopService.getById(id).isEmpty()) return ResponseEntity.badRequest().build();
 
@@ -94,6 +93,7 @@ public class WorkshopController {
         existingWorkshop.setTitle(workshopDto.getTitle());
         existingWorkshop.setDescription(workshopDto.getDescription());
         existingWorkshop.setWorkshopStatusId(workshopDto.getWorkshopStatusId());
+        existingWorkshop.setNoOfAvailableSlots(workshopDto.getNoOfAvailableSlots());
         WorkshopDto updatedWorkshopDto = workshopService.saveWorkshopDto(existingWorkshop);
         ActivityLogDto activityLogDto= new ActivityLogDto("e","workshop",userId);
         activityLogService.saveActivityLog(activityLogDto);

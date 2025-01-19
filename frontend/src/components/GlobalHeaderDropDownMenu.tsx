@@ -53,7 +53,46 @@ const handleLogout = () => {
 
 const HeaderDropdownMenu = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isAdmin = localStorage.getItem("userRole") === "ADMIN";
+  const isUser = localStorage.getItem("userRole") === "USER";
 
+  const { data: userAppliedForMentorship } = useGetUserApplication();
+
+  const items: MenuProps["items"] = [
+    {
+      key: "/themes",
+      label: "Teme",
+    },
+    {
+      key: "/posts",
+      label: "Oglasi",
+    },
+    {
+      key: "/workshop-user",
+      label: "Moje radionice",
+    },
+  ];
+
+  if (isAdmin)
+    items.push({
+      key: "/mentors-overview",
+      label: "Pregled prijava",
+    });
+
+  if (isUser && !userAppliedForMentorship) {
+    items.push({
+      key: "prijava",
+      label: "Prijava za mentorstvo",
+    });
+  }
+  items.push({
+    key: "/login",
+    label: (
+      <p className="text-red-600" onClick={() => handleLogout()}>
+        Odjava
+      </p>
+    ),
+  });
   const handleMenuClick = (key: string) => {
     if (key === "prijava") {
       setIsModalOpen(true);

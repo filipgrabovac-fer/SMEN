@@ -24,6 +24,7 @@ export const usePutOglas = ({ onSuccess }: PutOglasProps) => {
       description,
       postId,
     }: PutOglasMutationProps) => {
+      const userId = Number(localStorage.getItem("userId") ?? 0);
       const response = await customFetch({
         endpointUrl: `post/${postId}`,
         method: "PUT",
@@ -33,7 +34,7 @@ export const usePutOglas = ({ onSuccess }: PutOglasProps) => {
         body: JSON.stringify({
           title,
           description,
-          userId: 1,
+          userId: userId,
         }),
       });
 

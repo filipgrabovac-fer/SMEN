@@ -15,12 +15,17 @@ export enum WorkshopStatusEnum {
 
 export type EditWorkshopModalProps = {
   workshopStatusId: number;
+  setWorkshopStatusId: Dispatch<SetStateAction<number>>;
   selectedWorkshopId?: number;
   setSelectedWorkshopId: Dispatch<SetStateAction<number | undefined>>;
   isModalOpen: boolean | undefined;
   setIsModalOpen: Dispatch<SetStateAction<boolean | undefined>>;
   workshopTitle: string;
   workshopDescription: string;
+  setWorkshopTitle: Dispatch<SetStateAction<string | undefined>>;
+  setWorkshopDescription: Dispatch<SetStateAction<string | undefined>>;
+  workshopNumberOfPlaces: number | undefined;
+  setWorkshopNumberOfPlaces: Dispatch<SetStateAction<number | undefined>>;
 };
 
 export const EditWorkshopModal = ({
@@ -31,6 +36,11 @@ export const EditWorkshopModal = ({
   setIsModalOpen,
   workshopTitle,
   workshopDescription,
+  setWorkshopDescription,
+  setWorkshopTitle,
+  setWorkshopStatusId,
+  setWorkshopNumberOfPlaces,
+  workshopNumberOfPlaces,
 }: EditWorkshopModalProps) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
@@ -52,37 +62,50 @@ export const EditWorkshopModal = ({
         setIsModalOpen(undefined);
       }}
       onOk={() => {
-        form.validateFields().then((values) => {
+        form.validateFields().then(() => {
           putworkshop({
-            workshopTitle: values.workshopTitle ?? workshopTitle,
-            workshopDescription:
-              values.workshopDescription ?? workshopDescription,
+            workshopTitle: workshopTitle,
+            workshopDescription: workshopDescription,
             workshopId: selectedWorkshopId ?? 0,
-            workshopStatusId: values.workshopStatusId,
+            workshopStatusId: workshopStatusId,
+            noOfAvailableSlots: workshopNumberOfPlaces ?? 0,
           });
 
           form.resetFields();
         });
       }}
     >
-      <Form
-        form={form}
-        initialValues={{
-          workshopTitle: workshopTitle,
-          workshopDescription: workshopDescription,
-        }}
-        layout="vertical"
-      >
-        <Form.Item name="workshopTitle">
-          <Input allowClear placeholder="ime radionice" />
+      <Form form={form} layout="vertical">
+        <Form.Item>
+          <Input
+            allowClear
+            placeholder="ime radionice"
+            value={workshopTitle}
+            onChange={(e) => setWorkshopTitle(e.target.value)}
+          />
         </Form.Item>
-        <Form.Item name="workshopDescription">
-          <TextArea allowClear placeholder="opis radionice" rows={6} />
+        <Form.Item>
+          <TextArea
+            allowClear
+            placeholder="opis radionice"
+            rows={6}
+            value={workshopDescription}
+            onChange={(e) => setWorkshopDescription(e.target.value)}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Input
+            allowClear
+            placeholder="broj mjesta"
+            type="number"
+            value={workshopNumberOfPlaces}
+            onChange={(e) => setWorkshopNumberOfPlaces(Number(e.target.value))}
+          />
         </Form.Item>
         <Form.Item name="workshopStatusId">
           <Select
-            defaultActiveFirstOption={true}
             defaultValue={workshopStatusId}
+            onSelect={(value) => setWorkshopStatusId(value)}
             options={[
               { label: WorkshopStatusEnum.PENDING, value: 1 },
               { label: WorkshopStatusEnum.APPROVED, value: 2 },

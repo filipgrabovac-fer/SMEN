@@ -26,14 +26,16 @@ export const WorkshopApplicationModal = ({
   selectedWorkshopId,
   setSelectedWorkshopId,
 }: WorkshopApplicationModalProps) => {
-  const { data } = useGetWorkshopDetails({
+  const { data, isLoading } = useGetWorkshopDetails({
     workshopId: selectedWorkshopId.toString(),
   });
 
   const queryClient = useQueryClient();
   const { mutate: postWorkshopApplucation } = usePostWorkshopApplication({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workshops"] });
+      queryClient.invalidateQueries({
+        queryKey: ["workshops"],
+      });
       setIsModalOpen(false);
       setSelectedWorkshopId(undefined);
     },
@@ -67,7 +69,7 @@ export const WorkshopApplicationModal = ({
         </p>
       ) : (
         <div className="flex gap-x-4 justify-center">
-          {data ? (
+          {data && !isLoading ? (
             <button
               className="border border-button_border rounded-md p-2 hover:opacity-60 text-button_border"
               onClick={() =>

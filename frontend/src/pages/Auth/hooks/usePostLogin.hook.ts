@@ -36,6 +36,8 @@ export const usePostLogin = ({ onSuccess }: PostLoginProps) => {
 
       localStorage.setItem("token", response.access_token);
       localStorage.setItem("userRole", response.role);
+      localStorage.setItem("userId", response.userId);
+
       return response;
     },
   });

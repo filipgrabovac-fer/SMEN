@@ -1,5 +1,5 @@
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
-import { Button, Table } from "antd";
+import { Button, Input, Table } from "antd";
 import { useState } from "react";
 import { CreateThemeModal } from "./components/CreateThemeModal.component";
 import { useGetThemes } from "./hooks/useGetThemes.hook";
@@ -27,7 +27,19 @@ export const Themes = () => {
   >();
 
   const [isEditThemeModalOpen, setIsEditThemeModalOpen] = useState(false);
-  const dataSource = data?.map((theme) => ({
+
+  const [searchValue, setSearchValue] = useState("");
+
+  const filteredData =
+    searchValue != ""
+      ? data?.filter((theme) =>
+          theme.title.toLowerCase().includes(searchValue.toLowerCase().trim())
+        )
+      : data;
+
+  const canEditThemes = localStorage.getItem("userRole") != "USER";
+
+  const dataSource = filteredData?.map((theme) => ({
     key: theme.id,
     naziv: theme.title,
     opis: theme.description,
@@ -46,27 +58,31 @@ export const Themes = () => {
         Saznaj više
       </p>
     ),
-    edit: (
-      <div className="flex gap-x-2">
-        <Button
-          type="primary"
-          onClick={() => {
-            setSelectedThemeTitle(theme.title);
-            setSelectedThemeDescription(theme.description);
-            setSelectedThemeId(theme.id);
-            setIsEditThemeModalOpen(true);
-          }}
-        >
-          <PencilIcon className="w-3 h-3" />
-        </Button>
-        <Button
-          className="p-auto"
-          onClick={() => postDeleteTheme({ themeId: theme.id })}
-        >
-          <TrashIcon className="w-4 h-4" color="red" />
-        </Button>
-      </div>
-    ),
+    ...(canEditThemes
+      ? {
+          edit: (
+            <div className="flex gap-x-2">
+              <Button
+                type="primary"
+                onClick={() => {
+                  setSelectedThemeTitle(theme.title);
+                  setSelectedThemeDescription(theme.description);
+                  setSelectedThemeId(theme.id);
+                  setIsEditThemeModalOpen(true);
+                }}
+              >
+                <PencilIcon className="w-3 h-3" />
+              </Button>
+              <Button
+                className="p-auto"
+                onClick={() => postDeleteTheme({ themeId: theme.id })}
+              >
+                <TrashIcon className="w-4 h-4" color="red" />
+              </Button>
+            </div>
+          ),
+        }
+      : undefined),
   }));
 
   const columns = [
@@ -95,20 +111,34 @@ export const Themes = () => {
       dataIndex: "find_out_more",
       key: "find_out_more",
     },
-    {
-      title: "",
-      dataIndex: "edit",
-      key: "edit",
-    },
+    canEditThemes
+      ? {
+          title: "",
+          dataIndex: "edit",
+          key: "edit",
+        }
+      : {},
   ];
 
   return (
     <div className="w-4/5 m-auto flex flex-col gap-y-6 mt-6">
       <div className="flex justify-between">
         <h1 className="text-2xl font-medium">Teme</h1>
-        <Button type="primary" onClick={() => setIsCreateThemeModalOpen(true)}>
-          Dodaj temu <PlusIcon className="w-5 h-5" />
-        </Button>
+      </div>
+      <div className="flex justify-center gap-x-2">
+        <Input
+          className="basis-1/2"
+          placeholder="pretraži"
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        {canEditThemes && (
+          <Button
+            type="primary"
+            onClick={() => setIsCreateThemeModalOpen(true)}
+          >
+            Dodaj temu <PlusIcon className="w-5 h-5" />
+          </Button>
+        )}
       </div>
       <Table dataSource={dataSource} columns={columns} />
 
@@ -118,6 +148,8 @@ export const Themes = () => {
       />
       <EditThemeModal
         title={selectedThemeTitle ?? ""}
+        setTitle={setSelectedThemeTitle}
+        setDescription={setSelectedThemeDescription}
         description={selectedThemeDescription ?? ""}
         isModalOpen={isEditThemeModalOpen}
         setIsModalOpen={setIsEditThemeModalOpen}

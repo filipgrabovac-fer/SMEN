@@ -1,6 +1,5 @@
 import { createRouter } from "@tanstack/react-router";
-import { rootRoute } from "./root.routes";
-import { homeRoute } from "./home/home.routes";
+import { defaultRoute, rootRoute } from "./root.routes";
 import { loginRoute } from "./auth/login.routes";
 import { registerRoute } from "./auth/register.routes";
 import { themesRoute } from "./themes/themes.routes";
@@ -12,7 +11,6 @@ import { workshopsUserRoute } from "./workshops-user/workshops-user.route";
 import { activityLogRoute } from "./activitylog/activitylog.route";
 
 const routeTree = rootRoute.addChildren([
-  homeRoute,
   loginRoute,
   registerRoute,
   themesRoute,
@@ -22,6 +20,7 @@ const routeTree = rootRoute.addChildren([
   oglasRoute,
   workshopsUserRoute,
   activityLogRoute,
+  defaultRoute,
 ]);
 
 export const router = createRouter({ routeTree });

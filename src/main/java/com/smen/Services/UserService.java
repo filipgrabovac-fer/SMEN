@@ -91,4 +91,7 @@ public class UserService extends BaseEntityService<User, Long> {
         return userRepository.findByEmail(email);
     }
 
+    public User getUserByUsername(String username){
+        return userRepository.findUserByUsername(username);
+    }
 }

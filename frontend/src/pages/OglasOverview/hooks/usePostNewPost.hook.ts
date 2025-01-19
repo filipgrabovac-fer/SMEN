@@ -16,6 +16,7 @@ export const usePostNewPost = ({ onSuccess }: PostNewPostProps) => {
   return useMutation({
     onSuccess: onSuccess,
     mutationFn: async ({ description, title }: NewPostType) => {
+      const userId = Number(localStorage.getItem("userId") ?? 0);
       const response = await customFetch({
         endpointUrl: "post",
         method: "POST",
@@ -25,7 +26,7 @@ export const usePostNewPost = ({ onSuccess }: PostNewPostProps) => {
         body: JSON.stringify({
           description,
           title,
-          userId: 1,
+          userId: userId,
         }),
       });
 

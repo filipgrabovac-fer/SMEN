@@ -9,7 +9,7 @@ const PrijavaZaMentorstvoLayout = ({
 }) => {
   // // @ts-expect-error: userId is always defined at this point
   // const { userId } = jwtDecode(localStorage.getItem("token") ?? "");
-  const userId = 1;
+  const userId = Number(localStorage.getItem("userId") ?? 0);
   return <PrijavaModal requesterId={userId} open={open} onClose={onClose} />;
 };
 

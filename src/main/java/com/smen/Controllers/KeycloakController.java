@@ -4,17 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smen.DTO.Keycloak.KeycloakLoginDTO;
 import com.smen.DTO.Keycloak.KeycloakRegisterDTO;
 import com.smen.DTO.Keycloak.KeycloakTokenDTO;
+import com.smen.DTO.User.UserDto;
+import com.smen.Models.User;
 import com.smen.Services.RoleService;
 import com.smen.Services.UserService;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +20,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 
 @RestController
@@ -40,7 +36,7 @@ public class KeycloakController {
     @Value("${app.api.keycloak_client}")
     private String KEYCLOAK_CLIENT;
 
-    public KeycloakController(UserService userService, JwtDecoder jwtDecoder, RoleService roleService) {
+    public KeycloakController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
@@ -62,9 +58,14 @@ public class KeycloakController {
 
         KeycloakTokenDTO token = objectMapper.readValue(response.getBody(), KeycloakTokenDTO.class);
 
+        User user = userService.getUserByUsername(keycloakLogin.getUsername());
+
         KeycloakTokenDTO keycloakTokenDTO = new KeycloakTokenDTO();
+
         keycloakTokenDTO.setAccess_token(token.getAccess_token());
-        keycloakTokenDTO.setRole("RANDOM_ROLE");
+        keycloakTokenDTO.setUserId(user.getId());
+        keycloakTokenDTO.setRole(roleService.getById(user.getRoleId()).get().getName());
+
         return ResponseEntity.ok(keycloakTokenDTO);
     }
 
@@ -113,7 +114,7 @@ public class KeycloakController {
         HttpEntity<String> entity = new HttpEntity<>(registrationBody, registrationHeaders);
         restTemplate.postForEntity(KEYCLOAK_URL + "/admin/realms/smen/users", entity, String.class);
 
-        userService.createUser(keycloakRegisterDTO.toEntity(keycloakRegisterDTO));
+        UserDto createdUser = userService.createUser(keycloakRegisterDTO.toEntity(keycloakRegisterDTO));
 
         RestTemplate loginTemplate = new RestTemplate();
         String url = KEYCLOAK_URL + "/realms/smen/protocol/openid-connect/token";
@@ -131,6 +132,7 @@ public class KeycloakController {
 
         KeycloakTokenDTO keycloakTokenDTO = new KeycloakTokenDTO();
         keycloakTokenDTO.setAccess_token(token.getAccess_token());
+        keycloakTokenDTO.setUserId(createdUser.getId());
 
         String roleName = roleService.getById(keycloakRegisterDTO.getRoleId()).get().getName();
         keycloakTokenDTO.setRole(roleName);

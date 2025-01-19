@@ -6,6 +6,8 @@ export type GetPostType = {
   id: number;
   tags: string;
   title: string;
+  author: string;
+  createdAt: string;
 };
 export const useGetPosts = () => {
   return useQuery<GetPostType[]>({

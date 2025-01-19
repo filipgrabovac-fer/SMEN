@@ -14,4 +14,5 @@ import lombok.NoArgsConstructor;
 public class KeycloakTokenDTO {
     private String access_token;
     private String role;
+    private Long userId;
 }

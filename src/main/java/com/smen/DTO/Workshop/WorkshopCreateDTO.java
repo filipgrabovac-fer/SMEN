@@ -19,13 +19,14 @@ public class WorkshopCreateDTO {
     private Long subjectId;
     private Long userId;
     private String dateOfEvent;
+    private Integer noOfAvailableSlots;
 
     public Workshop toEntity() {
         Workshop workshop = new Workshop();
         workshop.setTitle(this.title);
         workshop.setDescription(this.description);
         workshop.setDuration(10000);
-        workshop.setNoOfAvailableSlots(10);
+        workshop.setNoOfAvailableSlots(this.noOfAvailableSlots);
         workshop.setOwnerId(this.userId);
         workshop.setWorkshopStatusId(1L);
         workshop.setDateOfEvent(LocalDate.parse(this.dateOfEvent));

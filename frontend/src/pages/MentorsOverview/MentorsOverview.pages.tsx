@@ -1,9 +1,10 @@
 import { Button, Table } from "antd";
-import { CheckIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { CheckIcon } from "@heroicons/react/24/solid";
 import { useGetMentors } from "./hooks/useGetMentors.hook";
 import { usePostApproveMentorRequest } from "./hooks/usePostApproveMentorRequest.hook";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePostRejectMentorRequest } from "./hooks/usePostRejectMentorRequest.hook";
+import { MinusCircleOutlined } from "@ant-design/icons";
 export const MentorsOverview = () => {
   const { data } = useGetMentors();
 
@@ -43,10 +44,10 @@ export const MentorsOverview = () => {
             >
               <CheckIcon className="w-5 h-5 text-white" />
             </Button>
-            <Button>
-              <TrashIcon
-                className="w-5 h-5"
+            <Button className="border-red-600">
+              <MinusCircleOutlined
                 color="red"
+                className="text-red-600"
                 onClick={() =>
                   postRejectMentorRequest({ mentorRequestId: mentor.id })
                 }

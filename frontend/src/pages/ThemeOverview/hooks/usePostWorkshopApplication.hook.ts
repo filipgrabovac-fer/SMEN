@@ -23,7 +23,8 @@ export const usePostWorkshopApplication = ({
     mutationFn: async ({
       workshopId,
     }: PostWorkshopApplicationMutationProps) => {
-      const userId = 1;
+      const userId = Number(localStorage.getItem("userId") ?? 0);
+
       const response = await customFetch({
         endpointUrl: `workshop-application/workshop/${workshopId}/user/${userId}`,
         method: "POST",

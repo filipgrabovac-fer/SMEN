@@ -30,6 +30,7 @@ export const CreateWorkshopModal = ({
         workshopDescription: values.workshopDescription,
         subjectId: themeId,
         workshopDateOfEvent: values.dateOfWorkshopEvent,
+        noOfAvailableSlots: values.maxNumberOfApplications,
       });
 
       form.resetFields();
@@ -65,7 +66,16 @@ export const CreateWorkshopModal = ({
           name="dateOfWorkshopEvent"
           rules={[{ required: true, message: "Please select a date!" }]}
         >
-          <Input type="date" />
+          <Input type="date" maxLength={255} />
+        </Form.Item>
+        <Form.Item
+          label="Broj prijava"
+          name="maxNumberOfApplications"
+          rules={[
+            { required: true, message: "Please enter number of applications!" },
+          ]}
+        >
+          <Input type="number" />
         </Form.Item>
       </Form>
     </Modal>

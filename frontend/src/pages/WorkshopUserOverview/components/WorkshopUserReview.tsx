@@ -3,8 +3,6 @@ import { Dispatch, SetStateAction } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePostReview } from "../hooks/usePostReview.hook";
 
-const userId = 1;
-
 export type ReviewWorkshopModalProps = {
   isReviewWorkshopModalOpen: boolean;
   setIsReviewWorkshopModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -16,6 +14,8 @@ export const ReviewWorkshopModal = ({
   setIsReviewWorkshopModalOpen,
   selectedWorkshopId,
 }: ReviewWorkshopModalProps) => {
+  const userId = Number(localStorage.getItem("userId") ?? 0);
+
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
 

@@ -5,8 +5,6 @@ import { WorkshopApplicationModal } from "../ThemeOverview/components/WorkshopAp
 import { Table } from "antd";
 import { ReviewWorkshopModal } from "./components/WorkshopUserReview";
 
-const userId = 1;
-
 const columns = [
   {
     title: "title",
@@ -46,6 +44,7 @@ export const WorkshopUserOverview = () => {
   const [selectedWorkshopId, setSelectedWorkshopId] = useState<
     number | undefined
   >();
+  const userId = Number(localStorage.getItem("userId") ?? 0);
 
   const { data } = useGetWorkshopsForUser({ userId: userId });
   const dataSource = data?.map((workshop) => ({

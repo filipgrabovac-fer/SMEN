@@ -6,6 +6,7 @@ export type PutWorkshopMutationProps = {
   workshopDescription: string;
   workshopId: number;
   workshopStatusId: number;
+  noOfAvailableSlots: number;
 };
 
 export type PutWorkshopProps = {
@@ -25,6 +26,7 @@ export const usePutWorkshop = ({ onSuccess }: PutWorkshopProps) => {
       workshopTitle,
       workshopDescription,
       workshopStatusId,
+      noOfAvailableSlots,
     }: PutWorkshopMutationProps) => {
       const response = await customFetch({
         endpointUrl: `workshop/${workshopId}`,
@@ -36,6 +38,7 @@ export const usePutWorkshop = ({ onSuccess }: PutWorkshopProps) => {
           title: workshopTitle,
           description: workshopDescription,
           workshopStatusId: workshopStatusId,
+          noOfAvailableSlots,
         }),
       });
 

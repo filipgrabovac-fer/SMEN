@@ -22,7 +22,8 @@ export const useGetWorkshopsForTheme = ({
   return useQuery<GetWorkshopsForThemeDataType[]>({
     queryKey: ["workshops"],
     queryFn: async () => {
-      const userId = 1;
+      const userId = Number(localStorage.getItem("userId") ?? 0);
+
       const response = await customFetch({
         endpointUrl: `workshop/subject/${subjectId}/user/${userId}`,
         method: "GET",

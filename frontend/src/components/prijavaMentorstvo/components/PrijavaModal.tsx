@@ -46,9 +46,9 @@ function PrijavaModal({ open, onClose, requesterId }: PrijavaModalProps) {
     >
       <div style={{ marginBottom: 16 }}>
         <Input.TextArea
-          rows={3}
+          rows={8}
           readOnly
-          value="Opis što kako radi uloga mentora i koje su funkcionalnosti uloge"
+          value="Mentor na radionicama ima ključnu ulogu u osiguravanju kvalitetnog i inspirativnog obrazovnog iskustva za sudionike. Njegova je odgovornost voditi sudionike kroz sadržaj radionice, pružati praktične smjernice te poticati interaktivnu i otvorenu razmjenu znanja. Mentor djeluje kao facilitator, osiguravajući da svi sudionici budu uključeni i motivirani za sudjelovanje, dok istovremeno prilagođava pristup individualnim potrebama grupe."
           style={{
             backgroundColor: "#f0f5ff",
             borderColor: "#d6e4ff",

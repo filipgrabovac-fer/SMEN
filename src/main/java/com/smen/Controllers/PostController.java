@@ -2,14 +2,18 @@ package com.smen.Controllers;
 
 import com.smen.DTO.ActivityLog.ActivityLogDto;
 import com.smen.DTO.Post.PostCreateDto;
+import com.smen.DTO.Post.PostGetDTO;
 import com.smen.Models.Post;
 import com.smen.Services.ActivityLogService;
+import com.smen.Models.User;
 import com.smen.Services.PostService;
+import com.smen.Services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/post")
@@ -17,14 +21,30 @@ import java.util.Optional;
 public class PostController {
 
     private final PostService postService;
-    private ActivityLogService activityLogService;
-    public PostController(PostService postService) {
+    private final UserService userService;
+
+    public PostController(PostService postService, UserService userService) {
         this.postService = postService;
+        this.userService = userService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Post>> getAllPosts(){
-        return ResponseEntity.ok(postService.getAllPosts());
+    public ResponseEntity<List<PostGetDTO>> getAllPosts(){
+
+        List<Post> posts = postService.getAllPosts();
+
+        return ResponseEntity.ok(posts.stream().map(post ->{
+            PostGetDTO postGetDTO = new PostGetDTO();
+            User user = userService.getById(post.getUserId()).get();
+
+            postGetDTO.setAuthor(user.getFirstName() + " " + user.getLastName());
+            postGetDTO.setId(post.getId());
+            postGetDTO.setCreatedAt(post.getCreatedAt().toString());
+            postGetDTO.setTitle(post.getTitle());
+            postGetDTO.setDescription(post.getDescription());
+
+            return postGetDTO;
+        }).collect(Collectors.toList()));
     }
 
     @PostMapping()

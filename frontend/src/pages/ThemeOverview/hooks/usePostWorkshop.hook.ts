@@ -6,6 +6,7 @@ export type PostWorkshopMutationProps = {
   workshopDescription: string;
   subjectId: number;
   workshopDateOfEvent: string;
+  noOfAvailableSlots: number;
 };
 
 export type PostWorkshopProps = {
@@ -20,7 +21,7 @@ export type PostWorkshopProps = {
 export const usePostWorkshop = ({ onSuccess }: PostWorkshopProps) => {
   // // @ts-expect-error: userId is always defined at this point
   // const { userId } = jwtDecode(localStorage.getItem("token") ?? "");
-  const userId = 1;
+  const userId = Number(localStorage.getItem("userId") ?? 0);
 
   return useMutation({
     onSuccess: onSuccess,
@@ -29,6 +30,7 @@ export const usePostWorkshop = ({ onSuccess }: PostWorkshopProps) => {
       workshopDescription,
       subjectId,
       workshopDateOfEvent,
+      noOfAvailableSlots,
     }: PostWorkshopMutationProps) => {
       const response = await customFetch({
         endpointUrl: `workshop`,
@@ -42,6 +44,7 @@ export const usePostWorkshop = ({ onSuccess }: PostWorkshopProps) => {
           description: workshopDescription,
           userId,
           subjectId: subjectId,
+          noOfAvailableSlots,
         }),
       });
       return response;

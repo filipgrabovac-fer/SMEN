@@ -23,6 +23,9 @@ export type PostRegisterProps = {
 export const usePostRegister = ({ onSuccess }: PostRegisterProps) => {
   return useMutation({
     onSuccess: onSuccess,
+    onError: (error) => {
+      console.log("error", error);
+    },
     mutationFn: async ({
       email,
       firstName,
@@ -49,6 +52,7 @@ export const usePostRegister = ({ onSuccess }: PostRegisterProps) => {
 
       localStorage.setItem("token", response.access_token);
       localStorage.setItem("userRole", response.role);
+      localStorage.setItem("userId", response.userId);
       return response;
     },
   });

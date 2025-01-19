@@ -30,4 +30,7 @@ public class User extends BaseEntity<BaseEntity, Number> {
 
     @NonNull
     private Long roleId;
+
+    @Column(unique = true)
+    private String username;
 }

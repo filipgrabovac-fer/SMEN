@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { homeRoute } from "../../routes/home/home.routes";
 import { Button, Form, Input, Select } from "antd";
 import { loginRoute } from "../../routes/auth/login.routes";
 import { usePostRegister } from "./hooks/usePostRegister.hook";
+import { themesRoute } from "../../routes/themes/themes.routes";
 
 export type HandleSubmitProps = {
   username: string;
@@ -23,7 +23,7 @@ export const Register = () => {
 
   const { mutate: postRegister } = usePostRegister({
     onSuccess: () => {
-      navigate({ to: homeRoute.fullPath });
+      navigate({ to: themesRoute.fullPath });
     },
   });
   const [form] = Form.useForm();
@@ -92,9 +92,9 @@ export const Register = () => {
                   placeholder="odaberi ulogu"
                   defaultActiveFirstOption
                   options={[
-                    { label: "Korisnik", value: "4" },
-                    { label: "Mentor", value: "3" },
-                    { label: "Vođa tima", value: "2" },
+                    { label: "Korisnik", value: "1" },
+                    { label: "Mentor", value: "2" },
+                    { label: "Vođa tima", value: "3" },
                   ]}
                 />
               </Form.Item>

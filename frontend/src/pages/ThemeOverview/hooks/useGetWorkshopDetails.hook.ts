@@ -18,7 +18,8 @@ export type GetWorkshopDetailsProps = {
 export const useGetWorkshopDetails = ({
   workshopId,
 }: GetWorkshopDetailsProps) => {
-  const userId = 1;
+  const userId = Number(localStorage.getItem("userId") ?? 0);
+
   return useQuery<GetWorkshopDetailsDataType>({
     queryKey: ["workshop-details"],
     queryFn: async () => {

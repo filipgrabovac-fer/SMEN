@@ -26,6 +26,7 @@ public class KeycloakRegisterDTO {
         user.setLastName(keycloakRegisterDTO.getLastName());
         user.setLanguageId(1L);
         user.setRoleId(keycloakRegisterDTO.getRoleId());
+        user.setUsername(keycloakRegisterDTO.getUsername());
         return user;
     }
 }
